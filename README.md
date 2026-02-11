@@ -36,6 +36,26 @@ Or install a specific version:
 ./install.sh -v v1.0.0
 ```
 
+### With Go
+
+Install the binary to `$GOPATH/bin` (or `$HOME/go/bin`):
+
+```bash
+go install github.com/alis-exchange/a2a-playground/cmd/a2a-playground@latest
+```
+
+Or a specific version:
+
+```bash
+go install github.com/alis-exchange/a2a-playground/cmd/a2a-playground@v1.0.0
+```
+
+Run without installing (fetches and builds on first use):
+
+```bash
+go run github.com/alis-exchange/a2a-playground/cmd/a2a-playground@latest --agent-url=localhost:8080
+```
+
 ### From source
 
 ```bash

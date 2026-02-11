@@ -29,9 +29,9 @@ jobs:
           version: 9
 
       - name: Install buf
-        uses: bufbuild/buf-setup-action@v1
+        uses: bufbuild/buf-action@v1
         with:
-          github_token: ${{ github.token }}
+          setup_only: true
 
       - name: Install app dependencies
         run: cd app && pnpm install --frozen-lockfile
