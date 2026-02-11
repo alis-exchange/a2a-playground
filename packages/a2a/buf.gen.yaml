@@ -1,0 +1,22 @@
+version: v2
+clean: false
+inputs:
+  - directory: proto
+plugins:
+  # TypeScript (frontend)
+  - remote: buf.build/bufbuild/es
+    out: ../../app/packages/a2a/protobuf
+    opt: target=ts
+  - remote: buf.build/connectrpc/es
+    out: ../../app/packages/a2a/protobuf
+    opt: target=ts
+  # Go (BFF: protobuf types + gRPC client + Connect handler)
+  - remote: buf.build/protocolbuffers/go:v1.36.3
+    out: ../../gen/go/a2apb
+    opt: paths=source_relative
+  - remote: buf.build/grpc/go:v1.4.0
+    out: ../../gen/go/a2apb
+    opt: paths=source_relative
+  - remote: buf.build/connectrpc/go:v1.18.1
+    out: ../../gen/go
+    opt: paths=source_relative

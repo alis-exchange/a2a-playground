@@ -1,0 +1,5 @@
+# App build output
+/dist
+
+# Local env files (app-specific)
+.env.*.local

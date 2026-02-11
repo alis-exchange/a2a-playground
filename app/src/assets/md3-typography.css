@@ -1,0 +1,201 @@
+:root {
+    --display-l-font-size: 3.5625rem;
+    --display-l-line-height: 4rem;
+    --display-l-font-weight: 400;
+    --display-l-font-variation-GRAD: 0;
+    --display-m-font-size: 2.8125rem;
+    --display-m-line-height: 3.25rem;
+    --display-m-font-weight: 400;
+    --display-m-font-variation-GRAD: 0;
+    --display-s-font-size: 2.25rem;
+    --display-s-line-height: 2.75rem;
+    --display-s-font-weight: 400;
+    --display-s-font-variation-GRAD: 0;
+
+    --display-l-font-tracking: -0.03125rem;
+    --display-l-font-wght: "wght" 400;
+    --display-l-font-width: "wdth" 100;
+    --display-l-opsz: "opsz" 57;
+    --display-m-font-tracking: -0.03125rem;
+    --display-m-font-wght: "wght" 400;
+    --display-m-font-width: "wdth" 100;
+    --display-m-opsz: "opsz" 45;
+    --display-s-font-tracking: 0rem;
+    --display-s-font-wght: "wght" 400;
+    --display-s-font-width: "wdth" 100;
+    --display-s-opsz: "opsz" 36;
+
+    --headline-l-font-size: 2rem;
+    --headline-l-line-height: 2.5rem;
+    --headline-l-font-weight: 400;
+    --headline-l-font-variation-GRAD: 0;
+    --headline-m-font-size: 1.75rem;
+    --headline-m-line-height: 2.25rem;
+    --headline-m-font-weight: 400;
+    --headline-m-font-variation-GRAD: 0;
+    --headline-s-font-size: 1.5rem;
+    --headline-s-line-height: 2rem;
+    --headline-s-font-weight: 400;
+    --headline-s-font-variation-GRAD: 0;
+
+    --headline-l-font-tracking: 0rem;
+    --headline-l-font-wght: "wght" 400;
+    --headline-l-font-width: "wdth" 100;
+    --headline-l-opsz: "opsz" 32;
+    --headline-m-font-tracking: 0rem;
+    --headline-m-font-wght: "wght" 400;
+    --headline-m-font-width: "wdth" 100;
+    --headline-m-opsz: "opsz" 28;
+    --headline-s-font-tracking: 0rem;
+    --headline-s-font-wght: "wght" 400;
+    --headline-s-font-width: "wdth" 100;
+    --headline-s-opsz: "opsz" 24;
+}
+
+.text-headline {
+    font-weight: 400 !important;
+}
+
+.text-title {
+    font-weight: 400 !important;
+}
+
+.text-label {
+    font-weight: 400 !important;
+}
+
+.text-body {
+    font-weight: 400 !important;
+}
+
+@media only screen and (max-width: 600px) {
+
+    /* Display Styles */
+    .text-display {
+        font-family: var(--display-s-font-family);
+        font-size: var(--display-s-font-size);
+        font-weight: var(--display-s-font-weight);
+        letter-spacing: var(--display-s-font-tracking);
+        line-height: var(--display-s-line-height);
+        font-variation-settings: "GRAD" var(--display-s-font-variation-GRAD), "opsz" var(--display-s-opsz);
+    }
+
+    /* Headline Styles */
+    .text-headline {
+        font-family: var(--headline-s-font-family);
+        font-size: var(--headline-s-font-size);
+        font-weight: var(--headline-s-font-weight);
+        letter-spacing: var(--headline-s-font-tracking);
+        line-height: var(--headline-s-line-height);
+        font-variation-settings: "GRAD" var(--headline-s-font-variation-GRAD), "opsz" var(--headline-s-opsz);
+    }
+
+    /* Title Styles */
+    .text-title {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        letter-spacing: 0.15px !important;
+    }
+
+    /* Label Styles */
+    .text-label {
+        font-size: 12px !important;
+        line-height: 16px !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Body Styles */
+    .text-body {
+        font-size: 14px !important;
+        line-height: 20px !important;
+        letter-spacing: 0.25px !important;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1920px) {
+
+    /* Display Styles */
+    .text-display {
+        font-family: var(--display-m-font-family);
+        font-size: var(--display-m-font-size);
+        font-weight: var(--display-m-font-weight);
+        letter-spacing: var(--display-m-font-tracking);
+        line-height: var(--display-m-line-height);
+        font-variation-settings: "GRAD" var(--display-m-font-variation-GRAD), "opsz" var(--display-m-opsz);
+    }
+
+    /* Headline Styles */
+    .text-headline {
+        font-family: var(--headline-m-font-family);
+        font-size: var(--headline-m-font-size);
+        font-weight: var(--headline-m-font-weight);
+        letter-spacing: var(--headline-m-font-tracking);
+        line-height: var(--headline-m-line-height);
+        font-variation-settings: "GRAD" var(--headline-m-font-variation-GRAD), "opsz" var(--headline-m-opsz);
+    }
+
+    /* Title Styles */
+    .text-title {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        letter-spacing: 0.15px !important;
+    }
+
+    /* Label Styles */
+    .text-label {
+        font-size: 12px !important;
+        line-height: 16px !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Body Styles */
+    .text-body {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        letter-spacing: 0.5px !important;
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+
+    /* Display Styles */
+    .text-display {
+        font-family: var(--display-l-font-family);
+        font-size: var(--display-l-font-size);
+        font-weight: var(--display-l-font-weight);
+        letter-spacing: var(--display-l-font-tracking);
+        line-height: var(--display-l-line-height);
+        font-variation-settings: "GRAD" var(--display-l-font-variation-GRAD), "opsz" var(--display-l-opsz);
+    }
+
+    /* Headline Styles */
+    .text-headline {
+        font-family: var(--headline-l-font-family);
+        font-size: var(--headline-l-font-size);
+        font-weight: var(--headline-l-font-weight);
+        letter-spacing: var(--headline-l-font-tracking);
+        line-height: var(--headline-l-line-height);
+        font-variation-settings: "GRAD" var(--headline-l-font-variation-GRAD), "opsz" var(--headline-l-opsz);
+    }
+
+    /* Title Styles */
+    .text-title {
+        font-size: 22px !important;
+        line-height: 28px !important;
+        letter-spacing: 0px !important;
+    }
+
+    /* Label Styles */
+    .text-label {
+        font-size: 14px !important;
+        line-height: 20px !important;
+        letter-spacing: 0.1px !important;
+    }
+
+    /* Body Styles */
+    .text-body {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        letter-spacing: 0.5px !important;
+    }
+}
