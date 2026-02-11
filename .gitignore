@@ -1,9 +1,8 @@
 # CLI binary (anchor to root so cmd/a2a-playground/ is not ignored)
 /a2a-playground
 
-# Build and cross-compilation output
-dist
-internal/bff/dist
+# Cross-compilation output (root dist/ only; app/dist is committed for releases)
+/dist
 
 # Logs
 logs

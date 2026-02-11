@@ -17,9 +17,9 @@ BINARY_NAME="a2a-playground"
 # Create the output directory
 mkdir -p "$OUTPUT_DIR"
 
-# Use Makefile for generate, frontend build, and prepare-embed
-echo "Building frontend and preparing embed..."
-make generate build-frontend prepare-embed
+# Build frontend (embeds app/dist directly at go build time)
+echo "Building frontend..."
+make generate build-frontend
 
 # Platforms and architectures for cross-compilation
 platforms=("linux" "darwin" "windows")

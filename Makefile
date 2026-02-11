@@ -12,13 +12,8 @@ generate:
 build-frontend:
 	cd app && pnpm build
 
-# Copy built frontend into internal/bff/dist for embedding
-prepare-embed:
-	rm -rf internal/bff/dist
-	cp -r app/dist internal/bff/
-
-# Build the CLI binary (requires app/dist or run build-frontend first)
-build-cli: generate build-frontend prepare-embed
+# Build the CLI binary (embeds app/dist directly; requires build-frontend first)
+build-cli: generate build-frontend
 	go build $(LDFLAGS) -o $(BINARY_NAME) ./cmd/a2a-playground/
 
 # Full build: generate, frontend, embed, CLI
@@ -35,6 +30,5 @@ run: generate build-frontend
 
 clean:
 	rm -f $(BINARY_NAME)
-	rm -rf internal/bff/dist
 	rm -rf app/dist
 	rm -rf dist

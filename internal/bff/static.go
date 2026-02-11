@@ -1,18 +1,14 @@
 package bff
 
 import (
-	"embed"
 	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-)
 
-// Embed dist at build time. Run `cp -r app/dist internal/bff/dist` before
-// building the release binary, or use --dev to serve from disk.
-//go:embed all:dist
-var embedFS embed.FS
+	"github.com/alis-exchange/a2a-playground"
+)
 
 // distFS returns an fs.FS for serving the SPA.
 // When dev is true, serves from rootDir/app/dist on disk; otherwise uses embedded files.
@@ -24,7 +20,7 @@ func distFS(dev bool, rootDir string) (fs.FS, error) {
 		}
 		return os.DirFS(distPath), nil
 	}
-	sub, err := fs.Sub(embedFS, "dist")
+	sub, err := fs.Sub(assets.FS, "app/dist")
 	if err != nil {
 		return nil, err
 	}

@@ -56,6 +56,8 @@ Run without installing (fetches and builds on first use):
 go run github.com/alis-exchange/a2a-playground/cmd/a2a-playground@latest --agent-url=localhost:8080
 ```
 
+> **Note:** `go run` and `go install` with a version (e.g. `@v1.0.0`) only work for releases where the embedded frontend was committed. Use the [install script](#from-release) or [build from source](#from-source) if a version fails with "no matching files found".
+
 ### From source
 
 ```bash
@@ -127,6 +129,20 @@ Build frontend for production:
 ```bash
 cd app && pnpm build
 ```
+
+## Releasing
+
+The binary embeds `app/dist` at build time. For `go run` and `go install` with a version to work, the built frontend must be committed **before** tagging:
+
+```bash
+make generate build-frontend
+git add app/dist
+git commit -m "chore: embed frontend for v1.0.0"
+git tag v1.0.0
+git push origin main --tags
+```
+
+The release workflow then builds the cross-platform binaries and attaches them to the GitHub release.
 
 ## Project structure
 
