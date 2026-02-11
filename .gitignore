@@ -1,5 +1,5 @@
-# CLI binary
-a2a-playground
+# CLI binary (anchor to root so cmd/a2a-playground/ is not ignored)
+/a2a-playground
 
 # Build and cross-compilation output
 dist
