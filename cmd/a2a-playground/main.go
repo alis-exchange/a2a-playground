@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 
 	"github.com/alis-exchange/a2a-playground/internal/bff"
 	"github.com/spf13/cobra"
@@ -20,11 +21,12 @@ func main() {
 }
 
 var (
-	version  string // set via -ldflags at build
-	agentURL string
-	port     int
-	noOpen   bool
-	dev      bool
+	version   string // set via -ldflags at build
+	agentURL  string
+	useJSONRPC bool
+	port      int
+	noOpen    bool
+	dev       bool
 )
 
 var rootCmd = &cobra.Command{
@@ -34,7 +36,8 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.Flags().StringVar(&agentURL, "agent-url", "localhost:8080", "gRPC URL of the A2A agent")
+	rootCmd.Flags().StringVar(&agentURL, "agent-url", "localhost:8080", "Agent endpoint: for gRPC use host:port; for JSON-RPC use full URL (e.g. http://localhost:8080/jsonrpc)")
+	rootCmd.Flags().BoolVar(&useJSONRPC, "jsonrpc", false, "Use JSON-RPC transport instead of gRPC")
 	if version != "" {
 		rootCmd.Version = version
 	}
@@ -47,6 +50,16 @@ func init() {
 func runServe(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 
+	// Validate and normalize agent-url by protocol
+	proto := bff.ProtocolGRPC
+	if useJSONRPC {
+		proto = bff.ProtocolJSONRPC
+	}
+	normalizedURL := normalizeAgentURL(agentURL, proto)
+	if normalizedURL == "" {
+		return fmt.Errorf("invalid agent-url %q for protocol %s: JSON-RPC requires http:// or https:// scheme", agentURL, proto)
+	}
+
 	appDir, err := findAppDir()
 	if err != nil {
 		return err
@@ -54,7 +67,8 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	cfg := bff.ServerConfig{
 		Port:        port,
-		AgentURL:    agentURL,
+		AgentURL:    normalizedURL,
+		Protocol:    proto,
 		Dev:         dev,
 		NoOpen:      noOpen,
 		AppDir:      appDir,
@@ -71,7 +85,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	}
 
 	url := fmt.Sprintf("http://localhost:%d", port)
-	fmt.Printf("Serving at %s (agent: %s)\n", url, agentURL)
+	fmt.Printf("Serving at %s (agent: %s, protocol: %s)\n", url, normalizedURL, proto)
 
 	if cfg.OpenBrowser {
 		_ = bff.OpenBrowser(url)
@@ -84,6 +98,33 @@ func runServe(cmd *cobra.Command, args []string) error {
 	fmt.Println("Shutting down...")
 	shutdownCtx := context.Background()
 	return srv.Shutdown(shutdownCtx)
+}
+
+// normalizeAgentURL validates and normalizes agent-url by protocol.
+// For gRPC: strips http(s):// so "http://localhost:8080" becomes "localhost:8080".
+// For JSON-RPC: requires http:// or https://; returns "" if invalid.
+func normalizeAgentURL(url string, proto bff.Protocol) string {
+	url = strings.TrimSpace(url)
+	if url == "" {
+		return ""
+	}
+	if proto == bff.ProtocolGRPC {
+		// Strip scheme for gRPC
+		if strings.HasPrefix(url, "http://") {
+			return strings.TrimPrefix(url, "http://")
+		}
+		if strings.HasPrefix(url, "https://") {
+			return strings.TrimPrefix(url, "https://")
+		}
+		return url // bare host:port is fine
+	}
+	// JSON-RPC: must have http:// or https://
+	if strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://") {
+		return url
+	}
+	// Bare host:port for JSON-RPC - treat as http by default (plan says reject, but being helpful)
+	// Plan says: "reject bare host:port when --jsonrpc"
+	return "" // reject bare host:port for JSON-RPC
 }
 
 // findAppDir locates the project root (containing app/) for serving app/dist in dev mode.

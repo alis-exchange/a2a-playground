@@ -13,6 +13,7 @@ import (
 type ServerConfig struct {
 	Port        int
 	AgentURL    string
+	Protocol    Protocol
 	Dev         bool
 	NoOpen      bool
 	AppDir      string
@@ -32,12 +33,24 @@ func NewServer(ctx context.Context, cfg ServerConfig) (*Server, error) {
 		return nil, fmt.Errorf("dist fs: %w", err)
 	}
 
-	proxy := NewA2AProxy(cfg.AgentURL)
+	var proxy A2AServiceHandler
+	if cfg.Protocol == ProtocolJSONRPC {
+		proxy = NewJSONRPCProxy(cfg.AgentURL)
+	} else {
+		proxy = NewGrpcProxy(cfg.AgentURL)
+	}
 
 	a2aPath, a2aHandler := proxy.Handler()
 
+	// Middleware to inject X-A2A-Agent-Headers into request context for proxy forwarding
+	a2aWithHeaders := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		headers := ExtractAgentHeaders(r)
+		ctx := WithAgentHeaders(r.Context(), headers)
+		a2aHandler.ServeHTTP(w, r.WithContext(ctx))
+	})
+
 	mux := mux.NewRouter()
-	mux.PathPrefix(a2aPath).Handler(a2aHandler)
+	mux.PathPrefix(a2aPath).Handler(a2aWithHeaders)
 	mux.PathPrefix("/").Handler(SPAHandler(fsys))
 
 	addr := fmt.Sprintf(":%d", cfg.Port)

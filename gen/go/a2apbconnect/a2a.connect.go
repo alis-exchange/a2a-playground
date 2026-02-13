@@ -10,7 +10,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	a2apb "github.com/alis-exchange/a2a-playground/gen/go/a2apb"
+	a2apb "github.com/a2aproject/a2a-go/a2apb"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
@@ -47,9 +47,9 @@ const (
 	A2AServiceListTasksProcedure = "/a2a.v1.A2AService/ListTasks"
 	// A2AServiceCancelTaskProcedure is the fully-qualified name of the A2AService's CancelTask RPC.
 	A2AServiceCancelTaskProcedure = "/a2a.v1.A2AService/CancelTask"
-	// A2AServiceSubscribeToTaskProcedure is the fully-qualified name of the A2AService's
-	// SubscribeToTask RPC.
-	A2AServiceSubscribeToTaskProcedure = "/a2a.v1.A2AService/SubscribeToTask"
+	// A2AServiceTaskSubscriptionProcedure is the fully-qualified name of the A2AService's
+	// TaskSubscription RPC.
+	A2AServiceTaskSubscriptionProcedure = "/a2a.v1.A2AService/TaskSubscription"
 	// A2AServiceCreateTaskPushNotificationConfigProcedure is the fully-qualified name of the
 	// A2AService's CreateTaskPushNotificationConfig RPC.
 	A2AServiceCreateTaskPushNotificationConfigProcedure = "/a2a.v1.A2AService/CreateTaskPushNotificationConfig"
@@ -59,9 +59,8 @@ const (
 	// A2AServiceListTaskPushNotificationConfigProcedure is the fully-qualified name of the A2AService's
 	// ListTaskPushNotificationConfig RPC.
 	A2AServiceListTaskPushNotificationConfigProcedure = "/a2a.v1.A2AService/ListTaskPushNotificationConfig"
-	// A2AServiceGetExtendedAgentCardProcedure is the fully-qualified name of the A2AService's
-	// GetExtendedAgentCard RPC.
-	A2AServiceGetExtendedAgentCardProcedure = "/a2a.v1.A2AService/GetExtendedAgentCard"
+	// A2AServiceGetAgentCardProcedure is the fully-qualified name of the A2AService's GetAgentCard RPC.
+	A2AServiceGetAgentCardProcedure = "/a2a.v1.A2AService/GetAgentCard"
 	// A2AServiceDeleteTaskPushNotificationConfigProcedure is the fully-qualified name of the
 	// A2AService's DeleteTaskPushNotificationConfig RPC.
 	A2AServiceDeleteTaskPushNotificationConfigProcedure = "/a2a.v1.A2AService/DeleteTaskPushNotificationConfig"
@@ -69,29 +68,32 @@ const (
 
 // A2AServiceClient is a client for the a2a.v1.A2AService service.
 type A2AServiceClient interface {
-	// Send a message to the agent.
+	// Send a message to the agent. This is a blocking call that will return the
+	// task once it is completed, or a LRO if requested.
 	SendMessage(context.Context, *connect.Request[a2apb.SendMessageRequest]) (*connect.Response[a2apb.SendMessageResponse], error)
-	// SendStreamingMessage is a streaming version of SendMessage.
+	// SendStreamingMessage is a streaming call that will return a stream of
+	// task update events until the Task is in an interrupted or terminal state.
 	SendStreamingMessage(context.Context, *connect.Request[a2apb.SendMessageRequest]) (*connect.ServerStreamForClient[a2apb.StreamResponse], error)
 	// Get the current state of a task from the agent.
 	GetTask(context.Context, *connect.Request[a2apb.GetTaskRequest]) (*connect.Response[a2apb.Task], error)
 	// List tasks with optional filtering and pagination.
 	ListTasks(context.Context, *connect.Request[a2apb.ListTasksRequest]) (*connect.Response[a2apb.ListTasksResponse], error)
-	// Cancel a task.
+	// Cancel a task from the agent. If supported one should expect no
+	// more task updates for the task.
 	CancelTask(context.Context, *connect.Request[a2apb.CancelTaskRequest]) (*connect.Response[a2apb.Task], error)
-	// SubscribeToTask allows subscribing to task updates for tasks not in
-	// terminal state. Returns UnsupportedOperationError if task is in terminal
-	// state (completed, failed, canceled, rejected).
-	SubscribeToTask(context.Context, *connect.Request[a2apb.SubscribeToTaskRequest]) (*connect.ServerStreamForClient[a2apb.StreamResponse], error)
-	// Create a push notification config for a task.
+	// TaskSubscription is a streaming call that will return a stream of task
+	// update events. This attaches the stream to an existing in process task.
+	// If the task is complete the stream will return the completed task (like
+	// GetTask) and close the stream.
+	TaskSubscription(context.Context, *connect.Request[a2apb.TaskSubscriptionRequest]) (*connect.ServerStreamForClient[a2apb.StreamResponse], error)
+	// Set a push notification config for a task.
 	CreateTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.CreateTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.TaskPushNotificationConfig], error)
 	// Get a push notification config for a task.
 	GetTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.GetTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.TaskPushNotificationConfig], error)
 	// Get a list of push notifications configured for a task.
 	ListTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.ListTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.ListTaskPushNotificationConfigResponse], error)
-	// GetExtendedAgentCard returns the extended agent card for authenticated
-	// agents.
-	GetExtendedAgentCard(context.Context, *connect.Request[a2apb.GetExtendedAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error)
+	// GetAgentCard returns the agent card for the agent.
+	GetAgentCard(context.Context, *connect.Request[a2apb.GetAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error)
 	// Delete a push notification config for a task.
 	DeleteTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.DeleteTaskPushNotificationConfigRequest]) (*connect.Response[emptypb.Empty], error)
 }
@@ -137,10 +139,10 @@ func NewA2AServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			connect.WithSchema(a2AServiceMethods.ByName("CancelTask")),
 			connect.WithClientOptions(opts...),
 		),
-		subscribeToTask: connect.NewClient[a2apb.SubscribeToTaskRequest, a2apb.StreamResponse](
+		taskSubscription: connect.NewClient[a2apb.TaskSubscriptionRequest, a2apb.StreamResponse](
 			httpClient,
-			baseURL+A2AServiceSubscribeToTaskProcedure,
-			connect.WithSchema(a2AServiceMethods.ByName("SubscribeToTask")),
+			baseURL+A2AServiceTaskSubscriptionProcedure,
+			connect.WithSchema(a2AServiceMethods.ByName("TaskSubscription")),
 			connect.WithClientOptions(opts...),
 		),
 		createTaskPushNotificationConfig: connect.NewClient[a2apb.CreateTaskPushNotificationConfigRequest, a2apb.TaskPushNotificationConfig](
@@ -161,10 +163,10 @@ func NewA2AServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			connect.WithSchema(a2AServiceMethods.ByName("ListTaskPushNotificationConfig")),
 			connect.WithClientOptions(opts...),
 		),
-		getExtendedAgentCard: connect.NewClient[a2apb.GetExtendedAgentCardRequest, a2apb.AgentCard](
+		getAgentCard: connect.NewClient[a2apb.GetAgentCardRequest, a2apb.AgentCard](
 			httpClient,
-			baseURL+A2AServiceGetExtendedAgentCardProcedure,
-			connect.WithSchema(a2AServiceMethods.ByName("GetExtendedAgentCard")),
+			baseURL+A2AServiceGetAgentCardProcedure,
+			connect.WithSchema(a2AServiceMethods.ByName("GetAgentCard")),
 			connect.WithClientOptions(opts...),
 		),
 		deleteTaskPushNotificationConfig: connect.NewClient[a2apb.DeleteTaskPushNotificationConfigRequest, emptypb.Empty](
@@ -183,11 +185,11 @@ type a2AServiceClient struct {
 	getTask                          *connect.Client[a2apb.GetTaskRequest, a2apb.Task]
 	listTasks                        *connect.Client[a2apb.ListTasksRequest, a2apb.ListTasksResponse]
 	cancelTask                       *connect.Client[a2apb.CancelTaskRequest, a2apb.Task]
-	subscribeToTask                  *connect.Client[a2apb.SubscribeToTaskRequest, a2apb.StreamResponse]
+	taskSubscription                 *connect.Client[a2apb.TaskSubscriptionRequest, a2apb.StreamResponse]
 	createTaskPushNotificationConfig *connect.Client[a2apb.CreateTaskPushNotificationConfigRequest, a2apb.TaskPushNotificationConfig]
 	getTaskPushNotificationConfig    *connect.Client[a2apb.GetTaskPushNotificationConfigRequest, a2apb.TaskPushNotificationConfig]
 	listTaskPushNotificationConfig   *connect.Client[a2apb.ListTaskPushNotificationConfigRequest, a2apb.ListTaskPushNotificationConfigResponse]
-	getExtendedAgentCard             *connect.Client[a2apb.GetExtendedAgentCardRequest, a2apb.AgentCard]
+	getAgentCard                     *connect.Client[a2apb.GetAgentCardRequest, a2apb.AgentCard]
 	deleteTaskPushNotificationConfig *connect.Client[a2apb.DeleteTaskPushNotificationConfigRequest, emptypb.Empty]
 }
 
@@ -216,9 +218,9 @@ func (c *a2AServiceClient) CancelTask(ctx context.Context, req *connect.Request[
 	return c.cancelTask.CallUnary(ctx, req)
 }
 
-// SubscribeToTask calls a2a.v1.A2AService.SubscribeToTask.
-func (c *a2AServiceClient) SubscribeToTask(ctx context.Context, req *connect.Request[a2apb.SubscribeToTaskRequest]) (*connect.ServerStreamForClient[a2apb.StreamResponse], error) {
-	return c.subscribeToTask.CallServerStream(ctx, req)
+// TaskSubscription calls a2a.v1.A2AService.TaskSubscription.
+func (c *a2AServiceClient) TaskSubscription(ctx context.Context, req *connect.Request[a2apb.TaskSubscriptionRequest]) (*connect.ServerStreamForClient[a2apb.StreamResponse], error) {
+	return c.taskSubscription.CallServerStream(ctx, req)
 }
 
 // CreateTaskPushNotificationConfig calls a2a.v1.A2AService.CreateTaskPushNotificationConfig.
@@ -236,9 +238,9 @@ func (c *a2AServiceClient) ListTaskPushNotificationConfig(ctx context.Context, r
 	return c.listTaskPushNotificationConfig.CallUnary(ctx, req)
 }
 
-// GetExtendedAgentCard calls a2a.v1.A2AService.GetExtendedAgentCard.
-func (c *a2AServiceClient) GetExtendedAgentCard(ctx context.Context, req *connect.Request[a2apb.GetExtendedAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error) {
-	return c.getExtendedAgentCard.CallUnary(ctx, req)
+// GetAgentCard calls a2a.v1.A2AService.GetAgentCard.
+func (c *a2AServiceClient) GetAgentCard(ctx context.Context, req *connect.Request[a2apb.GetAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error) {
+	return c.getAgentCard.CallUnary(ctx, req)
 }
 
 // DeleteTaskPushNotificationConfig calls a2a.v1.A2AService.DeleteTaskPushNotificationConfig.
@@ -248,29 +250,32 @@ func (c *a2AServiceClient) DeleteTaskPushNotificationConfig(ctx context.Context,
 
 // A2AServiceHandler is an implementation of the a2a.v1.A2AService service.
 type A2AServiceHandler interface {
-	// Send a message to the agent.
+	// Send a message to the agent. This is a blocking call that will return the
+	// task once it is completed, or a LRO if requested.
 	SendMessage(context.Context, *connect.Request[a2apb.SendMessageRequest]) (*connect.Response[a2apb.SendMessageResponse], error)
-	// SendStreamingMessage is a streaming version of SendMessage.
+	// SendStreamingMessage is a streaming call that will return a stream of
+	// task update events until the Task is in an interrupted or terminal state.
 	SendStreamingMessage(context.Context, *connect.Request[a2apb.SendMessageRequest], *connect.ServerStream[a2apb.StreamResponse]) error
 	// Get the current state of a task from the agent.
 	GetTask(context.Context, *connect.Request[a2apb.GetTaskRequest]) (*connect.Response[a2apb.Task], error)
 	// List tasks with optional filtering and pagination.
 	ListTasks(context.Context, *connect.Request[a2apb.ListTasksRequest]) (*connect.Response[a2apb.ListTasksResponse], error)
-	// Cancel a task.
+	// Cancel a task from the agent. If supported one should expect no
+	// more task updates for the task.
 	CancelTask(context.Context, *connect.Request[a2apb.CancelTaskRequest]) (*connect.Response[a2apb.Task], error)
-	// SubscribeToTask allows subscribing to task updates for tasks not in
-	// terminal state. Returns UnsupportedOperationError if task is in terminal
-	// state (completed, failed, canceled, rejected).
-	SubscribeToTask(context.Context, *connect.Request[a2apb.SubscribeToTaskRequest], *connect.ServerStream[a2apb.StreamResponse]) error
-	// Create a push notification config for a task.
+	// TaskSubscription is a streaming call that will return a stream of task
+	// update events. This attaches the stream to an existing in process task.
+	// If the task is complete the stream will return the completed task (like
+	// GetTask) and close the stream.
+	TaskSubscription(context.Context, *connect.Request[a2apb.TaskSubscriptionRequest], *connect.ServerStream[a2apb.StreamResponse]) error
+	// Set a push notification config for a task.
 	CreateTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.CreateTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.TaskPushNotificationConfig], error)
 	// Get a push notification config for a task.
 	GetTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.GetTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.TaskPushNotificationConfig], error)
 	// Get a list of push notifications configured for a task.
 	ListTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.ListTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.ListTaskPushNotificationConfigResponse], error)
-	// GetExtendedAgentCard returns the extended agent card for authenticated
-	// agents.
-	GetExtendedAgentCard(context.Context, *connect.Request[a2apb.GetExtendedAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error)
+	// GetAgentCard returns the agent card for the agent.
+	GetAgentCard(context.Context, *connect.Request[a2apb.GetAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error)
 	// Delete a push notification config for a task.
 	DeleteTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.DeleteTaskPushNotificationConfigRequest]) (*connect.Response[emptypb.Empty], error)
 }
@@ -312,10 +317,10 @@ func NewA2AServiceHandler(svc A2AServiceHandler, opts ...connect.HandlerOption) 
 		connect.WithSchema(a2AServiceMethods.ByName("CancelTask")),
 		connect.WithHandlerOptions(opts...),
 	)
-	a2AServiceSubscribeToTaskHandler := connect.NewServerStreamHandler(
-		A2AServiceSubscribeToTaskProcedure,
-		svc.SubscribeToTask,
-		connect.WithSchema(a2AServiceMethods.ByName("SubscribeToTask")),
+	a2AServiceTaskSubscriptionHandler := connect.NewServerStreamHandler(
+		A2AServiceTaskSubscriptionProcedure,
+		svc.TaskSubscription,
+		connect.WithSchema(a2AServiceMethods.ByName("TaskSubscription")),
 		connect.WithHandlerOptions(opts...),
 	)
 	a2AServiceCreateTaskPushNotificationConfigHandler := connect.NewUnaryHandler(
@@ -336,10 +341,10 @@ func NewA2AServiceHandler(svc A2AServiceHandler, opts ...connect.HandlerOption) 
 		connect.WithSchema(a2AServiceMethods.ByName("ListTaskPushNotificationConfig")),
 		connect.WithHandlerOptions(opts...),
 	)
-	a2AServiceGetExtendedAgentCardHandler := connect.NewUnaryHandler(
-		A2AServiceGetExtendedAgentCardProcedure,
-		svc.GetExtendedAgentCard,
-		connect.WithSchema(a2AServiceMethods.ByName("GetExtendedAgentCard")),
+	a2AServiceGetAgentCardHandler := connect.NewUnaryHandler(
+		A2AServiceGetAgentCardProcedure,
+		svc.GetAgentCard,
+		connect.WithSchema(a2AServiceMethods.ByName("GetAgentCard")),
 		connect.WithHandlerOptions(opts...),
 	)
 	a2AServiceDeleteTaskPushNotificationConfigHandler := connect.NewUnaryHandler(
@@ -360,16 +365,16 @@ func NewA2AServiceHandler(svc A2AServiceHandler, opts ...connect.HandlerOption) 
 			a2AServiceListTasksHandler.ServeHTTP(w, r)
 		case A2AServiceCancelTaskProcedure:
 			a2AServiceCancelTaskHandler.ServeHTTP(w, r)
-		case A2AServiceSubscribeToTaskProcedure:
-			a2AServiceSubscribeToTaskHandler.ServeHTTP(w, r)
+		case A2AServiceTaskSubscriptionProcedure:
+			a2AServiceTaskSubscriptionHandler.ServeHTTP(w, r)
 		case A2AServiceCreateTaskPushNotificationConfigProcedure:
 			a2AServiceCreateTaskPushNotificationConfigHandler.ServeHTTP(w, r)
 		case A2AServiceGetTaskPushNotificationConfigProcedure:
 			a2AServiceGetTaskPushNotificationConfigHandler.ServeHTTP(w, r)
 		case A2AServiceListTaskPushNotificationConfigProcedure:
 			a2AServiceListTaskPushNotificationConfigHandler.ServeHTTP(w, r)
-		case A2AServiceGetExtendedAgentCardProcedure:
-			a2AServiceGetExtendedAgentCardHandler.ServeHTTP(w, r)
+		case A2AServiceGetAgentCardProcedure:
+			a2AServiceGetAgentCardHandler.ServeHTTP(w, r)
 		case A2AServiceDeleteTaskPushNotificationConfigProcedure:
 			a2AServiceDeleteTaskPushNotificationConfigHandler.ServeHTTP(w, r)
 		default:
@@ -401,8 +406,8 @@ func (UnimplementedA2AServiceHandler) CancelTask(context.Context, *connect.Reque
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("a2a.v1.A2AService.CancelTask is not implemented"))
 }
 
-func (UnimplementedA2AServiceHandler) SubscribeToTask(context.Context, *connect.Request[a2apb.SubscribeToTaskRequest], *connect.ServerStream[a2apb.StreamResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("a2a.v1.A2AService.SubscribeToTask is not implemented"))
+func (UnimplementedA2AServiceHandler) TaskSubscription(context.Context, *connect.Request[a2apb.TaskSubscriptionRequest], *connect.ServerStream[a2apb.StreamResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("a2a.v1.A2AService.TaskSubscription is not implemented"))
 }
 
 func (UnimplementedA2AServiceHandler) CreateTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.CreateTaskPushNotificationConfigRequest]) (*connect.Response[a2apb.TaskPushNotificationConfig], error) {
@@ -417,8 +422,8 @@ func (UnimplementedA2AServiceHandler) ListTaskPushNotificationConfig(context.Con
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("a2a.v1.A2AService.ListTaskPushNotificationConfig is not implemented"))
 }
 
-func (UnimplementedA2AServiceHandler) GetExtendedAgentCard(context.Context, *connect.Request[a2apb.GetExtendedAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("a2a.v1.A2AService.GetExtendedAgentCard is not implemented"))
+func (UnimplementedA2AServiceHandler) GetAgentCard(context.Context, *connect.Request[a2apb.GetAgentCardRequest]) (*connect.Response[a2apb.AgentCard], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("a2a.v1.A2AService.GetAgentCard is not implemented"))
 }
 
 func (UnimplementedA2AServiceHandler) DeleteTaskPushNotificationConfig(context.Context, *connect.Request[a2apb.DeleteTaskPushNotificationConfigRequest]) (*connect.Response[emptypb.Empty], error) {

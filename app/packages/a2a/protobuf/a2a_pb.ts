@@ -9,7 +9,7 @@ import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf
 import { file_google_api_annotations } from "./google/api/annotations_pb";
 import { file_google_api_client } from "./google/api/client_pb";
 import { file_google_api_field_behavior } from "./google/api/field_behavior_pb";
-import type { EmptySchema, Timestamp, Value } from "@bufbuild/protobuf/wkt";
+import type { EmptySchema, Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_empty, file_google_protobuf_struct, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { JsonObject, Message as Message$1 } from "@bufbuild/protobuf";
 
@@ -17,44 +17,42 @@ import type { JsonObject, Message as Message$1 } from "@bufbuild/protobuf";
  * Describes the file a2a.proto.
  */
 export const file_a2a: GenFile = /*@__PURE__*/
-  fileDesc("CglhMmEucHJvdG8SBmEyYS52MSK9AQoYU2VuZE1lc3NhZ2VDb25maWd1cmF0aW9uEh0KFWFjY2VwdGVkX291dHB1dF9tb2RlcxgBIAMoCRJAChhwdXNoX25vdGlmaWNhdGlvbl9jb25maWcYAiABKAsyHi5hMmEudjEuUHVzaE5vdGlmaWNhdGlvbkNvbmZpZxIbCg5oaXN0b3J5X2xlbmd0aBgDIAEoBUgAiAEBEhAKCGJsb2NraW5nGAQgASgIQhEKD19oaXN0b3J5X2xlbmd0aCLLAQoEVGFzaxIPCgJpZBgBIAEoCUID4EECEhcKCmNvbnRleHRfaWQYAiABKAlCA+BBAhInCgZzdGF0dXMYAyABKAsyEi5hMmEudjEuVGFza1N0YXR1c0ID4EECEiMKCWFydGlmYWN0cxgEIAMoCzIQLmEyYS52MS5BcnRpZmFjdBIgCgdoaXN0b3J5GAUgAygLMg8uYTJhLnYxLk1lc3NhZ2USKQoIbWV0YWRhdGEYBiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0IoQBCgpUYXNrU3RhdHVzEiUKBXN0YXRlGAEgASgOMhEuYTJhLnYxLlRhc2tTdGF0ZUID4EECEiAKB21lc3NhZ2UYAiABKAsyDy5hMmEudjEuTWVzc2FnZRItCgl0aW1lc3RhbXAYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIrgBCgRQYXJ0Eg4KBHRleHQYASABKAlIABINCgNyYXcYAiABKAxIABINCgN1cmwYAyABKAlIABImCgRkYXRhGAQgASgLMhYuZ29vZ2xlLnByb3RvYnVmLlZhbHVlSAASKQoIbWV0YWRhdGEYBSABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EhAKCGZpbGVuYW1lGAYgASgJEhIKCm1lZGlhX3R5cGUYByABKAlCCQoHY29udGVudCLlAQoHTWVzc2FnZRIXCgptZXNzYWdlX2lkGAEgASgJQgPgQQISEgoKY29udGV4dF9pZBgCIAEoCRIPCgd0YXNrX2lkGAMgASgJEh8KBHJvbGUYBCABKA4yDC5hMmEudjEuUm9sZUID4EECEiAKBXBhcnRzGAUgAygLMgwuYTJhLnYxLlBhcnRCA+BBAhIpCghtZXRhZGF0YRgGIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3QSEgoKZXh0ZW5zaW9ucxgHIAMoCRIaChJyZWZlcmVuY2VfdGFza19pZHMYCCADKAkiqAEKCEFydGlmYWN0EhgKC2FydGlmYWN0X2lkGAEgASgJQgPgQQISDAoEbmFtZRgDIAEoCRITCgtkZXNjcmlwdGlvbhgEIAEoCRIgCgVwYXJ0cxgFIAMoCzIMLmEyYS52MS5QYXJ0QgPgQQISKQoIbWV0YWRhdGEYBiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EhIKCmV4dGVuc2lvbnMYByADKAkioAEKFVRhc2tTdGF0dXNVcGRhdGVFdmVudBIUCgd0YXNrX2lkGAEgASgJQgPgQQISFwoKY29udGV4dF9pZBgCIAEoCUID4EECEicKBnN0YXR1cxgDIAEoCzISLmEyYS52MS5UYXNrU3RhdHVzQgPgQQISKQoIbWV0YWRhdGEYBSABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0SgQIBBAFIsABChdUYXNrQXJ0aWZhY3RVcGRhdGVFdmVudBIUCgd0YXNrX2lkGAEgASgJQgPgQQISFwoKY29udGV4dF9pZBgCIAEoCUID4EECEicKCGFydGlmYWN0GAMgASgLMhAuYTJhLnYxLkFydGlmYWN0QgPgQQISDgoGYXBwZW5kGAQgASgIEhIKCmxhc3RfY2h1bmsYBSABKAgSKQoIbWV0YWRhdGEYBiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0InkKFlB1c2hOb3RpZmljYXRpb25Db25maWcSCgoCaWQYASABKAkSEAoDdXJsGAIgASgJQgPgQQISDQoFdG9rZW4YAyABKAkSMgoOYXV0aGVudGljYXRpb24YBCABKAsyGi5hMmEudjEuQXV0aGVudGljYXRpb25JbmZvIj4KEkF1dGhlbnRpY2F0aW9uSW5mbxITCgZzY2hlbWUYASABKAlCA+BBAhITCgtjcmVkZW50aWFscxgCIAEoCSJwCg5BZ2VudEludGVyZmFjZRIQCgN1cmwYASABKAlCA+BBAhIdChBwcm90b2NvbF9iaW5kaW5nGAIgASgJQgPgQQISDgoGdGVuYW50GAMgASgJEh0KEHByb3RvY29sX3ZlcnNpb24YBCABKAlCA+BBAiLMBQoJQWdlbnRDYXJkEhEKBG5hbWUYASABKAlCA+BBAhIYCgtkZXNjcmlwdGlvbhgCIAEoCUID4EECEjkKFHN1cHBvcnRlZF9pbnRlcmZhY2VzGBMgAygLMhYuYTJhLnYxLkFnZW50SW50ZXJmYWNlQgPgQQISJwoIcHJvdmlkZXIYBCABKAsyFS5hMmEudjEuQWdlbnRQcm92aWRlchIUCgd2ZXJzaW9uGAUgASgJQgPgQQISHgoRZG9jdW1lbnRhdGlvbl91cmwYBiABKAlIAIgBARI0CgxjYXBhYmlsaXRpZXMYByABKAsyGS5hMmEudjEuQWdlbnRDYXBhYmlsaXRpZXNCA+BBAhJAChBzZWN1cml0eV9zY2hlbWVzGAggAygLMiYuYTJhLnYxLkFnZW50Q2FyZC5TZWN1cml0eVNjaGVtZXNFbnRyeRI6ChVzZWN1cml0eV9yZXF1aXJlbWVudHMYDSADKAsyGy5hMmEudjEuU2VjdXJpdHlSZXF1aXJlbWVudBIgChNkZWZhdWx0X2lucHV0X21vZGVzGAogAygJQgPgQQISIQoUZGVmYXVsdF9vdXRwdXRfbW9kZXMYCyADKAlCA+BBAhInCgZza2lsbHMYDCADKAsyEi5hMmEudjEuQWdlbnRTa2lsbEID4EECEi4KCnNpZ25hdHVyZXMYESADKAsyGi5hMmEudjEuQWdlbnRDYXJkU2lnbmF0dXJlEhUKCGljb25fdXJsGBIgASgJSAGIAQEaTgoUU2VjdXJpdHlTY2hlbWVzRW50cnkSCwoDa2V5GAEgASgJEiUKBXZhbHVlGAIgASgLMhYuYTJhLnYxLlNlY3VyaXR5U2NoZW1lOgI4AUIUChJfZG9jdW1lbnRhdGlvbl91cmxCCwoJX2ljb25fdXJsSgQIAxAESgQICRAKSgQIDhAPSgQIDxAQSgQIEBARIjwKDUFnZW50UHJvdmlkZXISEAoDdXJsGAEgASgJQgPgQQISGQoMb3JnYW5pemF0aW9uGAIgASgJQgPgQQIi3QEKEUFnZW50Q2FwYWJpbGl0aWVzEhYKCXN0cmVhbWluZxgBIAEoCEgAiAEBEh8KEnB1c2hfbm90aWZpY2F0aW9ucxgCIAEoCEgBiAEBEioKCmV4dGVuc2lvbnMYAyADKAsyFi5hMmEudjEuQWdlbnRFeHRlbnNpb24SIAoTZXh0ZW5kZWRfYWdlbnRfY2FyZBgFIAEoCEgCiAEBQgwKCl9zdHJlYW1pbmdCFQoTX3B1c2hfbm90aWZpY2F0aW9uc0IWChRfZXh0ZW5kZWRfYWdlbnRfY2FyZEoECAQQBSJtCg5BZ2VudEV4dGVuc2lvbhILCgN1cmkYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSEAoIcmVxdWlyZWQYAyABKAgSJwoGcGFyYW1zGAQgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdCLWAQoKQWdlbnRTa2lsbBIPCgJpZBgBIAEoCUID4EECEhEKBG5hbWUYAiABKAlCA+BBAhIYCgtkZXNjcmlwdGlvbhgDIAEoCUID4EECEhEKBHRhZ3MYBCADKAlCA+BBAhIQCghleGFtcGxlcxgFIAMoCRITCgtpbnB1dF9tb2RlcxgGIAMoCRIUCgxvdXRwdXRfbW9kZXMYByADKAkSOgoVc2VjdXJpdHlfcmVxdWlyZW1lbnRzGAggAygLMhsuYTJhLnYxLlNlY3VyaXR5UmVxdWlyZW1lbnQibQoSQWdlbnRDYXJkU2lnbmF0dXJlEhYKCXByb3RlY3RlZBgBIAEoCUID4EECEhYKCXNpZ25hdHVyZRgCIAEoCUID4EECEicKBmhlYWRlchgDIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3QimgEKGlRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnEg4KBnRlbmFudBgEIAEoCRIPCgJpZBgBIAEoCUID4EECEhQKB3Rhc2tfaWQYAyABKAlCA+BBAhJFChhwdXNoX25vdGlmaWNhdGlvbl9jb25maWcYAiABKAsyHi5hMmEudjEuUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ0ID4EECIhoKClN0cmluZ0xpc3QSDAoEbGlzdBgBIAMoCSKUAQoTU2VjdXJpdHlSZXF1aXJlbWVudBI5CgdzY2hlbWVzGAEgAygLMiguYTJhLnYxLlNlY3VyaXR5UmVxdWlyZW1lbnQuU2NoZW1lc0VudHJ5GkIKDFNjaGVtZXNFbnRyeRILCgNrZXkYASABKAkSIQoFdmFsdWUYAiABKAsyEi5hMmEudjEuU3RyaW5nTGlzdDoCOAEi8QIKDlNlY3VyaXR5U2NoZW1lEj8KF2FwaV9rZXlfc2VjdXJpdHlfc2NoZW1lGAEgASgLMhwuYTJhLnYxLkFQSUtleVNlY3VyaXR5U2NoZW1lSAASQwoZaHR0cF9hdXRoX3NlY3VyaXR5X3NjaGVtZRgCIAEoCzIeLmEyYS52MS5IVFRQQXV0aFNlY3VyaXR5U2NoZW1lSAASPgoWb2F1dGgyX3NlY3VyaXR5X3NjaGVtZRgDIAEoCzIcLmEyYS52MS5PQXV0aDJTZWN1cml0eVNjaGVtZUgAEk4KH29wZW5faWRfY29ubmVjdF9zZWN1cml0eV9zY2hlbWUYBCABKAsyIy5hMmEudjEuT3BlbklkQ29ubmVjdFNlY3VyaXR5U2NoZW1lSAASPwoUbXRsc19zZWN1cml0eV9zY2hlbWUYBSABKAsyHy5hMmEudjEuTXV0dWFsVGxzU2VjdXJpdHlTY2hlbWVIAEIICgZzY2hlbWUiVQoUQVBJS2V5U2VjdXJpdHlTY2hlbWUSEwoLZGVzY3JpcHRpb24YASABKAkSFQoIbG9jYXRpb24YAiABKAlCA+BBAhIRCgRuYW1lGAMgASgJQgPgQQIiWQoWSFRUUEF1dGhTZWN1cml0eVNjaGVtZRITCgtkZXNjcmlwdGlvbhgBIAEoCRITCgZzY2hlbWUYAiABKAlCA+BBAhIVCg1iZWFyZXJfZm9ybWF0GAMgASgJInAKFE9BdXRoMlNlY3VyaXR5U2NoZW1lEhMKC2Rlc2NyaXB0aW9uGAEgASgJEiYKBWZsb3dzGAIgASgLMhIuYTJhLnYxLk9BdXRoRmxvd3NCA+BBAhIbChNvYXV0aDJfbWV0YWRhdGFfdXJsGAMgASgJIlQKG09wZW5JZENvbm5lY3RTZWN1cml0eVNjaGVtZRITCgtkZXNjcmlwdGlvbhgBIAEoCRIgChNvcGVuX2lkX2Nvbm5lY3RfdXJsGAIgASgJQgPgQQIiLgoXTXV0dWFsVGxzU2VjdXJpdHlTY2hlbWUSEwoLZGVzY3JpcHRpb24YASABKAkisgIKCk9BdXRoRmxvd3MSQAoSYXV0aG9yaXphdGlvbl9jb2RlGAEgASgLMiIuYTJhLnYxLkF1dGhvcml6YXRpb25Db2RlT0F1dGhGbG93SAASQAoSY2xpZW50X2NyZWRlbnRpYWxzGAIgASgLMiIuYTJhLnYxLkNsaWVudENyZWRlbnRpYWxzT0F1dGhGbG93SAASMQoIaW1wbGljaXQYAyABKAsyGS5hMmEudjEuSW1wbGljaXRPQXV0aEZsb3dCAhgBSAASMQoIcGFzc3dvcmQYBCABKAsyGS5hMmEudjEuUGFzc3dvcmRPQXV0aEZsb3dCAhgBSAASMgoLZGV2aWNlX2NvZGUYBSABKAsyGy5hMmEudjEuRGV2aWNlQ29kZU9BdXRoRmxvd0gAQgYKBGZsb3ci9AEKGkF1dGhvcml6YXRpb25Db2RlT0F1dGhGbG93Eh4KEWF1dGhvcml6YXRpb25fdXJsGAEgASgJQgPgQQISFgoJdG9rZW5fdXJsGAIgASgJQgPgQQISEwoLcmVmcmVzaF91cmwYAyABKAkSQwoGc2NvcGVzGAQgAygLMi4uYTJhLnYxLkF1dGhvcml6YXRpb25Db2RlT0F1dGhGbG93LlNjb3Blc0VudHJ5QgPgQQISFQoNcGtjZV9yZXF1aXJlZBgFIAEoCBotCgtTY29wZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIr0BChpDbGllbnRDcmVkZW50aWFsc09BdXRoRmxvdxIWCgl0b2tlbl91cmwYASABKAlCA+BBAhITCgtyZWZyZXNoX3VybBgCIAEoCRJDCgZzY29wZXMYAyADKAsyLi5hMmEudjEuQ2xpZW50Q3JlZGVudGlhbHNPQXV0aEZsb3cuU2NvcGVzRW50cnlCA+BBAhotCgtTY29wZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIqkBChFJbXBsaWNpdE9BdXRoRmxvdxIZChFhdXRob3JpemF0aW9uX3VybBgBIAEoCRITCgtyZWZyZXNoX3VybBgCIAEoCRI1CgZzY29wZXMYAyADKAsyJS5hMmEudjEuSW1wbGljaXRPQXV0aEZsb3cuU2NvcGVzRW50cnkaLQoLU2NvcGVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKhAQoRUGFzc3dvcmRPQXV0aEZsb3cSEQoJdG9rZW5fdXJsGAEgASgJEhMKC3JlZnJlc2hfdXJsGAIgASgJEjUKBnNjb3BlcxgDIAMoCzIlLmEyYS52MS5QYXNzd29yZE9BdXRoRmxvdy5TY29wZXNFbnRyeRotCgtTY29wZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBItYBChNEZXZpY2VDb2RlT0F1dGhGbG93EiUKGGRldmljZV9hdXRob3JpemF0aW9uX3VybBgBIAEoCUID4EECEhYKCXRva2VuX3VybBgCIAEoCUID4EECEhMKC3JlZnJlc2hfdXJsGAMgASgJEjwKBnNjb3BlcxgEIAMoCzInLmEyYS52MS5EZXZpY2VDb2RlT0F1dGhGbG93LlNjb3Blc0VudHJ5QgPgQQIaLQoLU2NvcGVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKvAQoSU2VuZE1lc3NhZ2VSZXF1ZXN0Eg4KBnRlbmFudBgEIAEoCRIlCgdtZXNzYWdlGAEgASgLMg8uYTJhLnYxLk1lc3NhZ2VCA+BBAhI3Cg1jb25maWd1cmF0aW9uGAIgASgLMiAuYTJhLnYxLlNlbmRNZXNzYWdlQ29uZmlndXJhdGlvbhIpCghtZXRhZGF0YRgDIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3QiYQoOR2V0VGFza1JlcXVlc3QSDgoGdGVuYW50GAMgASgJEg8KAmlkGAEgASgJQgPgQQISGwoOaGlzdG9yeV9sZW5ndGgYAiABKAVIAIgBAUIRCg9faGlzdG9yeV9sZW5ndGgitQIKEExpc3RUYXNrc1JlcXVlc3QSDgoGdGVuYW50GAkgASgJEhIKCmNvbnRleHRfaWQYASABKAkSIQoGc3RhdHVzGAIgASgOMhEuYTJhLnYxLlRhc2tTdGF0ZRIWCglwYWdlX3NpemUYAyABKAVIAIgBARISCgpwYWdlX3Rva2VuGAQgASgJEhsKDmhpc3RvcnlfbGVuZ3RoGAUgASgFSAGIAQESOgoWc3RhdHVzX3RpbWVzdGFtcF9hZnRlchgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHgoRaW5jbHVkZV9hcnRpZmFjdHMYByABKAhIAogBAUIMCgpfcGFnZV9zaXplQhEKD19oaXN0b3J5X2xlbmd0aEIUChJfaW5jbHVkZV9hcnRpZmFjdHMihAEKEUxpc3RUYXNrc1Jlc3BvbnNlEiAKBXRhc2tzGAEgAygLMgwuYTJhLnYxLlRhc2tCA+BBAhIcCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAlCA+BBAhIWCglwYWdlX3NpemUYAyABKAVCA+BBAhIXCgp0b3RhbF9zaXplGAQgASgFQgPgQQIiNAoRQ2FuY2VsVGFza1JlcXVlc3QSDgoGdGVuYW50GAIgASgJEg8KAmlkGAEgASgJQgPgQQIiXQokR2V0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXF1ZXN0Eg4KBnRlbmFudBgCIAEoCRIUCgd0YXNrX2lkGAMgASgJQgPgQQISDwoCaWQYASABKAlCA+BBAiJgCidEZWxldGVUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1JlcXVlc3QSDgoGdGVuYW50GAIgASgJEhQKB3Rhc2tfaWQYAyABKAlCA+BBAhIPCgJpZBgBIAEoCUID4EECIqIBCidDcmVhdGVUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1JlcXVlc3QSDgoGdGVuYW50GAQgASgJEhQKB3Rhc2tfaWQYASABKAlCA+BBAhIWCgljb25maWdfaWQYAiABKAlCA+BBAhIzCgZjb25maWcYBSABKAsyHi5hMmEudjEuUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ0ID4EECSgQIAxAEIjkKFlN1YnNjcmliZVRvVGFza1JlcXVlc3QSDgoGdGVuYW50GAIgASgJEg8KAmlkGAEgASgJQgPgQQIidAolTGlzdFRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnUmVxdWVzdBIOCgZ0ZW5hbnQYBCABKAkSFAoHdGFza19pZBgBIAEoCUID4EECEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIi0KG0dldEV4dGVuZGVkQWdlbnRDYXJkUmVxdWVzdBIOCgZ0ZW5hbnQYASABKAkiYgoTU2VuZE1lc3NhZ2VSZXNwb25zZRIcCgR0YXNrGAEgASgLMgwuYTJhLnYxLlRhc2tIABIiCgdtZXNzYWdlGAIgASgLMg8uYTJhLnYxLk1lc3NhZ2VIAEIJCgdwYXlsb2FkItEBCg5TdHJlYW1SZXNwb25zZRIcCgR0YXNrGAEgASgLMgwuYTJhLnYxLlRhc2tIABIiCgdtZXNzYWdlGAIgASgLMg8uYTJhLnYxLk1lc3NhZ2VIABI2Cg1zdGF0dXNfdXBkYXRlGAMgASgLMh0uYTJhLnYxLlRhc2tTdGF0dXNVcGRhdGVFdmVudEgAEjoKD2FydGlmYWN0X3VwZGF0ZRgEIAEoCzIfLmEyYS52MS5UYXNrQXJ0aWZhY3RVcGRhdGVFdmVudEgAQgkKB3BheWxvYWQidgomTGlzdFRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnUmVzcG9uc2USMwoHY29uZmlncxgBIAMoCzIiLmEyYS52MS5UYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZxIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkq+QEKCVRhc2tTdGF0ZRIaChZUQVNLX1NUQVRFX1VOU1BFQ0lGSUVEEAASGAoUVEFTS19TVEFURV9TVUJNSVRURUQQARIWChJUQVNLX1NUQVRFX1dPUktJTkcQAhIYChRUQVNLX1NUQVRFX0NPTVBMRVRFRBADEhUKEVRBU0tfU1RBVEVfRkFJTEVEEAQSFwoTVEFTS19TVEFURV9DQU5DRUxFRBAFEh0KGVRBU0tfU1RBVEVfSU5QVVRfUkVRVUlSRUQQBhIXChNUQVNLX1NUQVRFX1JFSkVDVEVEEAcSHAoYVEFTS19TVEFURV9BVVRIX1JFUVVJUkVEEAgqOwoEUm9sZRIUChBST0xFX1VOU1BFQ0lGSUVEEAASDQoJUk9MRV9VU0VSEAESDgoKUk9MRV9BR0VOVBACMuoOCgpBMkFTZXJ2aWNlEn0KC1NlbmRNZXNzYWdlEhouYTJhLnYxLlNlbmRNZXNzYWdlUmVxdWVzdBobLmEyYS52MS5TZW5kTWVzc2FnZVJlc3BvbnNlIjWC0+STAi86ASpaGzoBKiIWL3t0ZW5hbnR9L21lc3NhZ2U6c2VuZCINL21lc3NhZ2U6c2VuZBKHAQoUU2VuZFN0cmVhbWluZ01lc3NhZ2USGi5hMmEudjEuU2VuZE1lc3NhZ2VSZXF1ZXN0GhYuYTJhLnYxLlN0cmVhbVJlc3BvbnNlIjmC0+STAjM6ASpaHToBKiIYL3t0ZW5hbnR9L21lc3NhZ2U6c3RyZWFtIg8vbWVzc2FnZTpzdHJlYW0wARJlCgdHZXRUYXNrEhYuYTJhLnYxLkdldFRhc2tSZXF1ZXN0GgwuYTJhLnYxLlRhc2siNNpBAmlkgtPkkwIpWhgSFi97dGVuYW50fS90YXNrcy97aWQ9Kn0SDS90YXNrcy97aWQ9Kn0SYwoJTGlzdFRhc2tzEhguYTJhLnYxLkxpc3RUYXNrc1JlcXVlc3QaGS5hMmEudjEuTGlzdFRhc2tzUmVzcG9uc2UiIYLT5JMCG1oREg8ve3RlbmFudH0vdGFza3MSBi90YXNrcxJ6CgpDYW5jZWxUYXNrEhkuYTJhLnYxLkNhbmNlbFRhc2tSZXF1ZXN0GgwuYTJhLnYxLlRhc2siQ4LT5JMCPToBKloiOgEqIh0ve3RlbmFudH0vdGFza3Mve2lkPSp9OmNhbmNlbCIUL3Rhc2tzL3tpZD0qfTpjYW5jZWwSkAEKD1N1YnNjcmliZVRvVGFzaxIeLmEyYS52MS5TdWJzY3JpYmVUb1Rhc2tSZXF1ZXN0GhYuYTJhLnYxLlN0cmVhbVJlc3BvbnNlIkOC0+STAj1aIhIgL3t0ZW5hbnR9L3Rhc2tzL3tpZD0qfTpzdWJzY3JpYmUSFy90YXNrcy97aWQ9Kn06c3Vic2NyaWJlMAEShAIKIENyZWF0ZVRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnEi8uYTJhLnYxLkNyZWF0ZVRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnUmVxdWVzdBoiLmEyYS52MS5UYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZyKKAdpBDnRhc2tfaWQsY29uZmlngtPkkwJzOgZjb25maWdaPToGY29uZmlnIjMve3RlbmFudH0vdGFza3Mve3Rhc2tfaWQ9Kn0vcHVzaE5vdGlmaWNhdGlvbkNvbmZpZ3MiKi90YXNrcy97dGFza19pZD0qfS9wdXNoTm90aWZpY2F0aW9uQ29uZmlncxL4AQodR2V0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWcSLC5hMmEudjEuR2V0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXF1ZXN0GiIuYTJhLnYxLlRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnIoQB2kEKdGFza19pZCxpZILT5JMCcVo8Ejove3RlbmFudH0vdGFza3Mve3Rhc2tfaWQ9Kn0vcHVzaE5vdGlmaWNhdGlvbkNvbmZpZ3Mve2lkPSp9EjEvdGFza3Mve3Rhc2tfaWQ9Kn0vcHVzaE5vdGlmaWNhdGlvbkNvbmZpZ3Mve2lkPSp9EvQBCh5MaXN0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWcSLS5hMmEudjEuTGlzdFRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnUmVxdWVzdBouLmEyYS52MS5MaXN0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXNwb25zZSJz2kEHdGFza19pZILT5JMCY1o1EjMve3RlbmFudH0vdGFza3Mve3Rhc2tfaWQ9Kn0vcHVzaE5vdGlmaWNhdGlvbkNvbmZpZ3MSKi90YXNrcy97dGFza19pZD0qfS9wdXNoTm90aWZpY2F0aW9uQ29uZmlncxKJAQoUR2V0RXh0ZW5kZWRBZ2VudENhcmQSIy5hMmEudjEuR2V0RXh0ZW5kZWRBZ2VudENhcmRSZXF1ZXN0GhEuYTJhLnYxLkFnZW50Q2FyZCI5gtPkkwIzWh0SGy97dGVuYW50fS9leHRlbmRlZEFnZW50Q2FyZBISL2V4dGVuZGVkQWdlbnRDYXJkEvIBCiBEZWxldGVUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZxIvLmEyYS52MS5EZWxldGVUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1JlcXVlc3QaFi5nb29nbGUucHJvdG9idWYuRW1wdHkihAHaQQp0YXNrX2lkLGlkgtPkkwJxWjwqOi97dGVuYW50fS90YXNrcy97dGFza19pZD0qfS9wdXNoTm90aWZpY2F0aW9uQ29uZmlncy97aWQ9Kn0qMS90YXNrcy97dGFza19pZD0qfS9wdXNoTm90aWZpY2F0aW9uQ29uZmlncy97aWQ9Kn1CWQoRY29tLmdvb2dsZS5hMmEudjFCA0EyQVABWjRnaXRodWIuY29tL2FsaXMtZXhjaGFuZ2UvYTJhLXBsYXlncm91bmQvZ2VuL2dvL2EyYXBiqgIGQTJhLlYxYgZwcm90bzM", [file_google_api_annotations, file_google_api_client, file_google_api_field_behavior, file_google_protobuf_empty, file_google_protobuf_struct, file_google_protobuf_timestamp]);
+  fileDesc("CglhMmEucHJvdG8SBmEyYS52MSKeAQoYU2VuZE1lc3NhZ2VDb25maWd1cmF0aW9uEh0KFWFjY2VwdGVkX291dHB1dF9tb2RlcxgBIAMoCRI5ChFwdXNoX25vdGlmaWNhdGlvbhgCIAEoCzIeLmEyYS52MS5QdXNoTm90aWZpY2F0aW9uQ29uZmlnEhYKDmhpc3RvcnlfbGVuZ3RoGAMgASgFEhAKCGJsb2NraW5nGAQgASgIIrwBCgRUYXNrEgoKAmlkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSIgoGc3RhdHVzGAMgASgLMhIuYTJhLnYxLlRhc2tTdGF0dXMSIwoJYXJ0aWZhY3RzGAQgAygLMhAuYTJhLnYxLkFydGlmYWN0EiAKB2hpc3RvcnkYBSADKAsyDy5hMmEudjEuTWVzc2FnZRIpCghtZXRhZGF0YRgGIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3QihwEKClRhc2tTdGF0dXMSIAoFc3RhdGUYASABKA4yES5hMmEudjEuVGFza1N0YXRlEigKBnVwZGF0ZRgCIAEoCzIPLmEyYS52MS5NZXNzYWdlUgdtZXNzYWdlEi0KCXRpbWVzdGFtcBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAijQEKBFBhcnQSDgoEdGV4dBgBIAEoCUgAEiAKBGZpbGUYAiABKAsyEC5hMmEudjEuRmlsZVBhcnRIABIgCgRkYXRhGAMgASgLMhAuYTJhLnYxLkRhdGFQYXJ0SAASKQoIbWV0YWRhdGEYBCABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0QgYKBHBhcnQiZwoIRmlsZVBhcnQSFwoNZmlsZV93aXRoX3VyaRgBIAEoCUgAEhkKD2ZpbGVfd2l0aF9ieXRlcxgCIAEoDEgAEhEKCW1pbWVfdHlwZRgDIAEoCRIMCgRuYW1lGAQgASgJQgYKBGZpbGUiMQoIRGF0YVBhcnQSJQoEZGF0YRgBIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3Qi1gEKB01lc3NhZ2USEgoKbWVzc2FnZV9pZBgBIAEoCRISCgpjb250ZXh0X2lkGAIgASgJEg8KB3Rhc2tfaWQYAyABKAkSGgoEcm9sZRgEIAEoDjIMLmEyYS52MS5Sb2xlEhsKBXBhcnRzGAUgAygLMgwuYTJhLnYxLlBhcnQSKQoIbWV0YWRhdGEYBiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EhIKCmV4dGVuc2lvbnMYByADKAkSGgoScmVmZXJlbmNlX3Rhc2tfaWRzGAggAygJIp4BCghBcnRpZmFjdBITCgthcnRpZmFjdF9pZBgBIAEoCRIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEhsKBXBhcnRzGAUgAygLMgwuYTJhLnYxLlBhcnQSKQoIbWV0YWRhdGEYBiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EhIKCmV4dGVuc2lvbnMYByADKAkimgEKFVRhc2tTdGF0dXNVcGRhdGVFdmVudBIPCgd0YXNrX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSIgoGc3RhdHVzGAMgASgLMhIuYTJhLnYxLlRhc2tTdGF0dXMSDQoFZmluYWwYBCABKAgSKQoIbWV0YWRhdGEYBSABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0IrEBChdUYXNrQXJ0aWZhY3RVcGRhdGVFdmVudBIPCgd0YXNrX2lkGAEgASgJEhIKCmNvbnRleHRfaWQYAiABKAkSIgoIYXJ0aWZhY3QYAyABKAsyEC5hMmEudjEuQXJ0aWZhY3QSDgoGYXBwZW5kGAQgASgIEhIKCmxhc3RfY2h1bmsYBSABKAgSKQoIbWV0YWRhdGEYBiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0InQKFlB1c2hOb3RpZmljYXRpb25Db25maWcSCgoCaWQYASABKAkSCwoDdXJsGAIgASgJEg0KBXRva2VuGAMgASgJEjIKDmF1dGhlbnRpY2F0aW9uGAQgASgLMhouYTJhLnYxLkF1dGhlbnRpY2F0aW9uSW5mbyI6ChJBdXRoZW50aWNhdGlvbkluZm8SDwoHc2NoZW1lcxgBIAMoCRITCgtjcmVkZW50aWFscxgCIAEoCSIwCg5BZ2VudEludGVyZmFjZRILCgN1cmwYASABKAkSEQoJdHJhbnNwb3J0GAIgASgJIrQFCglBZ2VudENhcmQSGAoQcHJvdG9jb2xfdmVyc2lvbhgQIAEoCRIMCgRuYW1lGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEgsKA3VybBgDIAEoCRIbChNwcmVmZXJyZWRfdHJhbnNwb3J0GA4gASgJEjUKFWFkZGl0aW9uYWxfaW50ZXJmYWNlcxgPIAMoCzIWLmEyYS52MS5BZ2VudEludGVyZmFjZRInCghwcm92aWRlchgEIAEoCzIVLmEyYS52MS5BZ2VudFByb3ZpZGVyEg8KB3ZlcnNpb24YBSABKAkSGQoRZG9jdW1lbnRhdGlvbl91cmwYBiABKAkSLwoMY2FwYWJpbGl0aWVzGAcgASgLMhkuYTJhLnYxLkFnZW50Q2FwYWJpbGl0aWVzEkAKEHNlY3VyaXR5X3NjaGVtZXMYCCADKAsyJi5hMmEudjEuQWdlbnRDYXJkLlNlY3VyaXR5U2NoZW1lc0VudHJ5EiIKCHNlY3VyaXR5GAkgAygLMhAuYTJhLnYxLlNlY3VyaXR5EhsKE2RlZmF1bHRfaW5wdXRfbW9kZXMYCiADKAkSHAoUZGVmYXVsdF9vdXRwdXRfbW9kZXMYCyADKAkSIgoGc2tpbGxzGAwgAygLMhIuYTJhLnYxLkFnZW50U2tpbGwSLAokc3VwcG9ydHNfYXV0aGVudGljYXRlZF9leHRlbmRlZF9jYXJkGA0gASgIEi4KCnNpZ25hdHVyZXMYESADKAsyGi5hMmEudjEuQWdlbnRDYXJkU2lnbmF0dXJlEhAKCGljb25fdXJsGBIgASgJGk4KFFNlY3VyaXR5U2NoZW1lc0VudHJ5EgsKA2tleRgBIAEoCRIlCgV2YWx1ZRgCIAEoCzIWLmEyYS52MS5TZWN1cml0eVNjaGVtZToCOAEiMgoNQWdlbnRQcm92aWRlchILCgN1cmwYASABKAkSFAoMb3JnYW5pemF0aW9uGAIgASgJIpABChFBZ2VudENhcGFiaWxpdGllcxIRCglzdHJlYW1pbmcYASABKAgSGgoScHVzaF9ub3RpZmljYXRpb25zGAIgASgIEioKCmV4dGVuc2lvbnMYAyADKAsyFi5hMmEudjEuQWdlbnRFeHRlbnNpb24SIAoYc3RhdGVfdHJhbnNpdGlvbl9oaXN0b3J5GAQgASgIIm0KDkFnZW50RXh0ZW5zaW9uEgsKA3VyaRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIQCghyZXF1aXJlZBgDIAEoCBInCgZwYXJhbXMYBCABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0IqoBCgpBZ2VudFNraWxsEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSDAoEdGFncxgEIAMoCRIQCghleGFtcGxlcxgFIAMoCRITCgtpbnB1dF9tb2RlcxgGIAMoCRIUCgxvdXRwdXRfbW9kZXMYByADKAkSIgoIc2VjdXJpdHkYCCADKAsyEC5hMmEudjEuU2VjdXJpdHkibQoSQWdlbnRDYXJkU2lnbmF0dXJlEhYKCXByb3RlY3RlZBgBIAEoCUID4EECEhYKCXNpZ25hdHVyZRgCIAEoCUID4EECEicKBmhlYWRlchgDIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3QibAoaVGFza1B1c2hOb3RpZmljYXRpb25Db25maWcSDAoEbmFtZRgBIAEoCRJAChhwdXNoX25vdGlmaWNhdGlvbl9jb25maWcYAiABKAsyHi5hMmEudjEuUHVzaE5vdGlmaWNhdGlvbkNvbmZpZyIaCgpTdHJpbmdMaXN0EgwKBGxpc3QYASADKAkifgoIU2VjdXJpdHkSLgoHc2NoZW1lcxgBIAMoCzIdLmEyYS52MS5TZWN1cml0eS5TY2hlbWVzRW50cnkaQgoMU2NoZW1lc0VudHJ5EgsKA2tleRgBIAEoCRIhCgV2YWx1ZRgCIAEoCzISLmEyYS52MS5TdHJpbmdMaXN0OgI4ASLxAgoOU2VjdXJpdHlTY2hlbWUSPwoXYXBpX2tleV9zZWN1cml0eV9zY2hlbWUYASABKAsyHC5hMmEudjEuQVBJS2V5U2VjdXJpdHlTY2hlbWVIABJDChlodHRwX2F1dGhfc2VjdXJpdHlfc2NoZW1lGAIgASgLMh4uYTJhLnYxLkhUVFBBdXRoU2VjdXJpdHlTY2hlbWVIABI+ChZvYXV0aDJfc2VjdXJpdHlfc2NoZW1lGAMgASgLMhwuYTJhLnYxLk9BdXRoMlNlY3VyaXR5U2NoZW1lSAASTgofb3Blbl9pZF9jb25uZWN0X3NlY3VyaXR5X3NjaGVtZRgEIAEoCzIjLmEyYS52MS5PcGVuSWRDb25uZWN0U2VjdXJpdHlTY2hlbWVIABI/ChRtdGxzX3NlY3VyaXR5X3NjaGVtZRgFIAEoCzIfLmEyYS52MS5NdXR1YWxUbHNTZWN1cml0eVNjaGVtZUgAQggKBnNjaGVtZSJLChRBUElLZXlTZWN1cml0eVNjaGVtZRITCgtkZXNjcmlwdGlvbhgBIAEoCRIQCghsb2NhdGlvbhgCIAEoCRIMCgRuYW1lGAMgASgJIlQKFkhUVFBBdXRoU2VjdXJpdHlTY2hlbWUSEwoLZGVzY3JpcHRpb24YASABKAkSDgoGc2NoZW1lGAIgASgJEhUKDWJlYXJlcl9mb3JtYXQYAyABKAkiawoUT0F1dGgyU2VjdXJpdHlTY2hlbWUSEwoLZGVzY3JpcHRpb24YASABKAkSIQoFZmxvd3MYAiABKAsyEi5hMmEudjEuT0F1dGhGbG93cxIbChNvYXV0aDJfbWV0YWRhdGFfdXJsGAMgASgJIk8KG09wZW5JZENvbm5lY3RTZWN1cml0eVNjaGVtZRITCgtkZXNjcmlwdGlvbhgBIAEoCRIbChNvcGVuX2lkX2Nvbm5lY3RfdXJsGAIgASgJIi4KF011dHVhbFRsc1NlY3VyaXR5U2NoZW1lEhMKC2Rlc2NyaXB0aW9uGAEgASgJIvYBCgpPQXV0aEZsb3dzEkAKEmF1dGhvcml6YXRpb25fY29kZRgBIAEoCzIiLmEyYS52MS5BdXRob3JpemF0aW9uQ29kZU9BdXRoRmxvd0gAEkAKEmNsaWVudF9jcmVkZW50aWFscxgCIAEoCzIiLmEyYS52MS5DbGllbnRDcmVkZW50aWFsc09BdXRoRmxvd0gAEi0KCGltcGxpY2l0GAMgASgLMhkuYTJhLnYxLkltcGxpY2l0T0F1dGhGbG93SAASLQoIcGFzc3dvcmQYBCABKAsyGS5hMmEudjEuUGFzc3dvcmRPQXV0aEZsb3dIAEIGCgRmbG93Is4BChpBdXRob3JpemF0aW9uQ29kZU9BdXRoRmxvdxIZChFhdXRob3JpemF0aW9uX3VybBgBIAEoCRIRCgl0b2tlbl91cmwYAiABKAkSEwoLcmVmcmVzaF91cmwYAyABKAkSPgoGc2NvcGVzGAQgAygLMi4uYTJhLnYxLkF1dGhvcml6YXRpb25Db2RlT0F1dGhGbG93LlNjb3Blc0VudHJ5Gi0KC1Njb3Blc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiswEKGkNsaWVudENyZWRlbnRpYWxzT0F1dGhGbG93EhEKCXRva2VuX3VybBgBIAEoCRITCgtyZWZyZXNoX3VybBgCIAEoCRI+CgZzY29wZXMYAyADKAsyLi5hMmEudjEuQ2xpZW50Q3JlZGVudGlhbHNPQXV0aEZsb3cuU2NvcGVzRW50cnkaLQoLU2NvcGVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKpAQoRSW1wbGljaXRPQXV0aEZsb3cSGQoRYXV0aG9yaXphdGlvbl91cmwYASABKAkSEwoLcmVmcmVzaF91cmwYAiABKAkSNQoGc2NvcGVzGAMgAygLMiUuYTJhLnYxLkltcGxpY2l0T0F1dGhGbG93LlNjb3Blc0VudHJ5Gi0KC1Njb3Blc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEioQEKEVBhc3N3b3JkT0F1dGhGbG93EhEKCXRva2VuX3VybBgBIAEoCRITCgtyZWZyZXNoX3VybBgCIAEoCRI1CgZzY29wZXMYAyADKAsyJS5hMmEudjEuUGFzc3dvcmRPQXV0aEZsb3cuU2NvcGVzRW50cnkaLQoLU2NvcGVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKoAQoSU2VuZE1lc3NhZ2VSZXF1ZXN0Ei4KB3JlcXVlc3QYASABKAsyDy5hMmEudjEuTWVzc2FnZUID4EECUgdtZXNzYWdlEjcKDWNvbmZpZ3VyYXRpb24YAiABKAsyIC5hMmEudjEuU2VuZE1lc3NhZ2VDb25maWd1cmF0aW9uEikKCG1ldGFkYXRhGAMgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdCI7Cg5HZXRUYXNrUmVxdWVzdBIRCgRuYW1lGAEgASgJQgPgQQISFgoOaGlzdG9yeV9sZW5ndGgYAiABKAUi2gEKEExpc3RUYXNrc1JlcXVlc3QSEgoKY29udGV4dF9pZBgBIAEoCRIhCgZzdGF0dXMYAiABKA4yES5hMmEudjEuVGFza1N0YXRlEhEKCXBhZ2Vfc2l6ZRgDIAEoBRISCgpwYWdlX3Rva2VuGAQgASgJEhYKDmhpc3RvcnlfbGVuZ3RoGAUgASgFEjUKEWxhc3RfdXBkYXRlZF90aW1lGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIZChFpbmNsdWRlX2FydGlmYWN0cxgHIAEoCCJdChFMaXN0VGFza3NSZXNwb25zZRIbCgV0YXNrcxgBIAMoCzIMLmEyYS52MS5UYXNrEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCRISCgp0b3RhbF9zaXplGAMgASgFIiEKEUNhbmNlbFRhc2tSZXF1ZXN0EgwKBG5hbWUYASABKAkiNAokR2V0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXF1ZXN0EgwKBG5hbWUYASABKAkiNwonRGVsZXRlVGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXF1ZXN0EgwKBG5hbWUYASABKAkijwEKJ0NyZWF0ZVRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnUmVxdWVzdBITCgZwYXJlbnQYASABKAlCA+BBAhIWCgljb25maWdfaWQYAiABKAlCA+BBAhI3CgZjb25maWcYAyABKAsyIi5hMmEudjEuVGFza1B1c2hOb3RpZmljYXRpb25Db25maWdCA+BBAiInChdUYXNrU3Vic2NyaXB0aW9uUmVxdWVzdBIMCgRuYW1lGAEgASgJIl4KJUxpc3RUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1JlcXVlc3QSDgoGcGFyZW50GAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJIhUKE0dldEFnZW50Q2FyZFJlcXVlc3QiZwoTU2VuZE1lc3NhZ2VSZXNwb25zZRIcCgR0YXNrGAEgASgLMgwuYTJhLnYxLlRhc2tIABInCgNtc2cYAiABKAsyDy5hMmEudjEuTWVzc2FnZUgAUgdtZXNzYWdlQgkKB3BheWxvYWQi1gEKDlN0cmVhbVJlc3BvbnNlEhwKBHRhc2sYASABKAsyDC5hMmEudjEuVGFza0gAEicKA21zZxgCIAEoCzIPLmEyYS52MS5NZXNzYWdlSABSB21lc3NhZ2USNgoNc3RhdHVzX3VwZGF0ZRgDIAEoCzIdLmEyYS52MS5UYXNrU3RhdHVzVXBkYXRlRXZlbnRIABI6Cg9hcnRpZmFjdF91cGRhdGUYBCABKAsyHy5hMmEudjEuVGFza0FydGlmYWN0VXBkYXRlRXZlbnRIAEIJCgdwYXlsb2FkInYKJkxpc3RUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1Jlc3BvbnNlEjMKB2NvbmZpZ3MYASADKAsyIi5hMmEudjEuVGFza1B1c2hOb3RpZmljYXRpb25Db25maWcSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJKvoBCglUYXNrU3RhdGUSGgoWVEFTS19TVEFURV9VTlNQRUNJRklFRBAAEhgKFFRBU0tfU1RBVEVfU1VCTUlUVEVEEAESFgoSVEFTS19TVEFURV9XT1JLSU5HEAISGAoUVEFTS19TVEFURV9DT01QTEVURUQQAxIVChFUQVNLX1NUQVRFX0ZBSUxFRBAEEhgKFFRBU0tfU1RBVEVfQ0FOQ0VMTEVEEAUSHQoZVEFTS19TVEFURV9JTlBVVF9SRVFVSVJFRBAGEhcKE1RBU0tfU1RBVEVfUkVKRUNURUQQBxIcChhUQVNLX1NUQVRFX0FVVEhfUkVRVUlSRUQQCCo7CgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABINCglST0xFX1VTRVIQARIOCgpST0xFX0FHRU5UEAIykAsKCkEyQVNlcnZpY2USYwoLU2VuZE1lc3NhZ2USGi5hMmEudjEuU2VuZE1lc3NhZ2VSZXF1ZXN0GhsuYTJhLnYxLlNlbmRNZXNzYWdlUmVzcG9uc2UiG4LT5JMCFToBKiIQL3YxL21lc3NhZ2U6c2VuZBJrChRTZW5kU3RyZWFtaW5nTWVzc2FnZRIaLmEyYS52MS5TZW5kTWVzc2FnZVJlcXVlc3QaFi5hMmEudjEuU3RyZWFtUmVzcG9uc2UiHYLT5JMCFzoBKiISL3YxL21lc3NhZ2U6c3RyZWFtMAESUgoHR2V0VGFzaxIWLmEyYS52MS5HZXRUYXNrUmVxdWVzdBoMLmEyYS52MS5UYXNrIiHaQQRuYW1lgtPkkwIUEhIvdjEve25hbWU9dGFza3MvKn0SUwoJTGlzdFRhc2tzEhguYTJhLnYxLkxpc3RUYXNrc1JlcXVlc3QaGS5hMmEudjEuTGlzdFRhc2tzUmVzcG9uc2UiEYLT5JMCCxIJL3YxL3Rhc2tzElsKCkNhbmNlbFRhc2sSGS5hMmEudjEuQ2FuY2VsVGFza1JlcXVlc3QaDC5hMmEudjEuVGFzayIkgtPkkwIeOgEqIhkvdjEve25hbWU9dGFza3MvKn06Y2FuY2VsEnMKEFRhc2tTdWJzY3JpcHRpb24SHy5hMmEudjEuVGFza1N1YnNjcmlwdGlvblJlcXVlc3QaFi5hMmEudjEuU3RyZWFtUmVzcG9uc2UiJILT5JMCHhIcL3YxL3tuYW1lPXRhc2tzLyp9OnN1YnNjcmliZTABEsUBCiBDcmVhdGVUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZxIvLmEyYS52MS5DcmVhdGVUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1JlcXVlc3QaIi5hMmEudjEuVGFza1B1c2hOb3RpZmljYXRpb25Db25maWciTNpBDXBhcmVudCxjb25maWeC0+STAjY6BmNvbmZpZyIsL3YxL3twYXJlbnQ9dGFza3MvKi9wdXNoTm90aWZpY2F0aW9uQ29uZmlnc30SrgEKHUdldFRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnEiwuYTJhLnYxLkdldFRhc2tQdXNoTm90aWZpY2F0aW9uQ29uZmlnUmVxdWVzdBoiLmEyYS52MS5UYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZyI72kEEbmFtZYLT5JMCLhIsL3YxL3tuYW1lPXRhc2tzLyovcHVzaE5vdGlmaWNhdGlvbkNvbmZpZ3MvKn0SvgEKHkxpc3RUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZxItLmEyYS52MS5MaXN0VGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXF1ZXN0Gi4uYTJhLnYxLkxpc3RUYXNrUHVzaE5vdGlmaWNhdGlvbkNvbmZpZ1Jlc3BvbnNlIj3aQQZwYXJlbnSC0+STAi4SLC92MS97cGFyZW50PXRhc2tzLyp9L3B1c2hOb3RpZmljYXRpb25Db25maWdzElAKDEdldEFnZW50Q2FyZBIbLmEyYS52MS5HZXRBZ2VudENhcmRSZXF1ZXN0GhEuYTJhLnYxLkFnZW50Q2FyZCIQgtPkkwIKEggvdjEvY2FyZBKoAQogRGVsZXRlVGFza1B1c2hOb3RpZmljYXRpb25Db25maWcSLy5hMmEudjEuRGVsZXRlVGFza1B1c2hOb3RpZmljYXRpb25Db25maWdSZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IjvaQQRuYW1lgtPkkwIuKiwvdjEve25hbWU9dGFza3MvKi9wdXNoTm90aWZpY2F0aW9uQ29uZmlncy8qfUJzCgpjb20uYTJhLnYxQghBMmFQcm90b1ABWiJnaXRodWIuY29tL2EyYXByb2plY3QvYTJhLWdvL2EyYXBiogIDQVhYqgIGQTJhLlYxygIGQTJhXFYx4gISQTJhXFYxXEdQQk1ldGFkYXRh6gIHQTJhOjpWMWIGcHJvdG8z", [file_google_api_annotations, file_google_api_client, file_google_api_field_behavior, file_google_protobuf_empty, file_google_protobuf_struct, file_google_protobuf_timestamp]);
 
 /**
- * --8<-- [start:SendMessageConfiguration]
+ * --8<-- [start:MessageSendConfiguration]
  * Configuration of a send message request.
  *
  * @generated from message a2a.v1.SendMessageConfiguration
  */
 export type SendMessageConfiguration = Message$1<"a2a.v1.SendMessageConfiguration"> & {
   /**
-   * A list of media types the client is prepared to accept for response parts.
-   * Agents SHOULD use this to tailor their output.
+   * The output modes that the agent is expected to respond with.
    *
    * @generated from field: repeated string accepted_output_modes = 1;
    */
   acceptedOutputModes: string[];
 
   /**
-   * Configuration for the agent to send push notifications for task updates.
+   * A configuration of a webhook that can be used to receive updates
    *
-   * @generated from field: a2a.v1.PushNotificationConfig push_notification_config = 2;
+   * @generated from field: a2a.v1.PushNotificationConfig push_notification = 2;
    */
-  pushNotificationConfig?: PushNotificationConfig;
+  pushNotification?: PushNotificationConfig;
 
   /**
-   * The maximum number of most recent messages from the task's history to
-   * retrieve in the response. An unset value means the client does not impose
-   * any limit. A value of zero is a request to not include any messages. The
-   * server MUST NOT return more messages than the provided value, but MAY apply
-   * a lower limit.
+   * The maximum number of messages to include in the history. if 0, the
+   * history will be unlimited.
    *
-   * @generated from field: optional int32 history_length = 3;
+   * @generated from field: int32 history_length = 3;
    */
-  historyLength?: number;
+  historyLength: number;
 
   /**
-   * If true, the operation waits until the task reaches a terminal or
-   * interrupted state before returning. Default is false.
+   * If true, the message will be blocking until the task is completed. If
+   * false, the message will be non-blocking and the task will be returned
+   * immediately. It is the caller's responsibility to check for any task
+   * updates.
    *
    * @generated from field: bool blocking = 4;
    */
@@ -140,7 +138,7 @@ export const TaskSchema: GenMessage<Task> = /*@__PURE__*/
  */
 export type TaskStatus = Message$1<"a2a.v1.TaskStatus"> & {
   /**
-   * The current state of this task.
+   * The current state of this task
    *
    * @generated from field: a2a.v1.TaskState state = 1;
    */
@@ -149,12 +147,12 @@ export type TaskStatus = Message$1<"a2a.v1.TaskStatus"> & {
   /**
    * A message associated with the status.
    *
-   * @generated from field: a2a.v1.Message message = 2;
+   * @generated from field: a2a.v1.Message update = 2 [json_name = "message"];
    */
-  message?: Message;
+  update?: Message;
 
   /**
-   * ISO 8601 Timestamp when the status was recorded.
+   * Timestamp when the status was recorded.
    * Example: "2023-10-27T10:00:00Z"
    *
    * @generated from field: google.protobuf.Timestamp timestamp = 3;
@@ -179,66 +177,34 @@ export const TaskStatusSchema: GenMessage<TaskStatus> = /*@__PURE__*/
  */
 export type Part = Message$1<"a2a.v1.Part"> & {
   /**
-   * @generated from oneof a2a.v1.Part.content
+   * @generated from oneof a2a.v1.Part.part
    */
-  content: {
+  part: {
     /**
-     * The string content of the text part.
-     *
      * @generated from field: string text = 1;
      */
     value: string;
     case: "text";
   } | {
     /**
-     * The raw byte content of a file. In JSON serialization, this is encoded as
-     * a base64 string.
-     *
-     * @generated from field: bytes raw = 2;
+     * @generated from field: a2a.v1.FilePart file = 2;
      */
-    value: Uint8Array;
-    case: "raw";
+    value: FilePart;
+    case: "file";
   } | {
     /**
-     * A URL pointing to the file's content.
-     *
-     * @generated from field: string url = 3;
+     * @generated from field: a2a.v1.DataPart data = 3;
      */
-    value: string;
-    case: "url";
-  } | {
-    /**
-     * Arbitrary structured data as a JSON value (object, array, string, number,
-     * boolean, or null).
-     *
-     * @generated from field: google.protobuf.Value data = 4;
-     */
-    value: Value;
+    value: DataPart;
     case: "data";
   } | { case: undefined; value?: undefined };
 
   /**
    * Optional metadata associated with this part.
    *
-   * @generated from field: google.protobuf.Struct metadata = 5;
+   * @generated from field: google.protobuf.Struct metadata = 4;
    */
   metadata?: JsonObject;
-
-  /**
-   * An optional name for the file (e.g., "document.pdf").
-   *
-   * @generated from field: string filename = 6;
-   */
-  filename: string;
-
-  /**
-   * The media type (MIME type) of the part content (e.g., "text/plain",
-   * "application/json", "image/png"). This field is available for all part
-   * types.
-   *
-   * @generated from field: string media_type = 7;
-   */
-  mediaType: string;
 };
 
 /**
@@ -249,19 +215,85 @@ export const PartSchema: GenMessage<Part> = /*@__PURE__*/
   messageDesc(file_a2a, 3);
 
 /**
+ * --8<-- [start:FilePart]
+ * FilePart represents the different ways files can be provided. If files are
+ * small, directly feeding the bytes is supported via file_with_bytes. If the
+ * file is large, the agent should read the content as appropriate directly
+ * from the file_with_uri source.
+ *
+ * @generated from message a2a.v1.FilePart
+ */
+export type FilePart = Message$1<"a2a.v1.FilePart"> & {
+  /**
+   * @generated from oneof a2a.v1.FilePart.file
+   */
+  file: {
+    /**
+     * @generated from field: string file_with_uri = 1;
+     */
+    value: string;
+    case: "fileWithUri";
+  } | {
+    /**
+     * @generated from field: bytes file_with_bytes = 2;
+     */
+    value: Uint8Array;
+    case: "fileWithBytes";
+  } | { case: undefined; value?: undefined };
+
+  /**
+   * @generated from field: string mime_type = 3;
+   */
+  mimeType: string;
+
+  /**
+   * @generated from field: string name = 4;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message a2a.v1.FilePart.
+ * Use `create(FilePartSchema)` to create a new message.
+ */
+export const FilePartSchema: GenMessage<FilePart> = /*@__PURE__*/
+  messageDesc(file_a2a, 4);
+
+/**
+ * --8<-- [start:DataPart]
+ * DataPart represents a structured blob. This is most commonly a JSON payload.
+ *
+ * @generated from message a2a.v1.DataPart
+ */
+export type DataPart = Message$1<"a2a.v1.DataPart"> & {
+  /**
+   * @generated from field: google.protobuf.Struct data = 1;
+   */
+  data?: JsonObject;
+};
+
+/**
+ * Describes the message a2a.v1.DataPart.
+ * Use `create(DataPartSchema)` to create a new message.
+ */
+export const DataPartSchema: GenMessage<DataPart> = /*@__PURE__*/
+  messageDesc(file_a2a, 5);
+
+/**
  * --8<-- [start:Message]
- * Message is one unit of communication between client and server. It can be
- * associated with a context and/or a task. For server messages, context_id must
- * be provided, and task_id only if a task was created. For client messages,
- * both fields are optional, with the caveat that if both are provided, they
- * have to match (the context_id has to be the one that is set on the task). If
- * only task_id is provided, the server will infer context_id from it.
+ * Message is one unit of communication between client and server. It is
+ * associated with a context and optionally a task. Since the server is
+ * responsible for the context definition, it must always provide a context_id
+ * in its messages. The client can optionally provide the context_id if it
+ * knows the context to associate the message to. Similarly for task_id,
+ * except the server decides if a task is created and whether to include the
+ * task_id.
  *
  * @generated from message a2a.v1.Message
  */
 export type Message = Message$1<"a2a.v1.Message"> & {
   /**
-   * The unique identifier (e.g. UUID) of the message. This is required and
+   * The unique identifier (e.g. UUID)of the message. This is required and
    * created by the message creator.
    *
    * @generated from field: string message_id = 1;
@@ -285,7 +317,7 @@ export type Message = Message$1<"a2a.v1.Message"> & {
   taskId: string;
 
   /**
-   * Identifies the sender of the message.
+   * A role for the message.
    *
    * @generated from field: a2a.v1.Role role = 4;
    */
@@ -327,11 +359,13 @@ export type Message = Message$1<"a2a.v1.Message"> & {
  * Use `create(MessageSchema)` to create a new message.
  */
 export const MessageSchema: GenMessage<Message> = /*@__PURE__*/
-  messageDesc(file_a2a, 4);
+  messageDesc(file_a2a, 6);
 
 /**
  * --8<-- [start:Artifact]
- * Artifacts represent task outputs.
+ * Artifacts are the container for task completed results. These are similar
+ * to Messages but are intended to be the product of a task, as opposed to
+ * point-to-point communication.
  *
  * @generated from message a2a.v1.Artifact
  */
@@ -359,7 +393,7 @@ export type Artifact = Message$1<"a2a.v1.Artifact"> & {
   description: string;
 
   /**
-   * The content of the artifact. Must contain at least one part.
+   * The content of the artifact.
    *
    * @generated from field: repeated a2a.v1.Part parts = 5;
    */
@@ -385,12 +419,12 @@ export type Artifact = Message$1<"a2a.v1.Artifact"> & {
  * Use `create(ArtifactSchema)` to create a new message.
  */
 export const ArtifactSchema: GenMessage<Artifact> = /*@__PURE__*/
-  messageDesc(file_a2a, 5);
+  messageDesc(file_a2a, 7);
 
 /**
  * --8<-- [start:TaskStatusUpdateEvent]
- * An event sent by the agent to notify the client of a change in a task's
- * status.
+ * TaskStatusUpdateEvent is a delta even on a task indicating that a task
+ * has changed.
  *
  * @generated from message a2a.v1.TaskStatusUpdateEvent
  */
@@ -417,6 +451,13 @@ export type TaskStatusUpdateEvent = Message$1<"a2a.v1.TaskStatusUpdateEvent"> & 
   status?: TaskStatus;
 
   /**
+   * Whether this is the last status update expected for this task.
+   *
+   * @generated from field: bool final = 4;
+   */
+  final: boolean;
+
+  /**
    * Optional metadata to associate with the task update.
    *
    * @generated from field: google.protobuf.Struct metadata = 5;
@@ -429,7 +470,7 @@ export type TaskStatusUpdateEvent = Message$1<"a2a.v1.TaskStatusUpdateEvent"> & 
  * Use `create(TaskStatusUpdateEventSchema)` to create a new message.
  */
 export const TaskStatusUpdateEventSchema: GenMessage<TaskStatusUpdateEvent> = /*@__PURE__*/
-  messageDesc(file_a2a, 6);
+  messageDesc(file_a2a, 8);
 
 /**
  * --8<-- [start:TaskArtifactUpdateEvent]
@@ -440,36 +481,35 @@ export const TaskStatusUpdateEventSchema: GenMessage<TaskStatusUpdateEvent> = /*
  */
 export type TaskArtifactUpdateEvent = Message$1<"a2a.v1.TaskArtifactUpdateEvent"> & {
   /**
-   * The id of the task for this artifact.
+   * The id of the task for this artifact
    *
    * @generated from field: string task_id = 1;
    */
   taskId: string;
 
   /**
-   * The id of the context that this task belongs to.
+   * The id of the context that this task belongs too
    *
    * @generated from field: string context_id = 2;
    */
   contextId: string;
 
   /**
-   * The artifact that was generated or updated.
+   * The artifact itself
    *
    * @generated from field: a2a.v1.Artifact artifact = 3;
    */
   artifact?: Artifact;
 
   /**
-   * If true, the content of this artifact should be appended to a previously
-   * sent artifact with the same ID.
+   *  Whether this should be appended to a prior one produced
    *
    * @generated from field: bool append = 4;
    */
   append: boolean;
 
   /**
-   * If true, this is the final chunk of the artifact.
+   * Whether this represents the last part of an artifact
    *
    * @generated from field: bool last_chunk = 5;
    */
@@ -488,7 +528,7 @@ export type TaskArtifactUpdateEvent = Message$1<"a2a.v1.TaskArtifactUpdateEvent"
  * Use `create(TaskArtifactUpdateEventSchema)` to create a new message.
  */
 export const TaskArtifactUpdateEventSchema: GenMessage<TaskArtifactUpdateEvent> = /*@__PURE__*/
-  messageDesc(file_a2a, 7);
+  messageDesc(file_a2a, 9);
 
 /**
  * --8<-- [start:PushNotificationConfig]
@@ -519,7 +559,7 @@ export type PushNotificationConfig = Message$1<"a2a.v1.PushNotificationConfig"> 
   token: string;
 
   /**
-   * Authentication information required to send the notification
+   * Information about the authentication to sent with the notification
    *
    * @generated from field: a2a.v1.AuthenticationInfo authentication = 4;
    */
@@ -531,7 +571,7 @@ export type PushNotificationConfig = Message$1<"a2a.v1.PushNotificationConfig"> 
  * Use `create(PushNotificationConfigSchema)` to create a new message.
  */
 export const PushNotificationConfigSchema: GenMessage<PushNotificationConfig> = /*@__PURE__*/
-  messageDesc(file_a2a, 8);
+  messageDesc(file_a2a, 10);
 
 /**
  * --8<-- [start:PushNotificationAuthenticationInfo]
@@ -541,19 +581,14 @@ export const PushNotificationConfigSchema: GenMessage<PushNotificationConfig> = 
  */
 export type AuthenticationInfo = Message$1<"a2a.v1.AuthenticationInfo"> & {
   /**
-   * HTTP Authentication Scheme from the [IANA
-   * registry](https://www.iana.org/assignments/http-authschemes/). Common
-   * values: `Bearer`, `Basic`, `Digest`. Scheme names are case-insensitive per
-   * [RFC 9110
-   * Section 11.1](https://www.rfc-editor.org/rfc/rfc9110#section-11.1).
+   * Supported authentication schemes - e.g. Basic, Bearer, etc
    *
-   * @generated from field: string scheme = 1;
+   * @generated from field: repeated string schemes = 1;
    */
-  scheme: string;
+  schemes: string[];
 
   /**
-   * Push Notification credentials. Format depends on the scheme (e.g., token
-   * for Bearer).
+   * Optional credentials
    *
    * @generated from field: string credentials = 2;
    */
@@ -565,50 +600,30 @@ export type AuthenticationInfo = Message$1<"a2a.v1.AuthenticationInfo"> & {
  * Use `create(AuthenticationInfoSchema)` to create a new message.
  */
 export const AuthenticationInfoSchema: GenMessage<AuthenticationInfo> = /*@__PURE__*/
-  messageDesc(file_a2a, 9);
+  messageDesc(file_a2a, 11);
 
 /**
  * --8<-- [start:AgentInterface]
- * Declares a combination of a target URL, transport and protocol version for
- * interacting with the agent. This allows agents to expose the same
- * functionality over multiple protocol binding mechanisms.
+ * Defines additional transport information for the agent.
  *
  * @generated from message a2a.v1.AgentInterface
  */
 export type AgentInterface = Message$1<"a2a.v1.AgentInterface"> & {
   /**
-   * The URL where this interface is available. Must be a valid absolute HTTPS
-   * URL in production. Example: "https://api.example.com/a2a/v1",
-   * "https://grpc.example.com/a2a"
+   * The url this interface is found at.
    *
    * @generated from field: string url = 1;
    */
   url: string;
 
   /**
-   * The protocol binding supported at this URL. This is an open form string, to
-   * be easily extended for other protocol bindings. The core ones officially
-   * supported are `JSONRPC`, `GRPC` and `HTTP+JSON`.
+   * The transport supported this url. This is an open form string, to be
+   * easily extended for many transport protocols. The core ones officially
+   * supported are JSONRPC, GRPC and HTTP+JSON.
    *
-   * @generated from field: string protocol_binding = 2;
+   * @generated from field: string transport = 2;
    */
-  protocolBinding: string;
-
-  /**
-   * Tenant to be set in the request when calling the agent.
-   *
-   * @generated from field: string tenant = 3;
-   */
-  tenant: string;
-
-  /**
-   * The version of the A2A protocol this interface exposes.
-   * Use the latest supported minor version per major version.
-   * Examples: "0.3", "1.0"
-   *
-   * @generated from field: string protocol_version = 4;
-   */
-  protocolVersion: string;
+  transport: string;
 };
 
 /**
@@ -616,18 +631,27 @@ export type AgentInterface = Message$1<"a2a.v1.AgentInterface"> & {
  * Use `create(AgentInterfaceSchema)` to create a new message.
  */
 export const AgentInterfaceSchema: GenMessage<AgentInterface> = /*@__PURE__*/
-  messageDesc(file_a2a, 10);
+  messageDesc(file_a2a, 12);
 
 /**
  * --8<-- [start:AgentCard]
- * AgentCard is a self-describing manifest for an agent. It provides essential
- * metadata including the agent's identity, capabilities, skills, supported
- * communication methods, and security requirements.
- * Next ID: 20
+ * AgentCard conveys key information:
+ * - Overall details (version, name, description, uses)
+ * - Skills; a set of actions/solutions the agent can perform
+ * - Default modalities/content types supported by the agent.
+ * - Authentication requirements
+ * Next ID: 19
  *
  * @generated from message a2a.v1.AgentCard
  */
 export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
+  /**
+   * The version of the A2A protocol this agent supports.
+   *
+   * @generated from field: string protocol_version = 16;
+   */
+  protocolVersion: string;
+
   /**
    * A human readable name for the agent.
    * Example: "Recipe Agent"
@@ -637,8 +661,7 @@ export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
   name: string;
 
   /**
-   * A human-readable description of the agent, assisting users and other agents
-   * in understanding its purpose.
+   * A description of the agent's domain of action/solution space.
    * Example: "Agent that helps users with recipes and cooking."
    *
    * @generated from field: string description = 2;
@@ -646,11 +669,27 @@ export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
   description: string;
 
   /**
-   * Ordered list of supported interfaces. First entry is preferred.
+   * A URL to the address the agent is hosted at. This represents the
+   * preferred endpoint as declared by the agent.
    *
-   * @generated from field: repeated a2a.v1.AgentInterface supported_interfaces = 19;
+   * @generated from field: string url = 3;
    */
-  supportedInterfaces: AgentInterface[];
+  url: string;
+
+  /**
+   * The transport of the preferred endpoint. If empty, defaults to JSONRPC.
+   *
+   * @generated from field: string preferred_transport = 14;
+   */
+  preferredTransport: string;
+
+  /**
+   * Announcement of additional supported transports. Client can use any of
+   * the supported transports.
+   *
+   * @generated from field: repeated a2a.v1.AgentInterface additional_interfaces = 15;
+   */
+  additionalInterfaces: AgentInterface[];
 
   /**
    * The service provider of the agent.
@@ -670,9 +709,9 @@ export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
   /**
    * A url to provide additional documentation about the agent.
    *
-   * @generated from field: optional string documentation_url = 6;
+   * @generated from field: string documentation_url = 6;
    */
-  documentationUrl?: string;
+  documentationUrl: string;
 
   /**
    * A2A Capability set supported by the agent.
@@ -689,36 +728,58 @@ export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
   securitySchemes: { [key: string]: SecurityScheme };
 
   /**
+   * protolint:disable REPEATED_FIELD_NAMES_PLURALIZED
    * Security requirements for contacting the agent.
+   * This list can be seen as an OR of ANDs. Each object in the list describes
+   * one possible set of security requirements that must be present on a
+   * request. This allows specifying, for example, "callers must either use
+   * OAuth OR an API Key AND mTLS."
+   * Example:
+   * security {
+   *   schemes { key: "oauth" value { list: ["read"] } }
+   * }
+   * security {
+   *   schemes { key: "api-key" }
+   *   schemes { key: "mtls" }
+   * }
    *
-   * @generated from field: repeated a2a.v1.SecurityRequirement security_requirements = 13;
+   * @generated from field: repeated a2a.v1.Security security = 9;
    */
-  securityRequirements: SecurityRequirement[];
+  security: Security[];
 
   /**
    * protolint:enable REPEATED_FIELD_NAMES_PLURALIZED
    * The set of interaction modes that the agent supports across all skills.
-   * This can be overridden per skill. Defined as media types.
+   * This can be overridden per skill. Defined as mime types.
    *
    * @generated from field: repeated string default_input_modes = 10;
    */
   defaultInputModes: string[];
 
   /**
-   * The media types supported as outputs from this agent.
+   * The mime types supported as outputs from this agent.
    *
    * @generated from field: repeated string default_output_modes = 11;
    */
   defaultOutputModes: string[];
 
   /**
-   * Skills represent an ability of an agent. It is largely
-   * a descriptive concept but represents a more focused set of behaviors that
-   * the agent is likely to succeed at.
+   * Skills represent a unit of ability an agent can perform. This may
+   * somewhat abstract but represents a more focused set of actions that the
+   * agent is highly likely to succeed at.
    *
    * @generated from field: repeated a2a.v1.AgentSkill skills = 12;
    */
   skills: AgentSkill[];
+
+  /**
+   * Whether the agent supports providing an extended agent card when
+   * the user is authenticated, i.e. is the card from .well-known
+   * different than the card from GetAgentCard.
+   *
+   * @generated from field: bool supports_authenticated_extended_card = 13;
+   */
+  supportsAuthenticatedExtendedCard: boolean;
 
   /**
    * JSON Web Signatures computed for this AgentCard.
@@ -730,9 +791,9 @@ export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
   /**
    * An optional URL to an icon for the agent.
    *
-   * @generated from field: optional string icon_url = 18;
+   * @generated from field: string icon_url = 18;
    */
-  iconUrl?: string;
+  iconUrl: string;
 };
 
 /**
@@ -740,17 +801,17 @@ export type AgentCard = Message$1<"a2a.v1.AgentCard"> & {
  * Use `create(AgentCardSchema)` to create a new message.
  */
 export const AgentCardSchema: GenMessage<AgentCard> = /*@__PURE__*/
-  messageDesc(file_a2a, 11);
+  messageDesc(file_a2a, 13);
 
 /**
  * --8<-- [start:AgentProvider]
- * Represents the service provider of an agent.
+ * Represents information about the service provider of an agent.
  *
  * @generated from message a2a.v1.AgentProvider
  */
 export type AgentProvider = Message$1<"a2a.v1.AgentProvider"> & {
   /**
-   * A URL for the agent provider's website or relevant documentation.
+   * The providers reference url
    * Example: "https://ai.google.dev"
    *
    * @generated from field: string url = 1;
@@ -758,7 +819,7 @@ export type AgentProvider = Message$1<"a2a.v1.AgentProvider"> & {
   url: string;
 
   /**
-   * The name of the agent provider's organization.
+   * The providers organization name
    * Example: "Google"
    *
    * @generated from field: string organization = 2;
@@ -771,44 +832,42 @@ export type AgentProvider = Message$1<"a2a.v1.AgentProvider"> & {
  * Use `create(AgentProviderSchema)` to create a new message.
  */
 export const AgentProviderSchema: GenMessage<AgentProvider> = /*@__PURE__*/
-  messageDesc(file_a2a, 12);
+  messageDesc(file_a2a, 14);
 
 /**
  * --8<-- [start:AgentCapabilities]
- * Defines optional capabilities supported by an agent.
+ * Defines the A2A feature set supported by the agent
  *
  * @generated from message a2a.v1.AgentCapabilities
  */
 export type AgentCapabilities = Message$1<"a2a.v1.AgentCapabilities"> & {
   /**
-   * Indicates if the agent supports streaming responses.
+   * If the agent will support streaming responses
    *
-   * @generated from field: optional bool streaming = 1;
+   * @generated from field: bool streaming = 1;
    */
-  streaming?: boolean;
+  streaming: boolean;
 
   /**
-   * Indicates if the agent supports sending push notifications for asynchronous
-   * task updates.
+   * If the agent can send push notifications to the clients webhook
    *
-   * @generated from field: optional bool push_notifications = 2;
+   * @generated from field: bool push_notifications = 2;
    */
-  pushNotifications?: boolean;
+  pushNotifications: boolean;
 
   /**
-   * A list of protocol extensions supported by the agent.
+   * Extensions supported by this agent.
    *
    * @generated from field: repeated a2a.v1.AgentExtension extensions = 3;
    */
   extensions: AgentExtension[];
 
   /**
-   * Indicates if the agent supports providing an extended agent card when
-   * authenticated.
+   * If the agent provides a history of state transitions for a task.
    *
-   * @generated from field: optional bool extended_agent_card = 5;
+   * @generated from field: bool state_transition_history = 4;
    */
-  extendedAgentCard?: boolean;
+  stateTransitionHistory: boolean;
 };
 
 /**
@@ -816,39 +875,41 @@ export type AgentCapabilities = Message$1<"a2a.v1.AgentCapabilities"> & {
  * Use `create(AgentCapabilitiesSchema)` to create a new message.
  */
 export const AgentCapabilitiesSchema: GenMessage<AgentCapabilities> = /*@__PURE__*/
-  messageDesc(file_a2a, 13);
+  messageDesc(file_a2a, 15);
 
 /**
  * --8<-- [start:AgentExtension]
- * A declaration of a protocol extension supported by an Agent.
+ * A declaration of an extension supported by an Agent.
  *
  * @generated from message a2a.v1.AgentExtension
  */
 export type AgentExtension = Message$1<"a2a.v1.AgentExtension"> & {
   /**
-   * The unique URI identifying the extension.
+   * The URI of the extension.
+   * Example: "https://developers.google.com/identity/protocols/oauth2"
    *
    * @generated from field: string uri = 1;
    */
   uri: string;
 
   /**
-   * A human-readable description of how this agent uses the extension.
+   * A description of how this agent uses this extension.
+   * Example: "Google OAuth 2.0 authentication"
    *
    * @generated from field: string description = 2;
    */
   description: string;
 
   /**
-   * If true, the client must understand and comply with the extension's
-   * requirements.
+   * Whether the client must follow specific requirements of the extension.
+   * Example: false
    *
    * @generated from field: bool required = 3;
    */
   required: boolean;
 
   /**
-   * Optional, extension-specific configuration parameters.
+   * Optional configuration for the extension.
    *
    * @generated from field: google.protobuf.Struct params = 4;
    */
@@ -860,72 +921,85 @@ export type AgentExtension = Message$1<"a2a.v1.AgentExtension"> & {
  * Use `create(AgentExtensionSchema)` to create a new message.
  */
 export const AgentExtensionSchema: GenMessage<AgentExtension> = /*@__PURE__*/
-  messageDesc(file_a2a, 14);
+  messageDesc(file_a2a, 16);
 
 /**
  * --8<-- [start:AgentSkill]
- * Represents a distinct capability or function that an agent can perform.
+ * AgentSkill represents a unit of action/solution that the agent can perform.
+ * One can think of this as a type of highly reliable solution that an agent
+ * can be tasked to provide. Agents have the autonomy to choose how and when
+ * to use specific skills, but clients should have confidence that if the
+ * skill is defined that unit of action can be reliably performed.
  *
  * @generated from message a2a.v1.AgentSkill
  */
 export type AgentSkill = Message$1<"a2a.v1.AgentSkill"> & {
   /**
-   * A unique identifier for the agent's skill.
+   * Unique identifier of the skill within this agent.
    *
    * @generated from field: string id = 1;
    */
   id: string;
 
   /**
-   * A human-readable name for the skill.
+   * A human readable name for the skill.
    *
    * @generated from field: string name = 2;
    */
   name: string;
 
   /**
-   * A detailed description of the skill.
+   * A human (or llm) readable description of the skill
+   * details and behaviors.
    *
    * @generated from field: string description = 3;
    */
   description: string;
 
   /**
-   * A set of keywords describing the skill's capabilities.
+   * A set of tags for the skill to enhance categorization/utilization.
+   * Example: ["cooking", "customer support", "billing"]
    *
    * @generated from field: repeated string tags = 4;
    */
   tags: string[];
 
   /**
-   * Example prompts or scenarios that this skill can handle.
+   * A set of example queries that this skill is designed to address.
+   * These examples should help the caller to understand how to craft requests
+   * to the agent to achieve specific goals.
+   * Example: ["I need a recipe for bread"]
    *
    * @generated from field: repeated string examples = 5;
    */
   examples: string[];
 
   /**
-   * The set of supported input media types for this skill, overriding the
-   * agent's defaults.
+   * Possible input modalities supported.
    *
    * @generated from field: repeated string input_modes = 6;
    */
   inputModes: string[];
 
   /**
-   * The set of supported output media types for this skill, overriding the
-   * agent's defaults.
+   * Possible output modalities produced
    *
    * @generated from field: repeated string output_modes = 7;
    */
   outputModes: string[];
 
   /**
-   * Security schemes necessary for this skill.
+   * protolint:disable REPEATED_FIELD_NAMES_PLURALIZED
+   * Security schemes necessary for the agent to leverage this skill.
+   * As in the overall AgentCard.security, this list represents a logical OR of
+   * security requirement objects. Each object is a set of security schemes
+   * that must be used together (a logical AND).
    *
-   * @generated from field: repeated a2a.v1.SecurityRequirement security_requirements = 8;
+   * protolint:enable REPEATED_FIELD_NAMES_PLURALIZED
+   *
+   * @generated from field: repeated a2a.v1.Security security = 8;
    */
-  securityRequirements: SecurityRequirement[];
+  security: Security[];
 };
 
 /**
@@ -933,7 +1007,7 @@ export type AgentSkill = Message$1<"a2a.v1.AgentSkill"> & {
  * Use `create(AgentSkillSchema)` to create a new message.
  */
 export const AgentSkillSchema: GenMessage<AgentSkill> = /*@__PURE__*/
-  messageDesc(file_a2a, 15);
+  messageDesc(file_a2a, 17);
 
 /**
  * --8<-- [start:AgentCardSignature]
@@ -971,36 +1045,21 @@ export type AgentCardSignature = Message$1<"a2a.v1.AgentCardSignature"> & {
  * Use `create(AgentCardSignatureSchema)` to create a new message.
  */
 export const AgentCardSignatureSchema: GenMessage<AgentCardSignature> = /*@__PURE__*/
-  messageDesc(file_a2a, 16);
+  messageDesc(file_a2a, 18);
 
 /**
  * --8<-- [start:TaskPushNotificationConfig]
- * A container associating a push notification configuration with a specific
- * task.
  *
  * @generated from message a2a.v1.TaskPushNotificationConfig
  */
 export type TaskPushNotificationConfig = Message$1<"a2a.v1.TaskPushNotificationConfig"> & {
   /**
-   * Optional tenant
+   * The resource name of the config.
+   * Format: tasks/{task_id}/pushNotificationConfigs/{config_id}
    *
-   * @generated from field: string tenant = 4;
+   * @generated from field: string name = 1;
    */
-  tenant: string;
-
-  /**
-   * The id of the config.
-   *
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * The id of the task this config is associated with.
-   *
-   * @generated from field: string task_id = 3;
-   */
-  taskId: string;
+  name: string;
 
   /**
    * The push notification configuration details.
@@ -1015,7 +1074,7 @@ export type TaskPushNotificationConfig = Message$1<"a2a.v1.TaskPushNotificationC
  * Use `create(TaskPushNotificationConfigSchema)` to create a new message.
  */
 export const TaskPushNotificationConfigSchema: GenMessage<TaskPushNotificationConfig> = /*@__PURE__*/
-  messageDesc(file_a2a, 17);
+  messageDesc(file_a2a, 19);
 
 /**
  * protolint:disable REPEATED_FIELD_NAMES_PLURALIZED
@@ -1034,12 +1093,12 @@ export type StringList = Message$1<"a2a.v1.StringList"> & {
  * Use `create(StringListSchema)` to create a new message.
  */
 export const StringListSchema: GenMessage<StringList> = /*@__PURE__*/
-  messageDesc(file_a2a, 18);
+  messageDesc(file_a2a, 20);
 
 /**
- * @generated from message a2a.v1.SecurityRequirement
+ * @generated from message a2a.v1.Security
  */
-export type SecurityRequirement = Message$1<"a2a.v1.SecurityRequirement"> & {
+export type Security = Message$1<"a2a.v1.Security"> & {
   /**
    * @generated from field: map<string, a2a.v1.StringList> schemes = 1;
    */
@@ -1047,17 +1106,14 @@ export type SecurityRequirement = Message$1<"a2a.v1.SecurityRequirement"> & {
 };
 
 /**
- * Describes the message a2a.v1.SecurityRequirement.
- * Use `create(SecurityRequirementSchema)` to create a new message.
+ * Describes the message a2a.v1.Security.
+ * Use `create(SecuritySchema)` to create a new message.
  */
-export const SecurityRequirementSchema: GenMessage<SecurityRequirement> = /*@__PURE__*/
-  messageDesc(file_a2a, 19);
+export const SecuritySchema: GenMessage<Security> = /*@__PURE__*/
+  messageDesc(file_a2a, 21);
 
 /**
  * --8<-- [start:SecurityScheme]
- * Defines a security scheme that can be used to secure an agent's endpoints.
- * This is a discriminated union type based on the OpenAPI 3.2 Security Scheme
- * Object. See: https://spec.openapis.org/oas/v3.2.0.html#security-scheme-object
  *
  * @generated from message a2a.v1.SecurityScheme
  */
@@ -1067,40 +1123,30 @@ export type SecurityScheme = Message$1<"a2a.v1.SecurityScheme"> & {
    */
   scheme: {
     /**
-     * API key-based authentication.
-     *
      * @generated from field: a2a.v1.APIKeySecurityScheme api_key_security_scheme = 1;
      */
     value: APIKeySecurityScheme;
     case: "apiKeySecurityScheme";
   } | {
     /**
-     * HTTP authentication (Basic, Bearer, etc.).
-     *
      * @generated from field: a2a.v1.HTTPAuthSecurityScheme http_auth_security_scheme = 2;
      */
     value: HTTPAuthSecurityScheme;
     case: "httpAuthSecurityScheme";
   } | {
     /**
-     * OAuth 2.0 authentication.
-     *
      * @generated from field: a2a.v1.OAuth2SecurityScheme oauth2_security_scheme = 3;
      */
     value: OAuth2SecurityScheme;
     case: "oauth2SecurityScheme";
   } | {
     /**
-     * OpenID Connect authentication.
-     *
      * @generated from field: a2a.v1.OpenIdConnectSecurityScheme open_id_connect_security_scheme = 4;
      */
     value: OpenIdConnectSecurityScheme;
     case: "openIdConnectSecurityScheme";
   } | {
     /**
-     * Mutual TLS authentication.
-     *
      * @generated from field: a2a.v1.MutualTlsSecurityScheme mtls_security_scheme = 5;
      */
     value: MutualTlsSecurityScheme;
@@ -1113,32 +1159,30 @@ export type SecurityScheme = Message$1<"a2a.v1.SecurityScheme"> & {
  * Use `create(SecuritySchemeSchema)` to create a new message.
  */
 export const SecuritySchemeSchema: GenMessage<SecurityScheme> = /*@__PURE__*/
-  messageDesc(file_a2a, 20);
+  messageDesc(file_a2a, 22);
 
 /**
  * --8<-- [start:APIKeySecurityScheme]
- * Defines a security scheme using an API key.
  *
  * @generated from message a2a.v1.APIKeySecurityScheme
  */
 export type APIKeySecurityScheme = Message$1<"a2a.v1.APIKeySecurityScheme"> & {
   /**
-   * An optional description for the security scheme.
+   * Description of this security scheme.
    *
    * @generated from field: string description = 1;
    */
   description: string;
 
   /**
-   * The location of the API key. Valid values are "query", "header", or
-   * "cookie".
+   * Location of the API key, valid values are "query", "header", or "cookie"
    *
    * @generated from field: string location = 2;
    */
   location: string;
 
   /**
-   * The name of the header, query, or cookie parameter to be used.
+   * Name of the header, query or cookie parameter to be used.
    *
    * @generated from field: string name = 3;
    */
@@ -1150,34 +1194,35 @@ export type APIKeySecurityScheme = Message$1<"a2a.v1.APIKeySecurityScheme"> & {
  * Use `create(APIKeySecuritySchemeSchema)` to create a new message.
  */
 export const APIKeySecuritySchemeSchema: GenMessage<APIKeySecurityScheme> = /*@__PURE__*/
-  messageDesc(file_a2a, 21);
+  messageDesc(file_a2a, 23);
 
 /**
  * --8<-- [start:HTTPAuthSecurityScheme]
- * Defines a security scheme using HTTP authentication.
  *
  * @generated from message a2a.v1.HTTPAuthSecurityScheme
  */
 export type HTTPAuthSecurityScheme = Message$1<"a2a.v1.HTTPAuthSecurityScheme"> & {
   /**
-   * An optional description for the security scheme.
+   * Description of this security scheme.
    *
    * @generated from field: string description = 1;
    */
   description: string;
 
   /**
-   * The name of the HTTP Authentication scheme to be used in the Authorization
-   * header, as defined in RFC7235 (e.g., "Bearer"). This value should be
+   * The name of the HTTP Authentication scheme to be used in the
+   * Authorization header as defined in RFC7235. The values used SHOULD be
    * registered in the IANA Authentication Scheme registry.
+   * The value is case-insensitive, as defined in RFC7235.
    *
    * @generated from field: string scheme = 2;
    */
   scheme: string;
 
   /**
-   * A hint to the client to identify how the bearer token is formatted (e.g.,
-   * "JWT"). This is primarily for documentation purposes.
+   * A hint to the client to identify how the bearer token is formatted.
+   * Bearer tokens are usually generated by an authorization server, so
+   * this information is primarily for documentation purposes.
    *
    * @generated from field: string bearer_format = 3;
    */
@@ -1189,25 +1234,23 @@ export type HTTPAuthSecurityScheme = Message$1<"a2a.v1.HTTPAuthSecurityScheme"> 
  * Use `create(HTTPAuthSecuritySchemeSchema)` to create a new message.
  */
 export const HTTPAuthSecuritySchemeSchema: GenMessage<HTTPAuthSecurityScheme> = /*@__PURE__*/
-  messageDesc(file_a2a, 22);
+  messageDesc(file_a2a, 24);
 
 /**
  * --8<-- [start:OAuth2SecurityScheme]
- * Defines a security scheme using OAuth 2.0.
  *
  * @generated from message a2a.v1.OAuth2SecurityScheme
  */
 export type OAuth2SecurityScheme = Message$1<"a2a.v1.OAuth2SecurityScheme"> & {
   /**
-   * An optional description for the security scheme.
+   * Description of this security scheme.
    *
    * @generated from field: string description = 1;
    */
   description: string;
 
   /**
-   * An object containing configuration information for the supported OAuth 2.0
-   * flows.
+   * An object containing configuration information for the flow types supported
    *
    * @generated from field: a2a.v1.OAuthFlows flows = 2;
    */
@@ -1215,7 +1258,7 @@ export type OAuth2SecurityScheme = Message$1<"a2a.v1.OAuth2SecurityScheme"> & {
 
   /**
    * URL to the oauth2 authorization server metadata
-   * RFC8414 (https://datatracker.ietf.org/doc/html/rfc8414). TLS is required.
+   * [RFC8414](https://datatracker.ietf.org/doc/html/rfc8414). TLS is required.
    *
    * @generated from field: string oauth2_metadata_url = 3;
    */
@@ -1227,25 +1270,24 @@ export type OAuth2SecurityScheme = Message$1<"a2a.v1.OAuth2SecurityScheme"> & {
  * Use `create(OAuth2SecuritySchemeSchema)` to create a new message.
  */
 export const OAuth2SecuritySchemeSchema: GenMessage<OAuth2SecurityScheme> = /*@__PURE__*/
-  messageDesc(file_a2a, 23);
+  messageDesc(file_a2a, 25);
 
 /**
  * --8<-- [start:OpenIdConnectSecurityScheme]
- * Defines a security scheme using OpenID Connect.
  *
  * @generated from message a2a.v1.OpenIdConnectSecurityScheme
  */
 export type OpenIdConnectSecurityScheme = Message$1<"a2a.v1.OpenIdConnectSecurityScheme"> & {
   /**
-   * An optional description for the security scheme.
+   * Description of this security scheme.
    *
    * @generated from field: string description = 1;
    */
   description: string;
 
   /**
-   * The OpenID Connect Discovery URL for the OIDC provider's metadata.
-   * See: https://openid.net/specs/openid-connect-discovery-1_0.html
+   * Well-known URL to discover the [[OpenID-Connect-Discovery]] provider
+   * metadata.
    *
    * @generated from field: string open_id_connect_url = 2;
    */
@@ -1257,17 +1299,16 @@ export type OpenIdConnectSecurityScheme = Message$1<"a2a.v1.OpenIdConnectSecurit
  * Use `create(OpenIdConnectSecuritySchemeSchema)` to create a new message.
  */
 export const OpenIdConnectSecuritySchemeSchema: GenMessage<OpenIdConnectSecurityScheme> = /*@__PURE__*/
-  messageDesc(file_a2a, 24);
+  messageDesc(file_a2a, 26);
 
 /**
  * --8<-- [start:MutualTLSSecurityScheme]
- * Defines a security scheme using mTLS authentication.
  *
  * @generated from message a2a.v1.MutualTlsSecurityScheme
  */
 export type MutualTlsSecurityScheme = Message$1<"a2a.v1.MutualTlsSecurityScheme"> & {
   /**
-   * An optional description for the security scheme.
+   * Description of this security scheme.
    *
    * @generated from field: string description = 1;
    */
@@ -1279,11 +1320,10 @@ export type MutualTlsSecurityScheme = Message$1<"a2a.v1.MutualTlsSecurityScheme"
  * Use `create(MutualTlsSecuritySchemeSchema)` to create a new message.
  */
 export const MutualTlsSecuritySchemeSchema: GenMessage<MutualTlsSecurityScheme> = /*@__PURE__*/
-  messageDesc(file_a2a, 25);
+  messageDesc(file_a2a, 27);
 
 /**
  * --8<-- [start:OAuthFlows]
- * Defines the configuration for the supported OAuth 2.0 flows.
  *
  * @generated from message a2a.v1.OAuthFlows
  */
@@ -1293,42 +1333,28 @@ export type OAuthFlows = Message$1<"a2a.v1.OAuthFlows"> & {
    */
   flow: {
     /**
-     * Configuration for the OAuth Authorization Code flow.
-     *
      * @generated from field: a2a.v1.AuthorizationCodeOAuthFlow authorization_code = 1;
      */
     value: AuthorizationCodeOAuthFlow;
     case: "authorizationCode";
   } | {
     /**
-     * Configuration for the OAuth Client Credentials flow.
-     *
      * @generated from field: a2a.v1.ClientCredentialsOAuthFlow client_credentials = 2;
      */
     value: ClientCredentialsOAuthFlow;
     case: "clientCredentials";
   } | {
     /**
-     * @generated from field: a2a.v1.ImplicitOAuthFlow implicit = 3 [deprecated = true];
-     * @deprecated
+     * @generated from field: a2a.v1.ImplicitOAuthFlow implicit = 3;
      */
     value: ImplicitOAuthFlow;
     case: "implicit";
   } | {
     /**
-     * @generated from field: a2a.v1.PasswordOAuthFlow password = 4 [deprecated = true];
-     * @deprecated
+     * @generated from field: a2a.v1.PasswordOAuthFlow password = 4;
      */
     value: PasswordOAuthFlow;
     case: "password";
-  } | {
-    /**
-     * Configuration for the OAuth Device Code flow.
-     *
-     * @generated from field: a2a.v1.DeviceCodeOAuthFlow device_code = 5;
-     */
-    value: DeviceCodeOAuthFlow;
-    case: "deviceCode";
   } | { case: undefined; value?: undefined };
 };
 
@@ -1337,51 +1363,45 @@ export type OAuthFlows = Message$1<"a2a.v1.OAuthFlows"> & {
  * Use `create(OAuthFlowsSchema)` to create a new message.
  */
 export const OAuthFlowsSchema: GenMessage<OAuthFlows> = /*@__PURE__*/
-  messageDesc(file_a2a, 26);
+  messageDesc(file_a2a, 28);
 
 /**
  * --8<-- [start:AuthorizationCodeOAuthFlow]
- * Defines configuration details for the OAuth 2.0 Authorization Code flow.
  *
  * @generated from message a2a.v1.AuthorizationCodeOAuthFlow
  */
 export type AuthorizationCodeOAuthFlow = Message$1<"a2a.v1.AuthorizationCodeOAuthFlow"> & {
   /**
-   * The authorization URL to be used for this flow.
+   * The authorization URL to be used for this flow. This MUST be in the
+   * form of a URL. The OAuth2 standard requires the use of TLS
    *
    * @generated from field: string authorization_url = 1;
    */
   authorizationUrl: string;
 
   /**
-   * The token URL to be used for this flow.
+   * The token URL to be used for this flow. This MUST be in the form of a URL.
+   * The OAuth2 standard requires the use of TLS.
    *
    * @generated from field: string token_url = 2;
    */
   tokenUrl: string;
 
   /**
-   * The URL to be used for obtaining refresh tokens.
+   * The URL to be used for obtaining refresh tokens. This MUST be in the
+   * form of a URL. The OAuth2 standard requires the use of TLS.
    *
    * @generated from field: string refresh_url = 3;
    */
   refreshUrl: string;
 
   /**
-   * The available scopes for the OAuth2 security scheme.
+   * The available scopes for the OAuth2 security scheme. A map between the
+   * scope name and a short description for it. The map MAY be empty.
    *
    * @generated from field: map<string, string> scopes = 4;
    */
   scopes: { [key: string]: string };
-
-  /**
-   * Indicates if PKCE (RFC 7636) is required for this flow.
-   * PKCE should always be used for public clients and is recommended for all
-   * clients.
-   *
-   * @generated from field: bool pkce_required = 5;
-   */
-  pkceRequired: boolean;
 };
 
 /**
@@ -1389,31 +1409,33 @@ export type AuthorizationCodeOAuthFlow = Message$1<"a2a.v1.AuthorizationCodeOAut
  * Use `create(AuthorizationCodeOAuthFlowSchema)` to create a new message.
  */
 export const AuthorizationCodeOAuthFlowSchema: GenMessage<AuthorizationCodeOAuthFlow> = /*@__PURE__*/
-  messageDesc(file_a2a, 27);
+  messageDesc(file_a2a, 29);
 
 /**
  * --8<-- [start:ClientCredentialsOAuthFlow]
- * Defines configuration details for the OAuth 2.0 Client Credentials flow.
  *
  * @generated from message a2a.v1.ClientCredentialsOAuthFlow
  */
 export type ClientCredentialsOAuthFlow = Message$1<"a2a.v1.ClientCredentialsOAuthFlow"> & {
   /**
-   * The token URL to be used for this flow.
+   * The token URL to be used for this flow. This MUST be in the form of a URL.
+   * The OAuth2 standard requires the use of TLS.
    *
    * @generated from field: string token_url = 1;
    */
   tokenUrl: string;
 
   /**
-   * The URL to be used for obtaining refresh tokens.
+   * The URL to be used for obtaining refresh tokens. This MUST be in the
+   * form of a URL. The OAuth2 standard requires the use of TLS.
    *
    * @generated from field: string refresh_url = 2;
    */
   refreshUrl: string;
 
   /**
-   * The available scopes for the OAuth2 security scheme.
+   * The available scopes for the OAuth2 security scheme. A map between the
+   * scope name and a short description for it. The map MAY be empty.
    *
    * @generated from field: map<string, string> scopes = 3;
    */
@@ -1425,10 +1447,10 @@ export type ClientCredentialsOAuthFlow = Message$1<"a2a.v1.ClientCredentialsOAut
  * Use `create(ClientCredentialsOAuthFlowSchema)` to create a new message.
  */
 export const ClientCredentialsOAuthFlowSchema: GenMessage<ClientCredentialsOAuthFlow> = /*@__PURE__*/
-  messageDesc(file_a2a, 28);
+  messageDesc(file_a2a, 30);
 
 /**
- * DEPRECATED
+ * --8<-- [start:ImplicitOAuthFlow]
  *
  * @generated from message a2a.v1.ImplicitOAuthFlow
  */
@@ -1463,10 +1485,10 @@ export type ImplicitOAuthFlow = Message$1<"a2a.v1.ImplicitOAuthFlow"> & {
  * Use `create(ImplicitOAuthFlowSchema)` to create a new message.
  */
 export const ImplicitOAuthFlowSchema: GenMessage<ImplicitOAuthFlow> = /*@__PURE__*/
-  messageDesc(file_a2a, 29);
+  messageDesc(file_a2a, 31);
 
 /**
- * DEPRECATED
+ * --8<-- [start:PasswordOAuthFlow]
  *
  * @generated from message a2a.v1.PasswordOAuthFlow
  */
@@ -1501,74 +1523,21 @@ export type PasswordOAuthFlow = Message$1<"a2a.v1.PasswordOAuthFlow"> & {
  * Use `create(PasswordOAuthFlowSchema)` to create a new message.
  */
 export const PasswordOAuthFlowSchema: GenMessage<PasswordOAuthFlow> = /*@__PURE__*/
-  messageDesc(file_a2a, 30);
-
-/**
- * --8<-- [start:DeviceCodeOAuthFlow]
- * Defines configuration details for the OAuth 2.0 Device Code flow (RFC 8628).
- * This flow is designed for input-constrained devices such as IoT devices,
- * and CLI tools where the user authenticates on a separate device.
- *
- * @generated from message a2a.v1.DeviceCodeOAuthFlow
- */
-export type DeviceCodeOAuthFlow = Message$1<"a2a.v1.DeviceCodeOAuthFlow"> & {
-  /**
-   * The device authorization endpoint URL.
-   *
-   * @generated from field: string device_authorization_url = 1;
-   */
-  deviceAuthorizationUrl: string;
-
-  /**
-   * The token URL to be used for this flow.
-   *
-   * @generated from field: string token_url = 2;
-   */
-  tokenUrl: string;
-
-  /**
-   * The URL to be used for obtaining refresh tokens.
-   *
-   * @generated from field: string refresh_url = 3;
-   */
-  refreshUrl: string;
-
-  /**
-   * The available scopes for the OAuth2 security scheme.
-   *
-   * @generated from field: map<string, string> scopes = 4;
-   */
-  scopes: { [key: string]: string };
-};
-
-/**
- * Describes the message a2a.v1.DeviceCodeOAuthFlow.
- * Use `create(DeviceCodeOAuthFlowSchema)` to create a new message.
- */
-export const DeviceCodeOAuthFlowSchema: GenMessage<DeviceCodeOAuthFlow> = /*@__PURE__*/
-  messageDesc(file_a2a, 31);
+  messageDesc(file_a2a, 32);
 
 /**
  * /////////// Request Messages ///////////
- * --8<-- [start:SendMessageRequest]
- * Represents a request for the `SendMessage` method.
+ * --8<-- [start:MessageSendParams]
  *
  * @generated from message a2a.v1.SendMessageRequest
  */
 export type SendMessageRequest = Message$1<"a2a.v1.SendMessageRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
-   *
-   * @generated from field: string tenant = 4;
-   */
-  tenant: string;
-
-  /**
    * The message to send to the agent.
    *
-   * @generated from field: a2a.v1.Message message = 1;
+   * @generated from field: a2a.v1.Message request = 1 [json_name = "message"];
    */
-  message?: Message;
+  request?: Message;
 
   /**
    * Configuration for the send request.
@@ -1578,7 +1547,7 @@ export type SendMessageRequest = Message$1<"a2a.v1.SendMessageRequest"> & {
   configuration?: SendMessageConfiguration;
 
   /**
-   * A flexible key-value map for passing additional context or parameters.
+   * Optional metadata for the request.
    *
    * @generated from field: google.protobuf.Struct metadata = 3;
    */
@@ -1590,38 +1559,28 @@ export type SendMessageRequest = Message$1<"a2a.v1.SendMessageRequest"> & {
  * Use `create(SendMessageRequestSchema)` to create a new message.
  */
 export const SendMessageRequestSchema: GenMessage<SendMessageRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 32);
+  messageDesc(file_a2a, 33);
 
 /**
  * --8<-- [start:GetTaskRequest]
- * Represents a request for the `GetTask` method.
  *
  * @generated from message a2a.v1.GetTaskRequest
  */
 export type GetTaskRequest = Message$1<"a2a.v1.GetTaskRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The resource name of the task.
+   * Format: tasks/{task_id}
    *
-   * @generated from field: string tenant = 3;
+   * @generated from field: string name = 1;
    */
-  tenant: string;
+  name: string;
 
   /**
-   * The resource id of the task.
+   * The number of most recent messages from the task's history to retrieve.
    *
-   * @generated from field: string id = 1;
+   * @generated from field: int32 history_length = 2;
    */
-  id: string;
-
-  /**
-   * The maximum number of most recent messages from the task's history to
-   * retrieve. An unset value means the client does not impose any limit. A
-   * value of zero is a request to not include any messages. The server MUST NOT
-   * return more messages than the provided value, but MAY apply a lower limit.
-   *
-   * @generated from field: optional int32 history_length = 2;
-   */
-  historyLength?: number;
+  historyLength: number;
 };
 
 /**
@@ -1629,25 +1588,17 @@ export type GetTaskRequest = Message$1<"a2a.v1.GetTaskRequest"> & {
  * Use `create(GetTaskRequestSchema)` to create a new message.
  */
 export const GetTaskRequestSchema: GenMessage<GetTaskRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 33);
+  messageDesc(file_a2a, 34);
 
 /**
  * --8<-- [start:ListTasksRequest]
- * Parameters for listing tasks with optional filtering criteria.
  *
  * @generated from message a2a.v1.ListTasksRequest
  */
 export type ListTasksRequest = Message$1<"a2a.v1.ListTasksRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
-   *
-   * @generated from field: string tenant = 9;
-   */
-  tenant: string;
-
-  /**
-   * Filter tasks by context ID to get tasks from a specific conversation or
-   * session.
+   * Filter tasks by context ID to get tasks from a specific conversation
+   * or session.
    *
    * @generated from field: string context_id = 1;
    */
@@ -1664,9 +1615,9 @@ export type ListTasksRequest = Message$1<"a2a.v1.ListTasksRequest"> & {
    * Maximum number of tasks to return. Must be between 1 and 100.
    * Defaults to 50 if not specified.
    *
-   * @generated from field: optional int32 page_size = 3;
+   * @generated from field: int32 page_size = 3;
    */
-  pageSize?: number;
+  pageSize: number;
 
   /**
    * Token for pagination. Use the next_page_token from a previous
@@ -1677,28 +1628,28 @@ export type ListTasksRequest = Message$1<"a2a.v1.ListTasksRequest"> & {
   pageToken: string;
 
   /**
-   * The maximum number of messages to include in each task's history.
+   * Number of recent messages to include in each task's history.
+   * Must be non-negative. Defaults to 0 if not specified.
    *
-   * @generated from field: optional int32 history_length = 5;
+   * @generated from field: int32 history_length = 5;
    */
-  historyLength?: number;
+  historyLength: number;
 
   /**
-   * Filter tasks which have a status updated after the provided timestamp in
-   * ISO 8601 format (e.g., "2023-10-27T10:00:00Z"). Only tasks with a status
-   * timestamp time greater than or equal to this value will be returned.
+   * Filter tasks updated after this timestamp. Only tasks with a last
+   * updated time greater than or equal to this value will be returned.
    *
-   * @generated from field: google.protobuf.Timestamp status_timestamp_after = 6;
+   * @generated from field: google.protobuf.Timestamp last_updated_time = 6;
    */
-  statusTimestampAfter?: Timestamp;
+  lastUpdatedTime?: Timestamp;
 
   /**
    * Whether to include artifacts in the returned tasks.
    * Defaults to false to reduce payload size.
    *
-   * @generated from field: optional bool include_artifacts = 7;
+   * @generated from field: bool include_artifacts = 7;
    */
-  includeArtifacts?: boolean;
+  includeArtifacts: boolean;
 };
 
 /**
@@ -1706,12 +1657,10 @@ export type ListTasksRequest = Message$1<"a2a.v1.ListTasksRequest"> & {
  * Use `create(ListTasksRequestSchema)` to create a new message.
  */
 export const ListTasksRequestSchema: GenMessage<ListTasksRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 34);
+  messageDesc(file_a2a, 35);
 
 /**
  * --8<-- [start:ListTasksResponse]
- * Result object for tasks/list method containing an array of tasks and
- * pagination information.
  *
  * @generated from message a2a.v1.ListTasksResponse
  */
@@ -1724,23 +1673,17 @@ export type ListTasksResponse = Message$1<"a2a.v1.ListTasksResponse"> & {
   tasks: Task[];
 
   /**
-   * Token for retrieving the next page. Empty string if no more results.
+   * Token for retrieving the next page of results.
+   * Empty string if no more results.
    *
    * @generated from field: string next_page_token = 2;
    */
   nextPageToken: string;
 
   /**
-   * The size of page requested.
-   *
-   * @generated from field: int32 page_size = 3;
-   */
-  pageSize: number;
-
-  /**
    * Total number of tasks available (before pagination).
    *
-   * @generated from field: int32 total_size = 4;
+   * @generated from field: int32 total_size = 3;
    */
   totalSize: number;
 };
@@ -1750,28 +1693,21 @@ export type ListTasksResponse = Message$1<"a2a.v1.ListTasksResponse"> & {
  * Use `create(ListTasksResponseSchema)` to create a new message.
  */
 export const ListTasksResponseSchema: GenMessage<ListTasksResponse> = /*@__PURE__*/
-  messageDesc(file_a2a, 35);
+  messageDesc(file_a2a, 36);
 
 /**
  * --8<-- [start:CancelTaskRequest]
- * Represents a request for the `CancelTask` method.
  *
  * @generated from message a2a.v1.CancelTaskRequest
  */
 export type CancelTaskRequest = Message$1<"a2a.v1.CancelTaskRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The resource name of the task to cancel.
+   * Format: tasks/{task_id}
    *
-   * @generated from field: string tenant = 2;
+   * @generated from field: string name = 1;
    */
-  tenant: string;
-
-  /**
-   * The resource id of the task to cancel.
-   *
-   * @generated from field: string id = 1;
-   */
-  id: string;
+  name: string;
 };
 
 /**
@@ -1779,7 +1715,7 @@ export type CancelTaskRequest = Message$1<"a2a.v1.CancelTaskRequest"> & {
  * Use `create(CancelTaskRequestSchema)` to create a new message.
  */
 export const CancelTaskRequestSchema: GenMessage<CancelTaskRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 36);
+  messageDesc(file_a2a, 37);
 
 /**
  * --8<-- [start:GetTaskPushNotificationConfigRequest]
@@ -1788,25 +1724,12 @@ export const CancelTaskRequestSchema: GenMessage<CancelTaskRequest> = /*@__PURE_
  */
 export type GetTaskPushNotificationConfigRequest = Message$1<"a2a.v1.GetTaskPushNotificationConfigRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The resource name of the config to retrieve.
+   * Format: tasks/{task_id}/pushNotificationConfigs/{config_id}
    *
-   * @generated from field: string tenant = 2;
+   * @generated from field: string name = 1;
    */
-  tenant: string;
-
-  /**
-   * The parent task resource id.
-   *
-   * @generated from field: string task_id = 3;
-   */
-  taskId: string;
-
-  /**
-   * The resource id of the config to retrieve.
-   *
-   * @generated from field: string id = 1;
-   */
-  id: string;
+  name: string;
 };
 
 /**
@@ -1814,35 +1737,21 @@ export type GetTaskPushNotificationConfigRequest = Message$1<"a2a.v1.GetTaskPush
  * Use `create(GetTaskPushNotificationConfigRequestSchema)` to create a new message.
  */
 export const GetTaskPushNotificationConfigRequestSchema: GenMessage<GetTaskPushNotificationConfigRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 37);
+  messageDesc(file_a2a, 38);
 
 /**
  * --8<-- [start:DeleteTaskPushNotificationConfigRequest]
- * Represents a request for the `DeleteTaskPushNotificationConfig` method.
  *
  * @generated from message a2a.v1.DeleteTaskPushNotificationConfigRequest
  */
 export type DeleteTaskPushNotificationConfigRequest = Message$1<"a2a.v1.DeleteTaskPushNotificationConfigRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The resource name of the config to delete.
+   * Format: tasks/{task_id}/pushNotificationConfigs/{config_id}
    *
-   * @generated from field: string tenant = 2;
+   * @generated from field: string name = 1;
    */
-  tenant: string;
-
-  /**
-   * The parent task resource id.
-   *
-   * @generated from field: string task_id = 3;
-   */
-  taskId: string;
-
-  /**
-   * The resource id of the config to delete.
-   *
-   * @generated from field: string id = 1;
-   */
-  id: string;
+  name: string;
 };
 
 /**
@@ -1850,28 +1759,21 @@ export type DeleteTaskPushNotificationConfigRequest = Message$1<"a2a.v1.DeleteTa
  * Use `create(DeleteTaskPushNotificationConfigRequestSchema)` to create a new message.
  */
 export const DeleteTaskPushNotificationConfigRequestSchema: GenMessage<DeleteTaskPushNotificationConfigRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 38);
+  messageDesc(file_a2a, 39);
 
 /**
- * --8<-- [start:CreateTaskPushNotificationConfigRequest]
- * Represents a request for the `CreateTaskPushNotificationConfig` method.
+ * --8<-- [start:SetTaskPushNotificationConfigRequest]
  *
  * @generated from message a2a.v1.CreateTaskPushNotificationConfigRequest
  */
 export type CreateTaskPushNotificationConfigRequest = Message$1<"a2a.v1.CreateTaskPushNotificationConfigRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The parent task resource for this config.
+   * Format: tasks/{task_id}
    *
-   * @generated from field: string tenant = 4;
+   * @generated from field: string parent = 1;
    */
-  tenant: string;
-
-  /**
-   * The parent task resource id.
-   *
-   * @generated from field: string task_id = 1;
-   */
-  taskId: string;
+  parent: string;
 
   /**
    * The ID for the new config.
@@ -1883,9 +1785,9 @@ export type CreateTaskPushNotificationConfigRequest = Message$1<"a2a.v1.CreateTa
   /**
    * The configuration to create.
    *
-   * @generated from field: a2a.v1.PushNotificationConfig config = 5;
+   * @generated from field: a2a.v1.TaskPushNotificationConfig config = 3;
    */
-  config?: PushNotificationConfig;
+  config?: TaskPushNotificationConfig;
 };
 
 /**
@@ -1893,35 +1795,29 @@ export type CreateTaskPushNotificationConfigRequest = Message$1<"a2a.v1.CreateTa
  * Use `create(CreateTaskPushNotificationConfigRequestSchema)` to create a new message.
  */
 export const CreateTaskPushNotificationConfigRequestSchema: GenMessage<CreateTaskPushNotificationConfigRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 39);
+  messageDesc(file_a2a, 40);
 
 /**
- * --8<-- [start:SubscribeToTaskRequest]
+ * --8<-- [start:TaskResubscriptionRequest]
  *
- * @generated from message a2a.v1.SubscribeToTaskRequest
+ * @generated from message a2a.v1.TaskSubscriptionRequest
  */
-export type SubscribeToTaskRequest = Message$1<"a2a.v1.SubscribeToTaskRequest"> & {
+export type TaskSubscriptionRequest = Message$1<"a2a.v1.TaskSubscriptionRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The resource name of the task to subscribe to.
+   * Format: tasks/{task_id}
    *
-   * @generated from field: string tenant = 2;
+   * @generated from field: string name = 1;
    */
-  tenant: string;
-
-  /**
-   * The resource id of the task to subscribe to.
-   *
-   * @generated from field: string id = 1;
-   */
-  id: string;
+  name: string;
 };
 
 /**
- * Describes the message a2a.v1.SubscribeToTaskRequest.
- * Use `create(SubscribeToTaskRequestSchema)` to create a new message.
+ * Describes the message a2a.v1.TaskSubscriptionRequest.
+ * Use `create(TaskSubscriptionRequestSchema)` to create a new message.
  */
-export const SubscribeToTaskRequestSchema: GenMessage<SubscribeToTaskRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 40);
+export const TaskSubscriptionRequestSchema: GenMessage<TaskSubscriptionRequest> = /*@__PURE__*/
+  messageDesc(file_a2a, 41);
 
 /**
  * --8<-- [start:ListTaskPushNotificationConfigRequest]
@@ -1930,29 +1826,29 @@ export const SubscribeToTaskRequestSchema: GenMessage<SubscribeToTaskRequest> = 
  */
 export type ListTaskPushNotificationConfigRequest = Message$1<"a2a.v1.ListTaskPushNotificationConfigRequest"> & {
   /**
-   * Optional tenant, provided as a path parameter.
+   * The parent task resource.
+   * Format: tasks/{task_id}
    *
-   * @generated from field: string tenant = 4;
+   * @generated from field: string parent = 1;
    */
-  tenant: string;
+  parent: string;
 
   /**
-   * The parent task resource id.
-   *
-   * @generated from field: string task_id = 1;
-   */
-  taskId: string;
-
-  /**
+   * For AIP-158 these fields are present. Usually not used/needed.
    * The maximum number of configurations to return.
+   * If unspecified, all configs will be returned.
    *
    * @generated from field: int32 page_size = 2;
    */
   pageSize: number;
 
   /**
-   * A page token received from a previous ListTaskPushNotificationConfigRequest
-   * call.
+   * A page token received from a previous
+   * ListTaskPushNotificationConfigRequest call.
+   * Provide this to retrieve the subsequent page.
+   * When paginating, all other parameters provided to
+   * `ListTaskPushNotificationConfigRequest` must match the call that provided
+   * the page token.
    *
    * @generated from field: string page_token = 3;
    */
@@ -1964,32 +1860,28 @@ export type ListTaskPushNotificationConfigRequest = Message$1<"a2a.v1.ListTaskPu
  * Use `create(ListTaskPushNotificationConfigRequestSchema)` to create a new message.
  */
 export const ListTaskPushNotificationConfigRequestSchema: GenMessage<ListTaskPushNotificationConfigRequest> = /*@__PURE__*/
-  messageDesc(file_a2a, 41);
-
-/**
- * --8<-- [start:GetExtendedAgentCardRequest]
- *
- * @generated from message a2a.v1.GetExtendedAgentCardRequest
- */
-export type GetExtendedAgentCardRequest = Message$1<"a2a.v1.GetExtendedAgentCardRequest"> & {
-  /**
-   * Optional tenant, provided as a path parameter.
-   *
-   * @generated from field: string tenant = 1;
-   */
-  tenant: string;
-};
-
-/**
- * Describes the message a2a.v1.GetExtendedAgentCardRequest.
- * Use `create(GetExtendedAgentCardRequestSchema)` to create a new message.
- */
-export const GetExtendedAgentCardRequestSchema: GenMessage<GetExtendedAgentCardRequest> = /*@__PURE__*/
   messageDesc(file_a2a, 42);
 
 /**
+ * --8<-- [start:GetAuthenticatedExtendedCardRequest]
+ *
+ * Empty. Added to fix linter violation.
+ *
+ * @generated from message a2a.v1.GetAgentCardRequest
+ */
+export type GetAgentCardRequest = Message$1<"a2a.v1.GetAgentCardRequest"> & {
+};
+
+/**
+ * Describes the message a2a.v1.GetAgentCardRequest.
+ * Use `create(GetAgentCardRequestSchema)` to create a new message.
+ */
+export const GetAgentCardRequestSchema: GenMessage<GetAgentCardRequest> = /*@__PURE__*/
+  messageDesc(file_a2a, 43);
+
+/**
  * ////// Response Messages ///////////
- * --8<-- [start:SendMessageResponse]
+ * --8<-- [start:SendMessageSuccessResponse]
  *
  * @generated from message a2a.v1.SendMessageResponse
  */
@@ -2005,10 +1897,10 @@ export type SendMessageResponse = Message$1<"a2a.v1.SendMessageResponse"> & {
     case: "task";
   } | {
     /**
-     * @generated from field: a2a.v1.Message message = 2;
+     * @generated from field: a2a.v1.Message msg = 2 [json_name = "message"];
      */
     value: Message;
-    case: "message";
+    case: "msg";
   } | { case: undefined; value?: undefined };
 };
 
@@ -2017,12 +1909,19 @@ export type SendMessageResponse = Message$1<"a2a.v1.SendMessageResponse"> & {
  * Use `create(SendMessageResponseSchema)` to create a new message.
  */
 export const SendMessageResponseSchema: GenMessage<SendMessageResponse> = /*@__PURE__*/
-  messageDesc(file_a2a, 43);
+  messageDesc(file_a2a, 44);
 
 /**
- * --8<-- [start:StreamResponse]
- * A wrapper object used in streaming operations to encapsulate different types
- * of response data.
+ * --8<-- [start:SendStreamingMessageSuccessResponse]
+ * The stream response for a message. The stream should be one of the following
+ * sequences:
+ * If the response is a message, the stream should contain one, and only one,
+ * message and then close
+ * If the response is a task lifecycle, the first response should be a Task
+ * object followed by zero or more TaskStatusUpdateEvents and
+ * TaskArtifactUpdateEvents. The stream should complete when the Task
+ * if in an interrupted or terminal state. A stream that ends before these
+ * conditions are met are
  *
  * @generated from message a2a.v1.StreamResponse
  */
@@ -2032,32 +1931,24 @@ export type StreamResponse = Message$1<"a2a.v1.StreamResponse"> & {
    */
   payload: {
     /**
-     * A Task object containing the current state of the task.
-     *
      * @generated from field: a2a.v1.Task task = 1;
      */
     value: Task;
     case: "task";
   } | {
     /**
-     * A Message object containing a message from the agent.
-     *
-     * @generated from field: a2a.v1.Message message = 2;
+     * @generated from field: a2a.v1.Message msg = 2 [json_name = "message"];
      */
     value: Message;
-    case: "message";
+    case: "msg";
   } | {
     /**
-     * An event indicating a task status update.
-     *
      * @generated from field: a2a.v1.TaskStatusUpdateEvent status_update = 3;
      */
     value: TaskStatusUpdateEvent;
     case: "statusUpdate";
   } | {
     /**
-     * An event indicating a task artifact update.
-     *
      * @generated from field: a2a.v1.TaskArtifactUpdateEvent artifact_update = 4;
      */
     value: TaskArtifactUpdateEvent;
@@ -2070,12 +1961,10 @@ export type StreamResponse = Message$1<"a2a.v1.StreamResponse"> & {
  * Use `create(StreamResponseSchema)` to create a new message.
  */
 export const StreamResponseSchema: GenMessage<StreamResponse> = /*@__PURE__*/
-  messageDesc(file_a2a, 44);
+  messageDesc(file_a2a, 45);
 
 /**
- * --8<-- [start:ListTaskPushNotificationConfigResponse]
- * Represents a successful response for the `ListTaskPushNotificationConfig`
- * method.
+ * --8<-- [start:ListTaskPushNotificationConfigSuccessResponse]
  *
  * @generated from message a2a.v1.ListTaskPushNotificationConfigResponse
  */
@@ -2101,57 +1990,55 @@ export type ListTaskPushNotificationConfigResponse = Message$1<"a2a.v1.ListTaskP
  * Use `create(ListTaskPushNotificationConfigResponseSchema)` to create a new message.
  */
 export const ListTaskPushNotificationConfigResponseSchema: GenMessage<ListTaskPushNotificationConfigResponse> = /*@__PURE__*/
-  messageDesc(file_a2a, 45);
+  messageDesc(file_a2a, 46);
 
 /**
  * --8<-- [start:TaskState]
- * Defines the possible lifecycle states of a Task.
+ * The set of states a Task can be in.
  *
  * @generated from enum a2a.v1.TaskState
  */
 export enum TaskState {
   /**
-   * The task is in an unknown or indeterminate state.
-   *
    * @generated from enum value: TASK_STATE_UNSPECIFIED = 0;
    */
   UNSPECIFIED = 0,
 
   /**
-   * Represents the status that acknowledges a task is created.
+   * Represents the status that acknowledges a task is created
    *
    * @generated from enum value: TASK_STATE_SUBMITTED = 1;
    */
   SUBMITTED = 1,
 
   /**
-   * Represents the status that a task is actively being processed.
+   * Represents the status that a task is actively being processed
    *
    * @generated from enum value: TASK_STATE_WORKING = 2;
    */
   WORKING = 2,
 
   /**
-   * Represents the status a task is finished. This is a terminal state.
+   * Represents the status a task is finished. This is a terminal state
    *
    * @generated from enum value: TASK_STATE_COMPLETED = 3;
    */
   COMPLETED = 3,
 
   /**
-   * Represents the status a task is done but failed. This is a terminal state.
+   * Represents the status a task is done but failed. This is a terminal state
    *
    * @generated from enum value: TASK_STATE_FAILED = 4;
    */
   FAILED = 4,
 
   /**
-   * Represents the status a task was canceled before it finished.
+   * Represents the status a task was cancelled before it finished.
    * This is a terminal state.
    *
-   * @generated from enum value: TASK_STATE_CANCELED = 5;
+   * @generated from enum value: TASK_STATE_CANCELLED = 5;
    */
-  CANCELED = 5,
+  CANCELLED = 5,
 
   /**
    * Represents the status that the task requires information to complete.
@@ -2172,8 +2059,8 @@ export enum TaskState {
 
   /**
    * Represents the state that some authentication is needed from the upstream
-   * client. This is an interrupted state. Authentication is expected to come
-   * out-of-band.
+   * client. Authentication is expected to come out-of-band thus this is not
+   * an interrupted or terminal state.
    *
    * @generated from enum value: TASK_STATE_AUTH_REQUIRED = 8;
    */
@@ -2187,9 +2074,6 @@ export const TaskStateSchema: GenEnum<TaskState> = /*@__PURE__*/
   enumDesc(file_a2a, 0);
 
 /**
- * --8<-- [start:Role]
- * Defines the sender of a message in A2A protocol communication.
- *
  * @generated from enum a2a.v1.Role
  */
 export enum Role {
@@ -2220,13 +2104,23 @@ export const RoleSchema: GenEnum<Role> = /*@__PURE__*/
   enumDesc(file_a2a, 1);
 
 /**
- * A2AService defines the operations of the A2A protocol.
+ * A2AService defines the gRPC version of the A2A protocol. This has a slightly
+ * different shape than the JSONRPC version to better conform to AIP-127,
+ * where appropriate. The nouns are AgentCard, Message, Task and
+ * TaskPushNotificationConfig.
+ * - Messages are not a standard resource so there is no get/delete/update/list
+ *   interface, only a send and stream custom methods.
+ * - Tasks have a get interface and custom cancel and subscribe methods.
+ * - TaskPushNotificationConfig are a resource whose parent is a task.
+ *   They have get, list and create methods.
+ * - AgentCard is a static resource with only a get method.
  *
  * @generated from service a2a.v1.A2AService
  */
 export const A2AService: GenService<{
   /**
-   * Send a message to the agent.
+   * Send a message to the agent. This is a blocking call that will return the
+   * task once it is completed, or a LRO if requested.
    *
    * @generated from rpc a2a.v1.A2AService.SendMessage
    */
@@ -2236,7 +2130,8 @@ export const A2AService: GenService<{
     output: typeof SendMessageResponseSchema;
   },
   /**
-   * SendStreamingMessage is a streaming version of SendMessage.
+   * SendStreamingMessage is a streaming call that will return a stream of
+   * task update events until the Task is in an interrupted or terminal state.
    *
    * @generated from rpc a2a.v1.A2AService.SendStreamingMessage
    */
@@ -2266,7 +2161,8 @@ export const A2AService: GenService<{
     output: typeof ListTasksResponseSchema;
   },
   /**
-   * Cancel a task.
+   * Cancel a task from the agent. If supported one should expect no
+   * more task updates for the task.
    *
    * @generated from rpc a2a.v1.A2AService.CancelTask
    */
@@ -2276,19 +2172,20 @@ export const A2AService: GenService<{
     output: typeof TaskSchema;
   },
   /**
-   * SubscribeToTask allows subscribing to task updates for tasks not in
-   * terminal state. Returns UnsupportedOperationError if task is in terminal
-   * state (completed, failed, canceled, rejected).
+   * TaskSubscription is a streaming call that will return a stream of task
+   * update events. This attaches the stream to an existing in process task.
+   * If the task is complete the stream will return the completed task (like
+   * GetTask) and close the stream.
    *
-   * @generated from rpc a2a.v1.A2AService.SubscribeToTask
+   * @generated from rpc a2a.v1.A2AService.TaskSubscription
    */
-  subscribeToTask: {
+  taskSubscription: {
     methodKind: "server_streaming";
-    input: typeof SubscribeToTaskRequestSchema;
+    input: typeof TaskSubscriptionRequestSchema;
     output: typeof StreamResponseSchema;
   },
   /**
-   * Create a push notification config for a task.
+   * Set a push notification config for a task.
    *
    * @generated from rpc a2a.v1.A2AService.CreateTaskPushNotificationConfig
    */
@@ -2318,14 +2215,13 @@ export const A2AService: GenService<{
     output: typeof ListTaskPushNotificationConfigResponseSchema;
   },
   /**
-   * GetExtendedAgentCard returns the extended agent card for authenticated
-   * agents.
+   * GetAgentCard returns the agent card for the agent.
    *
-   * @generated from rpc a2a.v1.A2AService.GetExtendedAgentCard
+   * @generated from rpc a2a.v1.A2AService.GetAgentCard
    */
-  getExtendedAgentCard: {
+  getAgentCard: {
     methodKind: "unary";
-    input: typeof GetExtendedAgentCardRequestSchema;
+    input: typeof GetAgentCardRequestSchema;
     output: typeof AgentCardSchema;
   },
   /**

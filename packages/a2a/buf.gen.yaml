@@ -1,7 +1,18 @@
 version: v2
 clean: false
+# Use A2A canonical proto (same as a2a-go). Go types come from a2a-go/a2apb; we only generate Connect handler.
 inputs:
-  - directory: proto
+  - git_repo: https://github.com/a2aproject/A2A.git
+    ref: e7cf203ecdd7003c0f1740bb712248d2b5252bf1
+    subdir: specification/grpc
+
+managed:
+  enabled: true
+  override:
+    - file_option: go_package
+      path: a2a.proto
+      value: github.com/a2aproject/a2a-go/a2apb
+
 plugins:
   # TypeScript (frontend)
   - remote: buf.build/bufbuild/es
@@ -10,13 +21,7 @@ plugins:
   - remote: buf.build/connectrpc/es
     out: ../../app/packages/a2a/protobuf
     opt: target=ts
-  # Go (BFF: protobuf types + gRPC client + Connect handler)
-  - remote: buf.build/protocolbuffers/go:v1.36.3
-    out: ../../gen/go/a2apb
-    opt: paths=source_relative
-  - remote: buf.build/grpc/go:v1.4.0
-    out: ../../gen/go/a2apb
-    opt: paths=source_relative
+  # Go: Connect handler only (a2apb from a2a-go dependency)
   - remote: buf.build/connectrpc/go:v1.18.1
     out: ../../gen/go
     opt: paths=source_relative

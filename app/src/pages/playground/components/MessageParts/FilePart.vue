@@ -72,19 +72,23 @@
   // Refs
 
   // Computed
+  const filePart = computed(() => {
+    return props.part.part?.case === 'file' ? (props.part.part as { value?: { file?: { case?: string; value?: unknown }; mimeType?: string; name?: string } }).value : undefined
+  })
+
   const fileUri = computed(() => {
-    const c = props.part.content
-    return c?.case === 'url' ? c.value : undefined
+    const fp = filePart.value
+    return fp?.file?.case === 'fileWithUri' ? (fp.file as { value: string }).value : undefined
   })
 
   const fileBytes = computed(() => {
-    const c = props.part.content
-    return c?.case === 'raw' ? c.value : undefined
+    const fp = filePart.value
+    return fp?.file?.case === 'fileWithBytes' ? (fp.file as { value: Uint8Array }).value : undefined
   })
 
-  const mimeType = computed(() => props.part.mediaType ?? undefined)
+  const mimeType = computed(() => filePart.value?.mimeType ?? undefined)
 
-  const fileName = computed(() => props.part.filename ?? undefined)
+  const fileName = computed(() => filePart.value?.name ?? undefined)
 
   const hasUri = computed(() => !!fileUri.value)
   const hasBytes = computed(() => !!fileBytes.value)

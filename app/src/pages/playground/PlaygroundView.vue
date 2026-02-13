@@ -63,8 +63,8 @@
       const contextId = message.getContextId()
       const taskId = message.getTaskId()
       for (const part of parts) {
-        if (part?.content?.case !== 'data') continue
-        const raw = part.content.value
+        if (part?.part?.case !== 'data') continue
+        const raw = (part.part as { value?: unknown }).value
         const obj = normalizeDataPartToObject(raw) as Record<string, unknown>
         if (!isFunctionCall(obj)) continue
         result.push({
@@ -255,9 +255,19 @@
 <template>
   <div
     ref="playgroundWrapperRef"
-    class="w-100 h-100 d-flex flex-column"
+    class="w-100 h-100 d-flex flex-column position-relative"
     :style="{ height: playgroundHeight + 'px' }"
   >
+    <v-btn
+      icon
+      variant="text"
+      size="small"
+      class="position-absolute headers-toggle-btn"
+      title="Agent headers"
+      @click="agentPlaygroundStore.toggleHeadersDrawer"
+    >
+      <v-icon>key</v-icon>
+    </v-btn>
     <div class="d-flex justify-center flex-grow-1 overflow-y-hidden w-100">
       <div
         ref="messagesContainer"
@@ -323,6 +333,12 @@
 </template>
 
 <style lang="scss" scoped>
+  .headers-toggle-btn {
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+  }
+
   .messages-container {
     -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 82%, transparent 100%);

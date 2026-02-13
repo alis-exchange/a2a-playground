@@ -29,7 +29,7 @@
 
   // Computed
   const renderedMarkdown = computed(() => {
-    const text = props.part.content?.case === 'text' ? (props.part.content.value ?? '') : ''
+    const text = props.part.part?.case === 'text' ? ((props.part.part as { value?: string }).value ?? '') : ''
     if (!text || text.trim().length === 0) {
       return '&nbsp;'
     }

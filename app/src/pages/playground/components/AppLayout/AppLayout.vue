@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import DetailsDrawer from '../DetailsDrawer.vue'
+  import HeadersDrawer from '../HeadersDrawer.vue'
 </script>
 
 <template>
@@ -8,5 +9,6 @@
       <slot />
     </v-main>
     <DetailsDrawer />
+    <HeadersDrawer />
   </v-app>
 </template>

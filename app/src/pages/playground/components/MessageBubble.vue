@@ -119,7 +119,7 @@
     // Text from text parts
     const textParts = validParts.value
       .filter((part) => hasText(part))
-      .map((part) => (part?.content?.case === 'text' ? part.content.value : ''))
+      .map((part) => (part?.part?.case === 'text' ? (part.part as { value?: string }).value : ''))
       .filter(Boolean)
     const text = textParts.join('\n').trim()
     if (text) segments.push(text)
@@ -128,7 +128,7 @@
     for (const part of validParts.value) {
       if (!hasData(part)) continue
       try {
-        const raw = part?.content?.case === 'data' ? part.content.value : undefined
+        const raw = part?.part?.case === 'data' ? (part.part as { value?: unknown }).value : undefined
         const obj = normalizeDataPartToObject(raw)
         if (Object.keys(obj).length > 0) {
           segments.push(JSON.stringify(obj, null, 2))
@@ -155,19 +155,18 @@
 
   const hasText = (part: Part | null | undefined): boolean => {
     if (!part) return false
-    const c = part.content
-    return c?.case === 'text' ? !!(c.value && String(c.value).trim().length > 0) : false
+    const p = part.part
+    return p?.case === 'text' ? !!((p as { value?: string }).value && String((p as { value?: string }).value).trim().length > 0) : false
   }
 
   const hasFile = (part: Part | null | undefined): boolean => {
     if (!part) return false
-    const c = part.content
-    return c?.case === 'raw' || c?.case === 'url'
+    return part.part?.case === 'file'
   }
 
   const hasData = (part: Part | null | undefined): boolean => {
     if (!part) return false
-    return part.content?.case === 'data'
+    return part.part?.case === 'data'
   }
 </script>
 

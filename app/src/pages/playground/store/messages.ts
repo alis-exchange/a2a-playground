@@ -1,5 +1,7 @@
 import { createA2AClient } from '@/clients/a2aClient'
 import {
+  DataPartSchema,
+  FilePartSchema,
   MessageSchema,
   PartSchema,
   Role,
@@ -60,7 +62,7 @@ function getStateText(state: TaskState): string {
       return 'Task completed'
     case TaskState.FAILED:
       return 'Task failed'
-    case TaskState.CANCELED:
+    case TaskState.CANCELLED:
       return 'Task cancelled'
     case TaskState.INPUT_REQUIRED:
       return 'Input required'
@@ -76,9 +78,9 @@ function getStateText(state: TaskState): string {
 // Ensure status update has displayable text (for @local/a2a-js TaskStatusUpdateEvent)
 function ensureStatusHasText(statusEvent: TaskStatusUpdateEvent): void {
   const status = statusEvent.status
-  if (!status?.message) return
-  const parts = status.message.parts || []
-  const hasText = parts.some((p) => p.content?.case === 'text' && p.content.value?.trim())
+  if (!status?.update) return
+  const parts = status.update.parts || []
+  const hasText = parts.some((p: Part) => p.part?.case === 'text' && (p.part as { value?: string }).value?.trim())
   if (hasText) return
   const stateText = getStateText(status.state ?? TaskState.UNSPECIFIED)
   // Add text part - we need to clone/modify. In Buf, messages are typically immutable.
@@ -102,7 +104,7 @@ export function streamResponseToAgentMessage(response: StreamResponse): UnifiedM
   if (!payload || payload.case === undefined) return null
 
   switch (payload.case) {
-    case 'message': {
+    case 'msg': {
       const msg = payload.value
       if (!msg) return null
       return {
@@ -154,28 +156,26 @@ export async function userMessageToAgentMessage(
   for (const part of parts) {
     if (part instanceof TextMessagePart) {
       agentParts.push(
-        create(PartSchema, { content: { case: 'text', value: part.content } })
+        create(PartSchema, { part: { case: 'text', value: part.content } })
       )
     } else if (part instanceof FileMessagePart) {
       const arrayBuffer = await part.file.arrayBuffer()
       const rawBytes = new Uint8Array(arrayBuffer)
-      agentParts.push(
-        create(PartSchema, {
-          content: { case: 'raw', value: rawBytes },
-          mediaType: part.mimeType || '',
-          filename: part.fileName || '',
-        })
-      )
+      const filePart = create(FilePartSchema, {
+        file: { case: 'fileWithBytes', value: rawBytes },
+        mimeType: part.mimeType || '',
+        name: part.fileName || '',
+      })
+      agentParts.push(create(PartSchema, { part: { case: 'file', value: filePart } }))
     } else if (part instanceof AudioMessagePart) {
       const arrayBuffer = await part.audioBlob.arrayBuffer()
       const rawBytes = new Uint8Array(arrayBuffer)
-      agentParts.push(
-        create(PartSchema, {
-          content: { case: 'raw', value: rawBytes },
-          mediaType: part.mimeType || 'audio/mp4',
-          filename: part.fileName || 'recording.mp4',
-        })
-      )
+      const filePart = create(FilePartSchema, {
+        file: { case: 'fileWithBytes', value: rawBytes },
+        mimeType: part.mimeType || 'audio/mp4',
+        name: part.fileName || 'recording.mp4',
+      })
+      agentParts.push(create(PartSchema, { part: { case: 'file', value: filePart } }))
     }
   }
 
@@ -226,11 +226,11 @@ export class ConversationMessage {
     if (u.type === 'artifact_update' && u.artifactUpdate?.artifact) {
       return u.artifactUpdate.artifact.parts || []
     }
-    if (u.type === 'status_update' && u.statusUpdate?.status?.message) {
-      return u.statusUpdate.status.message.parts || []
+    if (u.type === 'status_update' && u.statusUpdate?.status?.update) {
+      return u.statusUpdate.status.update.parts || []
     }
-    if (u.type === 'task' && u.task?.status?.message) {
-      return u.task.status.message.parts || []
+    if (u.type === 'task' && u.task?.status?.update) {
+      return u.task.status.update.parts || []
     }
     return []
   }
@@ -311,7 +311,7 @@ export class ConversationMessage {
   getSourceMessage(): Message | undefined {
     const u = this.unifiedMessage
     if (u.type === 'agent_message') return u.agentMessage
-    if (u.type === 'status_update' && u.statusUpdate?.status?.message) return u.statusUpdate.status.message
+    if (u.type === 'status_update' && u.statusUpdate?.status?.update) return u.statusUpdate.status.update
     return undefined
   }
 
@@ -394,25 +394,23 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
     const agentParts: Part[] = []
     for (const part of parts) {
       if (part instanceof TextMessagePart) {
-        agentParts.push(create(PartSchema, { content: { case: 'text', value: part.content } }))
+        agentParts.push(create(PartSchema, { part: { case: 'text', value: part.content } }))
       } else if (part instanceof FileMessagePart) {
-        const base64Bytes = await fileToBase64Bytes(part.file)
-        agentParts.push(
-          create(PartSchema, {
-            content: { case: 'raw', value: base64Bytes },
-            mediaType: part.mimeType || '',
-            filename: part.fileName || '',
-          })
-        )
+        const fileBytes = new Uint8Array(await part.file.arrayBuffer())
+        const filePart = create(FilePartSchema, {
+          file: { case: 'fileWithBytes', value: fileBytes },
+          mimeType: part.mimeType || '',
+          name: part.fileName || '',
+        })
+        agentParts.push(create(PartSchema, { part: { case: 'file', value: filePart } }))
       } else if (part instanceof AudioMessagePart) {
-        const base64Bytes = await blobToBase64Bytes(part.audioBlob)
-        agentParts.push(
-          create(PartSchema, {
-            content: { case: 'raw', value: base64Bytes },
-            mediaType: part.mimeType || 'audio/mp4',
-            filename: part.fileName || 'recording.mp4',
-          })
-        )
+        const fileBytes = new Uint8Array(await part.audioBlob.arrayBuffer())
+        const filePart = create(FilePartSchema, {
+          file: { case: 'fileWithBytes', value: fileBytes },
+          mimeType: part.mimeType || 'audio/mp4',
+          name: part.fileName || 'recording.mp4',
+        })
+        agentParts.push(create(PartSchema, { part: { case: 'file', value: filePart } }))
       }
     }
 
@@ -427,8 +425,7 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
     })
 
     const request = create(SendMessageRequestSchema, {
-      tenant: '',
-      message: agentMessage,
+      request: agentMessage,
     })
 
     let resolvedContextId = sessionId
@@ -441,7 +438,7 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
         resolvedContextId = payload.value.contextId
         sessionContextId.value = resolvedContextId
       }
-      if (payload?.case === 'message' && payload.value?.contextId) {
+      if (payload?.case === 'msg' && payload.value?.contextId) {
         resolvedContextId = payload.value.contextId
         sessionContextId.value = resolvedContextId
       }
@@ -467,10 +464,10 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
     onStreamMessage?: (response: StreamResponse) => void
   ): Promise<string> => {
     const client = createA2AClient()
-    const dataPayload = { id: callId, name: callName, response: responsePayload }
-    const dataValue = valueFromObject(dataPayload)
+    const dataPayload = { id: callId, name: callName, response: responsePayload, adk_type: 'function_response' }
+    const dataPart = create(DataPartSchema, { data: dataPayload as import('@bufbuild/protobuf').JsonObject })
     const part = create(PartSchema, {
-      content: { case: 'data', value: dataValue },
+      part: { case: 'data', value: dataPart },
       metadata: { adk_type: 'function_response' },
     })
 
@@ -485,8 +482,7 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
     })
 
     const request = create(SendMessageRequestSchema, {
-      tenant: '',
-      message: agentMessage,
+      request: agentMessage,
     })
 
     let resolvedContextId = contextId
@@ -499,7 +495,7 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
         resolvedContextId = payload.value.contextId
         sessionContextId.value = resolvedContextId
       }
-      if (payload?.case === 'message' && payload.value?.contextId) {
+      if (payload?.case === 'msg' && payload.value?.contextId) {
         resolvedContextId = payload.value.contextId
         sessionContextId.value = resolvedContextId
       }

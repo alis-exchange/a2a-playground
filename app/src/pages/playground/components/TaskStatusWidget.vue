@@ -66,13 +66,13 @@
     const statusUpdate = latestMessage.value.getStatusUpdate()
     if (!statusUpdate) return 'Status update'
 
-    const updateMessage = statusUpdate.status?.message
+    const updateMessage = statusUpdate.status?.update
     if (!updateMessage) return 'Status update'
 
     const parts = updateMessage.parts || []
     const textParts = parts
-      .filter((p) => p?.content?.case === 'text' && p.content.value)
-      .map((p) => (p!.content!.case === 'text' ? p.content.value : ''))
+      .filter((p) => p?.part?.case === 'text' && (p.part as { value?: string }).value)
+      .map((p) => (p.part?.case === 'text' ? (p.part as { value?: string }).value : ''))
 
     if (textParts.length === 0) return 'Status update'
 

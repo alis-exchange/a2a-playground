@@ -5,11 +5,20 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AgentCard, CancelTaskRequest, CreateTaskPushNotificationConfigRequest, DeleteTaskPushNotificationConfigRequest, GetExtendedAgentCardRequest, GetTaskPushNotificationConfigRequest, GetTaskRequest, ListTaskPushNotificationConfigRequest, ListTaskPushNotificationConfigResponse, ListTasksRequest, ListTasksResponse, SendMessageRequest, SendMessageResponse, StreamResponse, SubscribeToTaskRequest, Task, TaskPushNotificationConfig } from "./a2a_pb.js";
+import { AgentCard, CancelTaskRequest, CreateTaskPushNotificationConfigRequest, DeleteTaskPushNotificationConfigRequest, GetAgentCardRequest, GetTaskPushNotificationConfigRequest, GetTaskRequest, ListTaskPushNotificationConfigRequest, ListTaskPushNotificationConfigResponse, ListTasksRequest, ListTasksResponse, SendMessageRequest, SendMessageResponse, StreamResponse, Task, TaskPushNotificationConfig, TaskSubscriptionRequest } from "./a2a_pb.js";
 import { Empty, MethodKind } from "@bufbuild/protobuf";
 
 /**
- * A2AService defines the operations of the A2A protocol.
+ * A2AService defines the gRPC version of the A2A protocol. This has a slightly
+ * different shape than the JSONRPC version to better conform to AIP-127,
+ * where appropriate. The nouns are AgentCard, Message, Task and
+ * TaskPushNotificationConfig.
+ * - Messages are not a standard resource so there is no get/delete/update/list
+ *   interface, only a send and stream custom methods.
+ * - Tasks have a get interface and custom cancel and subscribe methods.
+ * - TaskPushNotificationConfig are a resource whose parent is a task.
+ *   They have get, list and create methods.
+ * - AgentCard is a static resource with only a get method.
  *
  * @generated from service a2a.v1.A2AService
  */
@@ -17,7 +26,8 @@ export const A2AService = {
   typeName: "a2a.v1.A2AService",
   methods: {
     /**
-     * Send a message to the agent.
+     * Send a message to the agent. This is a blocking call that will return the
+     * task once it is completed, or a LRO if requested.
      *
      * @generated from rpc a2a.v1.A2AService.SendMessage
      */
@@ -28,7 +38,8 @@ export const A2AService = {
       kind: MethodKind.Unary,
     },
     /**
-     * SendStreamingMessage is a streaming version of SendMessage.
+     * SendStreamingMessage is a streaming call that will return a stream of
+     * task update events until the Task is in an interrupted or terminal state.
      *
      * @generated from rpc a2a.v1.A2AService.SendStreamingMessage
      */
@@ -61,7 +72,8 @@ export const A2AService = {
       kind: MethodKind.Unary,
     },
     /**
-     * Cancel a task.
+     * Cancel a task from the agent. If supported one should expect no
+     * more task updates for the task.
      *
      * @generated from rpc a2a.v1.A2AService.CancelTask
      */
@@ -72,20 +84,21 @@ export const A2AService = {
       kind: MethodKind.Unary,
     },
     /**
-     * SubscribeToTask allows subscribing to task updates for tasks not in
-     * terminal state. Returns UnsupportedOperationError if task is in terminal
-     * state (completed, failed, canceled, rejected).
+     * TaskSubscription is a streaming call that will return a stream of task
+     * update events. This attaches the stream to an existing in process task.
+     * If the task is complete the stream will return the completed task (like
+     * GetTask) and close the stream.
      *
-     * @generated from rpc a2a.v1.A2AService.SubscribeToTask
+     * @generated from rpc a2a.v1.A2AService.TaskSubscription
      */
-    subscribeToTask: {
-      name: "SubscribeToTask",
-      I: SubscribeToTaskRequest,
+    taskSubscription: {
+      name: "TaskSubscription",
+      I: TaskSubscriptionRequest,
       O: StreamResponse,
       kind: MethodKind.ServerStreaming,
     },
     /**
-     * Create a push notification config for a task.
+     * Set a push notification config for a task.
      *
      * @generated from rpc a2a.v1.A2AService.CreateTaskPushNotificationConfig
      */
@@ -118,14 +131,13 @@ export const A2AService = {
       kind: MethodKind.Unary,
     },
     /**
-     * GetExtendedAgentCard returns the extended agent card for authenticated
-     * agents.
+     * GetAgentCard returns the agent card for the agent.
      *
-     * @generated from rpc a2a.v1.A2AService.GetExtendedAgentCard
+     * @generated from rpc a2a.v1.A2AService.GetAgentCard
      */
-    getExtendedAgentCard: {
-      name: "GetExtendedAgentCard",
-      I: GetExtendedAgentCardRequest,
+    getAgentCard: {
+      name: "GetAgentCard",
+      I: GetAgentCardRequest,
       O: AgentCard,
       kind: MethodKind.Unary,
     },

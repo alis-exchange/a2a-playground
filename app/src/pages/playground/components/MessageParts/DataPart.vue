@@ -29,7 +29,7 @@
 
   const parsed = computed(() => {
     try {
-      const raw = props.part.content?.case === 'data' ? props.part.content.value : undefined
+      const raw = props.part.part?.case === 'data' ? (props.part.part as { value?: unknown }).value : undefined
       if (!raw) return null
       return normalizeDataPartToObject(raw) as Record<string, unknown>
     } catch {
@@ -57,7 +57,7 @@
 
   const formattedJson = computed(() => {
     try {
-      const raw = props.part.content?.case === 'data' ? props.part.content.value : undefined
+      const raw = props.part.part?.case === 'data' ? (props.part.part as { value?: unknown }).value : undefined
       const obj = raw !== undefined ? normalizeDataPartToObject(raw) : {}
       return JSON.stringify(obj, null, 2)
     } catch {

@@ -18,6 +18,7 @@ declare module 'vue' {
     DetailsDrawer: typeof import('./src/pages/playground/components/DetailsDrawer.vue')['default']
     FilePart: typeof import('./src/pages/playground/components/MessageParts/FilePart.vue')['default']
     FileUploader: typeof import('./src/pages/playground/components/ContentInput/FileUploader.vue')['default']
+    HeadersDrawer: typeof import('./src/pages/playground/components/HeadersDrawer.vue')['default']
     MessageBubble: typeof import('./src/pages/playground/components/MessageBubble.vue')['default']
     PendingFunctionResponseBlock: typeof import('./src/pages/playground/components/PendingFunctionResponseBlock.vue')['default']
     RichTextInput: typeof import('./src/pages/playground/components/ContentInput/RichTextInput.vue')['default']

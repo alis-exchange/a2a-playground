@@ -9,11 +9,16 @@ export type DetailsDrawerMode = 'message'
 
 export const useAgentPlaygroundStore = defineStore(STORE_ID, () => {
   const detailsDrawerOpen: Ref<boolean> = ref(false)
+  const headersDrawerOpen: Ref<boolean> = ref(false)
   const detailsDrawerMode: Ref<DetailsDrawerMode> = ref('message')
   const detailsDrawerMessage: Ref<ConversationMessage | null> = ref(null)
 
   const toggleDetailsDrawer = () => {
     detailsDrawerOpen.value = !detailsDrawerOpen.value
+  }
+
+  const toggleHeadersDrawer = () => {
+    headersDrawerOpen.value = !headersDrawerOpen.value
   }
 
   const openDetailsDrawer = () => {
@@ -42,9 +47,11 @@ export const useAgentPlaygroundStore = defineStore(STORE_ID, () => {
 
   return {
     detailsDrawerOpen,
+    headersDrawerOpen,
     detailsDrawerMode,
     detailsDrawerMessage,
     toggleDetailsDrawer,
+    toggleHeadersDrawer,
     openDetailsDrawer,
     closeDetailsDrawer,
     setDetailsDrawerMessage,
