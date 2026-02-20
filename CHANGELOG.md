@@ -1,4 +1,13 @@
-# [](https://github.com/alis-exchange/a2a-playground/compare/v0.0.4...v) (2026-02-20)
+# [](https://github.com/alis-exchange/a2a-playground/compare/v0.0.5...v) (2026-02-20)
+
+
+
+## [0.0.5](https://github.com/alis-exchange/a2a-playground/compare/v0.0.4...v0.0.5) (2026-02-20)
+
+
+### Bug Fixes
+
+* update file handling in messages store to use base64 encoding for file and audio blobs, ensuring compatibility with BFF/JSON-RPC ([befdbac](https://github.com/alis-exchange/a2a-playground/commit/befdbac61ae2af35a47fe715fb4836652e8ffcab))
 
 
 
