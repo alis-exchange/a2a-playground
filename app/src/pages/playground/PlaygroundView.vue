@@ -13,13 +13,8 @@
   import MessageBubble from '@/pages/playground/components/MessageBubble.vue'
   import PendingFunctionResponseBlock from '@/pages/playground/components/PendingFunctionResponseBlock.vue'
   import TaskStatusWidget from '@/pages/playground/components/TaskStatusWidget.vue'
-  import { normalizeDataPartToObject, isFunctionCall } from '@/pages/playground/store/dataPartUtils'
-  import {
-    ConversationMessage,
-    streamResponseToAgentMessage,
-    useMessagesStore,
-    userMessageToAgentMessage,
-  } from '@/pages/playground/store/messages'
+  import { isFunctionCall, normalizeDataPartToObject } from '@/pages/playground/store/dataPartUtils'
+  import { ConversationMessage, streamResponseToAgentMessage, useMessagesStore, userMessageToAgentMessage } from '@/pages/playground/store/messages'
   import type { StreamResponse } from '@local/a2a-js'
   import { TaskState } from '@local/a2a-js'
 
@@ -128,9 +123,7 @@
             statusWidgetInserted.add(taskId)
             const latestStatus = statusMsgs[statusMsgs.length - 1]
             const latestState = latestStatus?.getState()
-            const showPending =
-              (latestState === TaskState.INPUT_REQUIRED || latestState === TaskState.AUTH_REQUIRED) &&
-              pendingCalls.length > 0
+            const showPending = (latestState === TaskState.INPUT_REQUIRED || latestState === TaskState.AUTH_REQUIRED) && pendingCalls.length > 0
             if (showPending) {
               for (let j = 0; j < pendingCalls.length; j++) {
                 const call = pendingCalls[j]
@@ -176,25 +169,15 @@
 
   const sendingFunctionResponse = ref(false)
 
-  const onSendFunctionResponse = async (
-    call: { id: string; name: string; taskId: string; contextId: string },
-    responsePayload: Record<string, unknown>,
-  ) => {
+  const onSendFunctionResponse = async (call: { id: string; name: string; taskId: string; contextId: string }, responsePayload: Record<string, unknown>) => {
     sendingFunctionResponse.value = true
     try {
-      await messagesStore.sendFunctionResponse(
-        call.contextId,
-        call.taskId,
-        call.id,
-        call.name,
-        responsePayload,
-        (response: StreamResponse) => {
-          const unifiedMessage = streamResponseToAgentMessage(response)
-          if (unifiedMessage) {
-            messagesStore.addMessage(unifiedMessage)
-          }
-        },
-      )
+      await messagesStore.sendFunctionResponse(call.contextId, call.taskId, call.id, call.name, responsePayload, (response: StreamResponse) => {
+        const unifiedMessage = streamResponseToAgentMessage(response)
+        if (unifiedMessage) {
+          messagesStore.addMessage(unifiedMessage)
+        }
+      })
     } catch (error) {
       console.error(error)
       snackbarStore.error('Failed to send response')
@@ -260,7 +243,7 @@
 <template>
   <div
     ref="playgroundWrapperRef"
-    class="w-100 h-100 d-flex flex-column position-relative"
+    class="playground-root"
     :style="{ height: playgroundHeight + 'px' }"
   >
     <v-btn
@@ -273,10 +256,10 @@
     >
       <v-icon>key</v-icon>
     </v-btn>
-    <div class="d-flex justify-center flex-grow-1 overflow-y-hidden w-100">
+    <div class="playground-chat">
       <div
         ref="messagesContainer"
-        class="messages-container overflow-y-auto overflow-x-hidden h-100 w-100 py-16"
+        class="messages-scroll"
       >
         <div
           v-for="item in messageItems"
@@ -305,7 +288,7 @@
 
         <div
           v-if="messageItems.length === 0"
-          class="h-100 d-flex align-center justify-center text-center"
+          class="empty-state"
         >
           <div>
             <v-avatar
@@ -325,14 +308,15 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="input-container pb-4 d-flex justify-center">
-      <v-card
-        class="w-100 main-textarea-shadow"
-        max-width="760px"
-      >
-        <ContentInput @submit="sendMessage" />
-      </v-card>
+
+      <div class="input-sticky">
+        <v-card
+          class="w-100 main-textarea-shadow"
+          max-width="760px"
+        >
+          <ContentInput @submit="sendMessage" />
+        </v-card>
+      </div>
     </div>
   </div>
 </template>
@@ -344,11 +328,43 @@
     z-index: 1;
   }
 
-  .messages-container {
-    -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
-    max-width: 760px;
+  .playground-root {
+    position: relative;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 2rem;
   }
+
+  .playground-chat {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 760px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .messages-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4rem 0;
+    -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+  }
+
+  .input-sticky {
+    flex-shrink: 0;
+    padding: 0.5rem 0 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
   .message-row {
     display: grid;
     grid-template-columns: 1fr;
@@ -362,5 +378,14 @@
 
   .message-row-agent {
     justify-items: start;
+  }
+
+  .empty-state {
+    min-height: 300px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 </style>

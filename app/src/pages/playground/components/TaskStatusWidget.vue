@@ -67,28 +67,28 @@
     if (!statusUpdate) return 'Status update'
 
     const updateMessage = statusUpdate.status?.update
-    if (!updateMessage) return 'Status update'
-
-    const parts = updateMessage.parts || []
+    const parts = updateMessage?.parts || []
     const textParts = parts
       .filter((p) => p?.part?.case === 'text' && (p.part as { value?: string }).value)
       .map((p) => (p.part?.case === 'text' ? (p.part as { value?: string }).value : ''))
 
-    if (textParts.length === 0) return 'Status update'
-
-    const text = textParts.join(' ').trim()
-    if (!text) return 'Status update'
-
-    // If the text is from the enum (starts with "Task status: "), extract the state
-    if (text.startsWith('Task status: ')) {
-      const state = text.substring('Task status: '.length).trim()
-      return state || 'Status update'
+    if (textParts.length > 0) {
+      const text = textParts.join(' ').trim()
+      if (text) {
+        // If the text is from the enum (starts with "Task status: "), extract the state
+        if (text.startsWith('Task status: ')) {
+          const state = text.substring('Task status: '.length).trim()
+          return state || (latestMessage.value!.getStateText() ?? 'Status update')
+        }
+        if (text.startsWith('Task created: ')) {
+          return 'Created'
+        }
+        return text
+      }
     }
-    if (text.startsWith('Task created: ')) {
-      return 'Created'
-    }
 
-    return text
+    // Fallback: use state enum when update/parts are missing (common with a2a-js)
+    return latestMessage.value.getStateText() ?? 'Status update'
   })
 
   const statusColor = computed(() => {
