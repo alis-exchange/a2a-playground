@@ -396,7 +396,8 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
       if (part instanceof TextMessagePart) {
         agentParts.push(create(PartSchema, { part: { case: 'text', value: part.content } }))
       } else if (part instanceof FileMessagePart) {
-        const fileBytes = new Uint8Array(await part.file.arrayBuffer())
+        // BFF/JSON-RPC expects UTF-8 bytes of base64 string (see Agent sendStreamingMessage)
+        const fileBytes = await fileToBase64Bytes(part.file)
         const filePart = create(FilePartSchema, {
           file: { case: 'fileWithBytes', value: fileBytes },
           mimeType: part.mimeType || '',
@@ -404,7 +405,8 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
         })
         agentParts.push(create(PartSchema, { part: { case: 'file', value: filePart } }))
       } else if (part instanceof AudioMessagePart) {
-        const fileBytes = new Uint8Array(await part.audioBlob.arrayBuffer())
+        // BFF/JSON-RPC expects UTF-8 bytes of base64 string (see Agent sendStreamingMessage)
+        const fileBytes = await blobToBase64Bytes(part.audioBlob)
         const filePart = create(FilePartSchema, {
           file: { case: 'fileWithBytes', value: fileBytes },
           mimeType: part.mimeType || 'audio/mp4',
