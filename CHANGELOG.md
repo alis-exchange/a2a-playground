@@ -1,4 +1,14 @@
-# [](https://github.com/alis-exchange/a2a-playground/compare/v0.0.3...v) (2026-02-13)
+# [](https://github.com/alis-exchange/a2a-playground/compare/v0.0.4...v) (2026-02-20)
+
+
+
+## [0.0.4](https://github.com/alis-exchange/a2a-playground/compare/v0.0.3...v0.0.4) (2026-02-20)
+
+
+### Features
+
+* implement OAuth callback handling with new views and routing, enhance playground functionality for authorization requests ([d0b108d](https://github.com/alis-exchange/a2a-playground/commit/d0b108d4cada3cad5b66fea835e99065ab5579e2))
+* update playground view with improved layout and styling, add new assets for OAuth callback handling, and streamline font preloading ([61fc74a](https://github.com/alis-exchange/a2a-playground/commit/61fc74a2fd94fc6071c4499571d7f00bfaae5234))
 
 
 
