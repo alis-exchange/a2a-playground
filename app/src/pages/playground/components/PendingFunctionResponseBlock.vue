@@ -20,9 +20,48 @@
         {{ hint }}
       </div>
 
-      <!-- Confirmation-style shortcut -->
+      <!-- Auth request: Authorize button primary, JSON as expandable fallback -->
+      <template v-if="isAuthRequest">
+        <div class="d-flex gap-2 mb-2">
+          <v-btn
+            size="small"
+            color="primary"
+            :disabled="sending || props.sending || authorizing"
+            :loading="authorizing"
+            @click="onAuthorize"
+          >
+            {{ authorizing ? 'Authorizing...' : 'Authorize' }}
+          </v-btn>
+        </div>
+        <v-expansion-panels class="mt-2">
+          <v-expansion-panel>
+            <v-expansion-panel-title>Manual response (fallback)</v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-textarea
+                v-model="responseText"
+                label="Response (strict JSON object)"
+                variant="outlined"
+                density="compact"
+                rows="3"
+                hide-details
+                class="mb-2"
+                :error-messages="jsonError"
+              />
+              <v-btn
+                size="small"
+                :disabled="sending || props.sending || !isValidJson"
+                @click="sendCustomResponse"
+              >
+                {{ sending || props.sending ? 'Sending...' : 'Send response' }}
+              </v-btn>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
+
+      <!-- Confirmation-style shortcut (non-auth) -->
       <div
-        v-if="showConfirmationButtons"
+        v-else-if="showConfirmationButtons"
         class="d-flex gap-2 mb-2"
       >
         <v-btn
@@ -43,8 +82,11 @@
         </v-btn>
       </div>
 
-      <!-- Generic JSON response -->
-      <div class="mt-2">
+      <!-- Generic JSON response (non-auth) -->
+      <div
+        v-else
+        class="mt-2"
+      >
         <v-textarea
           v-model="responseText"
           label="Response (strict JSON object)"
@@ -69,6 +111,14 @@
 
 <script setup lang="ts">
   import { computed, ref, watch } from 'vue'
+  import { useSnackbarStore } from '@/store/snackbar'
+  import {
+    buildAuthResponsePayload,
+    getAuthConfigFromCall,
+    getAuthUriFromCall,
+    isAuthRequestCall,
+    openOAuthPopup,
+  } from '@/utils/oauth'
 
   interface PendingCall {
     id: string
@@ -90,9 +140,13 @@
     (e: 'send', response: Record<string, unknown>): void
   }>()
 
+  const snackbarStore = useSnackbarStore()
   const sending = ref(false)
+  const authorizing = ref(false)
   const responseText = ref('{}')
   const jsonError = ref('')
+
+  const isAuthRequest = computed(() => isAuthRequestCall(props.payload))
 
   const argsSummary = computed(() => {
     const a = props.payload.args
@@ -147,6 +201,23 @@
       jsonError.value = r.ok ? '' : r.error
     },
   )
+
+  async function onAuthorize() {
+    if (!isAuthRequest.value) return
+    authorizing.value = true
+    try {
+      const authUri = getAuthUriFromCall(props.payload)
+      const authConfig = getAuthConfigFromCall(props.payload)
+      const redirectUri = `${window.location.origin}/oauth-callback`
+      const authResponseUrl = await openOAuthPopup(authUri, redirectUri)
+      const payload = buildAuthResponsePayload(authConfig, authResponseUrl, redirectUri)
+      emit('send', payload)
+    } catch (err) {
+      snackbarStore.error('Popup blocked. Use manual response fallback.')
+    } finally {
+      authorizing.value = false
+    }
+  }
 
   async function sendConfirmed(confirmed: boolean) {
     sending.value = true

@@ -51,14 +51,15 @@
     return msgs.map((m) => ConversationMessage.fromUnifiedMessage(m))
   })
 
-  /** Pending function calls from the latest INPUT_REQUIRED status update */
+  /** Pending function calls from the latest INPUT_REQUIRED or AUTH_REQUIRED status update */
   const pendingFunctionCalls = computed(() => {
     const msgs = conversationMessages.value
     const result: Array<{ id: string; name: string; args: Record<string, unknown>; taskId: string; contextId: string }> = []
     for (let i = msgs.length - 1; i >= 0; i--) {
       const message = msgs[i]
       if (message?.getPayloadType() !== 'status_update') continue
-      if (message.getState() !== TaskState.INPUT_REQUIRED) continue
+      const state = message.getState()
+      if (state !== TaskState.INPUT_REQUIRED && state !== TaskState.AUTH_REQUIRED) continue
       const parts = message.getParts()
       const contextId = message.getContextId()
       const taskId = message.getTaskId()
@@ -126,7 +127,11 @@
             })
             statusWidgetInserted.add(taskId)
             const latestStatus = statusMsgs[statusMsgs.length - 1]
-            if (latestStatus?.getState() === TaskState.INPUT_REQUIRED && pendingCalls.length > 0) {
+            const latestState = latestStatus?.getState()
+            const showPending =
+              (latestState === TaskState.INPUT_REQUIRED || latestState === TaskState.AUTH_REQUIRED) &&
+              pendingCalls.length > 0
+            if (showPending) {
               for (let j = 0; j < pendingCalls.length; j++) {
                 const call = pendingCalls[j]
                 if (call && call.taskId === taskId) {
