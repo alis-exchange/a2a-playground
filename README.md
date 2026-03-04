@@ -90,9 +90,13 @@ a2a-playground --agent-url=http://localhost:8080/jsonrpc --jsonrpc
 | `--no-open`   | `false`                   | Do not open the browser on start                                                                     |
 | `--dev`       | `false`                   | Serve from `app/dist` on disk instead of embedded files                                              |
 
-### Custom headers
+### Authentication and headers
 
-Configure authentication and custom headers in the playground UI (key icon in the toolbar). Headers such as `Authorization`, `X-API-Key`, and `X-Tenant-ID` are persisted and forwarded to the agent on every request.
+Use the **Playground** sidebar (right side) to configure:
+
+- **Connection settings** – Agent URL and transport (gRPC or JSON-RPC).
+- **Authentication** – Custom headers (e.g. `Authorization`, `X-API-Key`, `X-Tenant-ID`) sent with every request. These are persisted and forwarded by the BFF to the agent.
+- **OAuth 2.0** – Client ID, Client Secret, Authorization URL, Token URL, and scope. Click **Authorize Connection** to sign in via a popup; the access token is then sent as `Authorization: Bearer <token>` on all A2A requests. The BFF forwards the incoming `Authorization` header to the agent.
 
 ## Architecture
 
@@ -111,11 +115,13 @@ The BFF (Backend-for-Frontend) serves the static Vue SPA and proxies Connect-RPC
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │ Frontend (Vue)                                                                      │
 │  messages.ts → createA2AClient().sendStreamingMessage(req)                          │
-│  a2aClient.ts: agentHeadersInterceptor sets X-A2A-Agent-Headers from Pinia store    │
+│  a2aClient.ts: agentConfigInterceptor (X-A2A-Agent-URL, X-A2A-Agent-Protocol)       │
+│                agentOAuthBearerInterceptor (Authorization: Bearer <token>)           │
+│                agentHeadersInterceptor (X-A2A-Agent-Headers from Pinia store)        │
 └─────────────────────────────────────────────────────────────────────────────────────┘
                                         │
                                         │ HTTP POST (Connect) to /a2a.v1.A2AService/*
-                                        │ Header: X-A2A-Agent-Headers: {"Authorization":"Bearer x"}
+                                        │ Headers: Authorization, X-A2A-Agent-Headers, etc.
                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │ BFF                                                                                  │
@@ -138,12 +144,12 @@ The BFF (Backend-for-Frontend) serves the static Vue SPA and proxies Connect-RPC
 
 - User input flows through `PlaygroundView` into the messages store (`app/src/pages/playground/store/messages.ts`), which builds a `SendMessageRequest` and calls `createA2AClient().sendStreamingMessage(request)`.
 - The Connect client (`app/src/clients/a2aClient.ts`) uses same-origin requests, so all A2A calls go to the BFF (e.g. `http://localhost:3000`).
-- Before every request, the `agentHeadersInterceptor` reads the Pinia store (`app/src/store/agentHeaders.ts`), serializes configured headers to JSON, and sets the `X-A2A-Agent-Headers` HTTP header. Headers are configured in the UI (key icon) and can be persisted to localStorage.
+- Before every request, the Connect client adds: (1) agent config (`X-A2A-Agent-URL`, `X-A2A-Agent-Protocol`) from `agentConnection` store; (2) `Authorization: Bearer <token>` from `agentOAuth` store when the user has completed OAuth; (3) custom headers as `X-A2A-Agent-Headers` (JSON) from `agentHeaders` store. These are configured in the Playground sidebar and (for headers) can be persisted to localStorage.
 
 **2. BFF routing and headers**
 
 - The BFF (`internal/bff/server.go`) mounts two handler groups: the A2A Connect proxy at `/a2a.v1.A2AService/` and the static SPA at `/`.
-- All A2A requests pass through middleware that reads `X-A2A-Agent-Headers`, parses it as `map[string]string`, and puts it into the request context (`internal/bff/headers.go`). The chosen proxy can then read these headers.
+- All A2A requests pass through middleware that builds the agent headers from the incoming request (`internal/bff/headers.go`): it parses `X-A2A-Agent-Headers` (JSON) and merges in the request’s `Authorization` header so OAuth Bearer tokens are forwarded. The result is put into the request context; the chosen proxy sends these headers to the agent.
 
 **3. Protocol switching**
 

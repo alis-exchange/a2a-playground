@@ -10,9 +10,10 @@
 
 <script setup lang="ts">
   // Vue & Store Imports
-  import { onBeforeMount, onErrorCaptured } from 'vue'
+  import { onBeforeMount, onMounted, onErrorCaptured } from 'vue'
   import { useAppStore } from '@/store/app'
   import { useSnackbarStore } from '@/store/snackbar'
+  import { useAgentOAuthStore } from '@/store/agentOAuth'
 
   // Component Imports
 
@@ -21,20 +22,43 @@
   // Define Stores
   const store = useAppStore()
   const snackbarStore = useSnackbarStore()
-
-  // Define Emits
-
-  // Refs
-
-  // Computed
-
-  // Watchers
-
-  // Functions
+  const oauthStore = useAgentOAuthStore()
 
   // Lifecycle Hooks
   onBeforeMount(() => {
     // No user service in standalone app
+  })
+
+  onMounted(() => {
+    const hash = window.location.hash
+    if (hash.startsWith('#auth_callback?')) {
+      const query = hash.slice('#auth_callback?'.length)
+      const params = new URLSearchParams(query)
+      const accessToken = params.get('access_token')
+      const refreshToken = params.get('refresh_token')
+      const expiresIn = parseInt(params.get('expires_in') ?? '3600', 10)
+      if (accessToken && window.opener) {
+        // Popup flow: send tokens to opener and close
+        window.opener.postMessage(
+          {
+            type: 'auth_callback',
+            accessToken,
+            refreshToken: refreshToken ?? '',
+            expiresAt: Date.now() + expiresIn * 1000,
+          },
+          window.location.origin,
+        )
+        window.close()
+      } else if (accessToken) {
+        // Same-window redirect (fallback)
+        oauthStore.setTokens({
+          accessToken,
+          refreshToken: refreshToken ?? '',
+          expiresAt: Date.now() + expiresIn * 1000,
+        })
+        window.history.replaceState(null, '', window.location.pathname + window.location.search)
+      }
+    }
   })
 
   onErrorCaptured((error) => {

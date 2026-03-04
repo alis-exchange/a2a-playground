@@ -33,23 +33,23 @@ func NewServer(ctx context.Context, cfg ServerConfig) (*Server, error) {
 		return nil, fmt.Errorf("dist fs: %w", err)
 	}
 
-	var proxy A2AServiceHandler
-	if cfg.Protocol == ProtocolJSONRPC {
-		proxy = NewJSONRPCProxy(cfg.AgentURL)
-	} else {
-		proxy = NewGrpcProxy(cfg.AgentURL)
-	}
+	factory := NewProxyFactory(cfg.AgentURL, cfg.Protocol)
+	// Prime the cache and get the A2A path prefix
+	a2aPath, _ := factory.GetHandler(cfg.AgentURL, cfg.Protocol)
 
-	a2aPath, a2aHandler := proxy.Handler()
-
-	// Middleware to inject X-A2A-Agent-Headers into request context for proxy forwarding
+	// Per-request: read agent config from headers (fallback to CLI default), get proxy handler, inject agent headers, serve
 	a2aWithHeaders := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		agentURL, protocol := AgentConfigFromRequest(r)
+		_, handler := factory.GetHandler(agentURL, protocol)
 		headers := ExtractAgentHeaders(r)
-		ctx := WithAgentHeaders(r.Context(), headers)
-		a2aHandler.ServeHTTP(w, r.WithContext(ctx))
+		reqCtx := WithAgentHeaders(r.Context(), headers)
+		handler.ServeHTTP(w, r.WithContext(reqCtx))
 	})
 
 	mux := mux.NewRouter()
+	mux.HandleFunc("/auth/callback", HandleAuthCallback).Methods(http.MethodGet)
+	mux.HandleFunc("/auth/refresh", HandleAuthRefresh).Methods(http.MethodPost)
+	mux.HandleFunc("/auth/start", HandleAuthStart).Methods(http.MethodPost)
 	mux.PathPrefix(a2aPath).Handler(a2aWithHeaders)
 	mux.PathPrefix("/").Handler(SPAHandler(fsys))
 

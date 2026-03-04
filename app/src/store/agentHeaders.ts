@@ -26,6 +26,10 @@ export const useAgentHeadersStore = defineStore(STORE_ID, () => {
     headers.value = headers.value.filter((_, i) => i !== index)
   }
 
+  const clearHeaders = () => {
+    headers.value = []
+  }
+
   const updateHeader = (index: number, updates: Partial<HeaderEntry>) => {
     const next = [...headers.value]
     if (index >= 0 && index < next.length) {
@@ -102,6 +106,7 @@ export const useAgentHeadersStore = defineStore(STORE_ID, () => {
     presetKeys: PRESET_KEYS,
     addHeader,
     removeHeader,
+    clearHeaders,
     updateHeader,
     addPreset,
     getHeadersObject,

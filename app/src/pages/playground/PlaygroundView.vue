@@ -12,6 +12,7 @@
   import type { MessagePart } from '@/pages/playground/components/ContentInput/types'
   import MessageBubble from '@/pages/playground/components/MessageBubble.vue'
   import PendingFunctionResponseBlock from '@/pages/playground/components/PendingFunctionResponseBlock.vue'
+  import PlaygroundSidebar from '@/pages/playground/components/PlaygroundSidebar.vue'
   import TaskStatusWidget from '@/pages/playground/components/TaskStatusWidget.vue'
   import { isFunctionCall, normalizeDataPartToObject } from '@/pages/playground/store/dataPartUtils'
   import { ConversationMessage, streamResponseToAgentMessage, useMessagesStore, userMessageToAgentMessage } from '@/pages/playground/store/messages'
@@ -246,16 +247,6 @@
     class="playground-root"
     :style="{ height: playgroundHeight + 'px' }"
   >
-    <v-btn
-      icon
-      variant="text"
-      size="small"
-      class="position-absolute headers-toggle-btn"
-      title="Agent headers"
-      @click="agentPlaygroundStore.toggleHeadersDrawer"
-    >
-      <v-icon>key</v-icon>
-    </v-btn>
     <div class="playground-chat">
       <div
         ref="messagesContainer"
@@ -290,21 +281,18 @@
           v-if="messageItems.length === 0"
           class="empty-state"
         >
-          <div>
-            <v-avatar
-              class="mb-6"
-              size="60"
-              color="grey-lighten-3"
+          <div class="d-flex flex-column align-center justify-center h-100 text-center">
+            <v-icon
+              size="80"
+              color="primary"
+              class="mb-8"
             >
-              <v-icon
-                size="32"
-                color="grey"
-              >
-                chat
-              </v-icon>
-            </v-avatar>
-            <div class="text-headline mb-4">No messages yet</div>
-            <div class="text-body-2 text-grey">Start the conversation by sending a message</div>
+              smart_toy
+            </v-icon>
+            <div class="text-h4 mb-4">Agent Playground</div>
+            <div class="text-body-1 text-medium-emphasis mb-8" style="max-width: 600px">
+              Use the sidebar to configure your agent's connection parameters and security settings. Start the conversation by sending a message below.
+            </div>
           </div>
         </div>
       </div>
@@ -318,23 +306,28 @@
         </v-card>
       </div>
     </div>
+    <PlaygroundSidebar v-if="agentPlaygroundStore.sidebarOpen" />
+    <v-btn
+      v-else
+      class="sidebar-reopen-btn"
+      icon
+      variant="tonal"
+      color="primary"
+      aria-label="Open sidebar"
+      @click="agentPlaygroundStore.setSidebarOpen(true)"
+    >
+      <v-icon>menu</v-icon>
+    </v-btn>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .headers-toggle-btn {
-    top: 8px;
-    right: 8px;
-    z-index: 1;
-  }
-
   .playground-root {
     position: relative;
     min-height: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     overflow: hidden;
-    padding: 0 2rem;
   }
 
   .playground-chat {
@@ -346,6 +339,7 @@
     max-width: 760px;
     margin: 0 auto;
     width: 100%;
+    padding: 0 2rem;
   }
 
   .messages-scroll {
@@ -381,11 +375,13 @@
   }
 
   .empty-state {
-    min-height: 300px;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  }
+
+  .sidebar-reopen-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 4;
   }
 </style>

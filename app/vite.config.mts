@@ -48,7 +48,7 @@ export default defineConfig({
     vueDevTools(),
   ],
   optimizeDeps: {
-    exclude: ['vuetify', 'vue-router'],
+    exclude: ['vuetify', 'vue-router', '@local/a2a-js'],
   },
   define: { 'process.env': {} },
   resolve: {

@@ -8,17 +8,21 @@ const STORE_ID = 'agentPlayground'
 export type DetailsDrawerMode = 'message'
 
 export const useAgentPlaygroundStore = defineStore(STORE_ID, () => {
+  const sidebarOpen: Ref<boolean> = ref(true)
   const detailsDrawerOpen: Ref<boolean> = ref(false)
-  const headersDrawerOpen: Ref<boolean> = ref(false)
   const detailsDrawerMode: Ref<DetailsDrawerMode> = ref('message')
   const detailsDrawerMessage: Ref<ConversationMessage | null> = ref(null)
 
-  const toggleDetailsDrawer = () => {
-    detailsDrawerOpen.value = !detailsDrawerOpen.value
+  const setSidebarOpen = (open: boolean) => {
+    sidebarOpen.value = open
   }
 
-  const toggleHeadersDrawer = () => {
-    headersDrawerOpen.value = !headersDrawerOpen.value
+  const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value
+  }
+
+  const toggleDetailsDrawer = () => {
+    detailsDrawerOpen.value = !detailsDrawerOpen.value
   }
 
   const openDetailsDrawer = () => {
@@ -46,12 +50,13 @@ export const useAgentPlaygroundStore = defineStore(STORE_ID, () => {
   }
 
   return {
+    sidebarOpen,
+    setSidebarOpen,
+    toggleSidebar,
     detailsDrawerOpen,
-    headersDrawerOpen,
     detailsDrawerMode,
     detailsDrawerMessage,
     toggleDetailsDrawer,
-    toggleHeadersDrawer,
     openDetailsDrawer,
     closeDetailsDrawer,
     setDetailsDrawerMessage,
