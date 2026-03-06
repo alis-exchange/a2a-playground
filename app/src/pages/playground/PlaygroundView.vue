@@ -16,6 +16,8 @@
   import TaskStatusWidget from '@/pages/playground/components/TaskStatusWidget.vue'
   import { isFunctionCall, normalizeDataPartToObject } from '@/pages/playground/store/dataPartUtils'
   import { ConversationMessage, streamResponseToAgentMessage, useMessagesStore, userMessageToAgentMessage } from '@/pages/playground/store/messages'
+  import { Data } from '@a2ui/lit/0.8'
+  import type { Surface } from '@a2ui/lit/ui'
   import type { StreamResponse } from '@local/a2a-js'
   import { TaskState } from '@local/a2a-js'
 
@@ -27,6 +29,9 @@
   // Refs
   const messagesContainer = ref<HTMLElement | null>(null)
   const playgroundWrapperRef = ref<HTMLElement | null>(null)
+
+  // A2UI Processor (one surface per block; surfaces keyed by a2uiSurfaceId)
+  const processor = Data.createSignalA2uiMessageProcessor()
 
   // Dynamic height calculation
   const { height: windowHeight, width: windowWidth } = useDisplay()
@@ -79,11 +84,12 @@
 
   interface MessageItem {
     key: string
-    type: 'message' | 'status' | 'pending_function_response'
+    type: 'message' | 'status' | 'pending_function_response' | 'a2ui'
     message?: ConversationMessage
     statusMessages?: ConversationMessage[]
     isUser?: boolean
     pendingCall?: { id: string; name: string; args: Record<string, unknown>; taskId: string; contextId: string }
+    surfaceId?: string
   }
 
   const messageItems = computed((): MessageItem[] => {
@@ -121,8 +127,17 @@
               statusMessages: statusMsgs,
               isUser: false,
             })
-            statusWidgetInserted.add(taskId)
             const latestStatus = statusMsgs[statusMsgs.length - 1]
+            const statusA2uiSurfaceId = latestStatus?.getA2uiSurfaceId()
+            if (statusA2uiSurfaceId) {
+              items.push({
+                key: `a2ui-${statusA2uiSurfaceId}`,
+                type: 'a2ui',
+                surfaceId: statusA2uiSurfaceId,
+                isUser: false,
+              })
+            }
+            statusWidgetInserted.add(taskId)
             const latestState = latestStatus?.getState()
             const showPending = (latestState === TaskState.INPUT_REQUIRED || latestState === TaskState.AUTH_REQUIRED) && pendingCalls.length > 0
             if (showPending) {
@@ -147,6 +162,15 @@
           message,
           isUser: message.isUser(),
         })
+        const a2uiSurfaceId = message.getA2uiSurfaceId()
+        if (a2uiSurfaceId) {
+          items.push({
+            key: `a2ui-${a2uiSurfaceId}`,
+            type: 'a2ui',
+            surfaceId: a2uiSurfaceId,
+            isUser: false,
+          })
+        }
       }
     }
 
@@ -175,7 +199,10 @@
     try {
       await messagesStore.sendFunctionResponse(call.contextId, call.taskId, call.id, call.name, responsePayload, (response: StreamResponse) => {
         const unifiedMessage = streamResponseToAgentMessage(response)
+        const messageId = unifiedMessage?.messageId ?? uuidv7()
+        const surfaceId = processA2UIParts(response, messageId)
         if (unifiedMessage) {
+          if (surfaceId) unifiedMessage.a2uiSurfaceId = surfaceId
           messagesStore.addMessage(unifiedMessage)
         }
       })
@@ -208,7 +235,10 @@
         messageId,
         (response: StreamResponse) => {
           const unifiedMessage = streamResponseToAgentMessage(response)
+          const messageId = unifiedMessage?.messageId ?? uuidv7()
+          const surfaceId = processA2UIParts(response, messageId)
           if (unifiedMessage) {
+            if (surfaceId) unifiedMessage.a2uiSurfaceId = surfaceId
             messagesStore.addMessage(unifiedMessage)
           }
         },
@@ -222,6 +252,49 @@
       scrollToBottom()
     }
   }
+
+  /**
+   * Process A2UI data parts from a stream response into a dedicated surface (one per block).
+   * Injects the given surfaceId into the first A2UI message so the processor creates that surface.
+   * Returns the surfaceId used, or null if no A2UI parts were found.
+   */
+  const processA2UIParts = (response: StreamResponse, messageId: string): string | null => {
+    const payload = response.payload
+    if (!payload) return null
+
+    let parts: unknown[] = []
+    if (payload.case === 'msg' && payload.value?.parts) {
+      parts = payload.value.parts
+    } else if (payload.case === 'statusUpdate' && payload.value?.status?.update?.parts) {
+      parts = payload.value.status.update.parts
+    } else if (payload.case === 'artifactUpdate' && payload.value?.artifact?.parts) {
+      parts = payload.value.artifact.parts
+    }
+
+    const a2uiMessages: Record<string, unknown>[] = []
+    for (const part of parts) {
+      const p = part as { part?: { case: string; value?: { data?: unknown } }; metadata?: { mimeType?: string } }
+      if (p.part?.case === 'data' && p.metadata?.mimeType === 'application/json+a2ui') {
+        const dataPart = p.part.value
+        if (dataPart && typeof dataPart === 'object' && 'data' in dataPart && dataPart.data) {
+          a2uiMessages.push(dataPart.data as Record<string, unknown>)
+        }
+      }
+    }
+
+    if (a2uiMessages.length === 0) return null
+
+    const surfaceId = `a2ui-${messageId}`
+    const first = a2uiMessages[0]
+    if (first && typeof first === 'object') {
+      first.surfaceId = surfaceId
+      if (!('surface_id' in first)) (first as Record<string, unknown>).surface_id = surfaceId
+    }
+    processor.processMessages(a2uiMessages)
+    return surfaceId
+  }
+
+  const getSurfaceForId = (surfaceId: string) => processor.getSurfaces().get(surfaceId) ?? null
 
   onBeforeRouteLeave(async (_to, _from, next) => {
     agentPlaygroundStore.resetDrawerState()
@@ -275,6 +348,12 @@
             :sending="sendingFunctionResponse"
             @send="(response) => onSendFunctionResponse(item.pendingCall!, response)"
           />
+          <a2ui-surface
+            v-else-if="item.type === 'a2ui' && item.surfaceId"
+            :surface-id="item.surfaceId"
+            :processor="processor"
+            :surface="getSurfaceForId(item.surfaceId)"
+          />
         </div>
 
         <div
@@ -290,7 +369,10 @@
               smart_toy
             </v-icon>
             <div class="text-h4 mb-4">Agent Playground</div>
-            <div class="text-body-1 text-medium-emphasis mb-8" style="max-width: 600px">
+            <div
+              class="text-body-1 text-medium-emphasis mb-8"
+              style="max-width: 600px"
+            >
               Use the sidebar to configure your agent's connection parameters and security settings. Start the conversation by sending a message below.
             </div>
           </div>

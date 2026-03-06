@@ -11,9 +11,10 @@ import (
 type AgentHeadersKey struct{}
 
 const (
-	agentHeadersHeader   = "X-A2A-Agent-Headers"
-	agentURLHeader       = "X-A2A-Agent-URL"
-	agentProtocolHeader  = "X-A2A-Agent-Protocol"
+	agentHeadersHeader    = "X-A2A-Agent-Headers"
+	agentURLHeader        = "X-A2A-Agent-URL"
+	agentProtocolHeader   = "X-A2A-Agent-Protocol"
+	agentExtensionsHeader = "X-A2A-Extensions"
 )
 
 // AgentHeadersFromContext returns the agent headers from context, or nil if not set.
@@ -41,6 +42,9 @@ func ExtractAgentHeaders(r *http.Request) map[string]string {
 	}
 	if auth := r.Header.Get("Authorization"); auth != "" {
 		m["Authorization"] = auth
+	}
+	if ext := strings.TrimSpace(r.Header.Get(agentExtensionsHeader)); ext != "" {
+		m[agentExtensionsHeader] = ext
 	}
 	if len(m) == 0 {
 		return nil

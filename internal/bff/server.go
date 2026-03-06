@@ -50,6 +50,10 @@ func NewServer(ctx context.Context, cfg ServerConfig) (*Server, error) {
 	mux.HandleFunc("/auth/callback", HandleAuthCallback).Methods(http.MethodGet)
 	mux.HandleFunc("/auth/refresh", HandleAuthRefresh).Methods(http.MethodPost)
 	mux.HandleFunc("/auth/start", HandleAuthStart).Methods(http.MethodPost)
+	mux.HandleFunc("/api/oauth-presets", HandleListOAuthPresets).Methods(http.MethodGet)
+	mux.HandleFunc("/api/oauth-presets", HandleSaveOAuthPreset).Methods(http.MethodPost)
+	mux.HandleFunc("/api/oauth-presets/{nickname}", HandleGetOAuthPreset).Methods(http.MethodGet)
+	mux.HandleFunc("/api/oauth-presets/{nickname}", HandleDeleteOAuthPreset).Methods(http.MethodDelete)
 	mux.PathPrefix(a2aPath).Handler(a2aWithHeaders)
 	mux.PathPrefix("/").Handler(SPAHandler(fsys))
 

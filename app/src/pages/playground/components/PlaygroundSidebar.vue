@@ -131,6 +131,40 @@
       <div class="mb-6">
         <div class="text-subtitle-2 mb-3">OAuth 2.0 Flow</div>
 
+        <!-- Preset bar -->
+        <div class="d-flex align-center gap-2 mb-3 flex-wrap">
+          <v-select
+            v-model="selectedPresetNickname"
+            :items="oauthPresets"
+            item-title="nickname"
+            item-value="nickname"
+            label="Saved configs"
+            density="compact"
+            variant="outlined"
+            hide-details
+            clearable
+            class="flex-grow-1 preset-select"
+            @update:model-value="onPresetSelect"
+          />
+          <v-btn
+            variant="tonal"
+            size="small"
+            prepend-icon="save"
+            @click="openSavePresetDialog"
+          >
+            Save
+          </v-btn>
+          <v-btn
+            variant="tonal"
+            size="small"
+            prepend-icon="delete"
+            :disabled="!selectedPresetNickname"
+            @click="openDeletePresetDialog"
+          >
+            Delete
+          </v-btn>
+        </div>
+
         <v-form
           ref="oauthFormRef"
           v-model="oauthFormValid"
@@ -247,6 +281,82 @@
         </v-form>
       </div>
     </div>
+
+    <!-- Save OAuth preset dialog -->
+    <v-dialog
+      v-model="savePresetDialogOpen"
+      max-width="400"
+      persistent
+    >
+      <v-card>
+        <v-card-title>Save OAuth preset</v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="savePresetNickname"
+            label="Nickname"
+            density="compact"
+            variant="outlined"
+            :rules="[nicknameRule]"
+            :error-messages="savePresetExists ? 'A preset with this name already exists' : []"
+            placeholder="e.g. my-google-app"
+            @update:model-value="savePresetExists = false"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            variant="text"
+            @click="savePresetDialogOpen = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            v-if="savePresetExists"
+            color="primary"
+            @click="confirmOverwritePreset"
+          >
+            Overwrite
+          </v-btn>
+          <v-btn
+            color="primary"
+            :disabled="!isSavePresetNicknameValid"
+            @click="submitSavePreset"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Delete preset confirmation -->
+    <v-dialog
+      v-model="deletePresetDialogOpen"
+      max-width="400"
+      persistent
+    >
+      <v-card>
+        <v-card-title>Delete preset</v-card-title>
+        <v-card-text>
+          Delete preset &quot;{{ deletePresetNickname }}&quot;? This cannot be undone.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            variant="text"
+            @click="deletePresetDialogOpen = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="error"
+            :loading="deletePresetLoading"
+            @click="confirmDeletePreset"
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-navigation-drawer>
 </template>
 
@@ -256,7 +366,8 @@
   import { useAgentHeadersStore } from '@/store/agentHeaders'
   import { useAgentOAuthStore } from '@/store/agentOAuth'
   import { useSnackbarStore } from '@/store/snackbar'
-  import { computed, ref } from 'vue'
+  import type { OAuthPresetSummary } from '@/store/agentOAuth'
+  import { computed, onMounted, ref } from 'vue'
   import { useDisplay } from 'vuetify'
   import type { VForm } from 'vuetify/components'
 
@@ -271,6 +382,26 @@
   const oauthFormValid = ref(false)
   const visibleHeaderIndex = ref<number | null>(null)
   const showOAuthSecret = ref(false)
+
+  const oauthPresets = ref<OAuthPresetSummary[]>([])
+  const selectedPresetNickname = ref<string | null>(null)
+  const savePresetDialogOpen = ref(false)
+  const savePresetNickname = ref('')
+  const savePresetExists = ref(false)
+  const deletePresetDialogOpen = ref(false)
+  const deletePresetNickname = ref('')
+  const deletePresetLoading = ref(false)
+
+  const NICKNAME_REGEX = /^[A-Za-z0-9_.-]+$/
+  const nicknameRule = (v: string) => {
+    const s = (v ?? '').trim()
+    if (!s) return 'Nickname is required'
+    return NICKNAME_REGEX.test(s) || 'Only letters, numbers, underscore, dot, and hyphen'
+  }
+  const isSavePresetNicknameValid = computed(() => {
+    const s = (savePresetNickname.value ?? '').trim()
+    return s.length > 0 && NICKNAME_REGEX.test(s)
+  })
 
   const oauthRules = {
     clientId: (v: string) => {
@@ -323,6 +454,89 @@
   const onClose = () => {
     playgroundStore.setSidebarOpen(false)
   }
+
+  const fetchPresets = async () => {
+    try {
+      oauthPresets.value = await oauthStore.listPresets()
+    } catch {
+      oauthPresets.value = []
+    }
+  }
+
+  const onPresetSelect = async (nickname: string | null) => {
+    if (!nickname) return
+    try {
+      await oauthStore.loadPreset(nickname)
+      snackbarStore.success('Preset loaded')
+    } catch {
+      snackbarStore.error('Failed to load preset')
+    }
+  }
+
+  const openSavePresetDialog = () => {
+    savePresetNickname.value = ''
+    savePresetExists.value = false
+    savePresetDialogOpen.value = true
+  }
+
+  const submitSavePreset = async () => {
+    const name = savePresetNickname.value.trim()
+    if (!name || !NICKNAME_REGEX.test(name)) return
+    try {
+      const result = await oauthStore.savePreset(name, false)
+      if (result === 'exists') {
+        savePresetExists.value = true
+        return
+      }
+      savePresetDialogOpen.value = false
+      await fetchPresets()
+      snackbarStore.success('Preset saved')
+    } catch {
+      snackbarStore.error('Failed to save preset')
+    }
+  }
+
+  const confirmOverwritePreset = async () => {
+    const name = savePresetNickname.value.trim()
+    if (!name || !NICKNAME_REGEX.test(name)) return
+    try {
+      await oauthStore.savePreset(name, true)
+      savePresetDialogOpen.value = false
+      savePresetExists.value = false
+      await fetchPresets()
+      snackbarStore.success('Preset saved')
+    } catch {
+      snackbarStore.error('Failed to save preset')
+    }
+  }
+
+  const openDeletePresetDialog = () => {
+    if (selectedPresetNickname.value) {
+      deletePresetNickname.value = selectedPresetNickname.value
+      deletePresetDialogOpen.value = true
+    }
+  }
+
+  const confirmDeletePreset = async () => {
+    const name = deletePresetNickname.value
+    if (!name) return
+    deletePresetLoading.value = true
+    try {
+      await oauthStore.deletePreset(name)
+      deletePresetDialogOpen.value = false
+      selectedPresetNickname.value = null
+      await fetchPresets()
+      snackbarStore.success('Preset deleted')
+    } catch {
+      snackbarStore.error('Failed to delete preset')
+    } finally {
+      deletePresetLoading.value = false
+    }
+  }
+
+  onMounted(() => {
+    fetchPresets()
+  })
 
   const onRefreshToken = async () => {
     try {

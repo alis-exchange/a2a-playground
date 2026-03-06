@@ -17,6 +17,24 @@ export interface OAuthTokens {
   expiresAt: number
 }
 
+export interface OAuthPresetSummary {
+  nickname: string
+}
+
+/** Response shape from GET /api/oauth-presets/{nickname} (snake_case). */
+interface OAuthPresetResponse {
+  nickname: string
+  client_id: string
+  client_secret: string
+  authorization_url: string
+  token_url: string
+  scope: string
+}
+
+function getApiBase(): string {
+  return import.meta.env.VITE_API_URL ?? ''
+}
+
 export const useAgentOAuthStore = defineStore(STORE_ID, () => {
   const config = ref<OAuthConfig>({
     clientId: '',
@@ -36,12 +54,63 @@ export const useAgentOAuthStore = defineStore(STORE_ID, () => {
     tokens.value = t
   }
 
+  const listPresets = async (): Promise<OAuthPresetSummary[]> => {
+    const baseUrl = getApiBase()
+    const res = await fetch(`${baseUrl}/api/oauth-presets`)
+    if (!res.ok) throw new Error('Failed to list presets')
+    const data = (await res.json()) as { presets: OAuthPresetSummary[] }
+    return data.presets ?? []
+  }
+
+  const loadPreset = async (nickname: string): Promise<void> => {
+    const baseUrl = getApiBase()
+    const res = await fetch(`${baseUrl}/api/oauth-presets/${encodeURIComponent(nickname)}`)
+    if (!res.ok) throw new Error('Failed to load preset')
+    const p = (await res.json()) as OAuthPresetResponse
+    setConfig({
+      clientId: p.client_id ?? '',
+      clientSecret: p.client_secret ?? '',
+      authorizationUrl: p.authorization_url ?? '',
+      tokenUrl: p.token_url ?? '',
+      scope: p.scope ?? '',
+    })
+  }
+
+  const savePreset = async (nickname: string, overwrite: boolean): Promise<'ok' | 'exists'> => {
+    const baseUrl = getApiBase()
+    const c = config.value
+    const res = await fetch(`${baseUrl}/api/oauth-presets`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nickname,
+        client_id: c.clientId,
+        client_secret: c.clientSecret,
+        authorization_url: c.authorizationUrl,
+        token_url: c.tokenUrl,
+        scope: c.scope,
+        overwrite,
+      }),
+    })
+    if (res.status === 409) return 'exists'
+    if (!res.ok) throw new Error('Failed to save preset')
+    return 'ok'
+  }
+
+  const deletePreset = async (nickname: string): Promise<void> => {
+    const baseUrl = getApiBase()
+    const res = await fetch(`${baseUrl}/api/oauth-presets/${encodeURIComponent(nickname)}`, {
+      method: 'DELETE',
+    })
+    if (!res.ok) throw new Error('Failed to delete preset')
+  }
+
   const authorize = async () => {
     const { clientId, clientSecret, authorizationUrl, tokenUrl, scope } = config.value
     if (!authorizationUrl || !tokenUrl) return
-    const baseUrl = import.meta.env.VITE_API_URL ?? ''
+    const baseUrl = getApiBase()
     const redirectOrigin = typeof window !== 'undefined' ? window.location.origin : ''
-    const res = await fetch(`${baseUrl || ''}/auth/start`, {
+    const res = await fetch(`${baseUrl}/auth/start`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -112,7 +181,7 @@ export const useAgentOAuthStore = defineStore(STORE_ID, () => {
     const { clientId, clientSecret, tokenUrl } = config.value
     if (!tokenUrl) return false
     const baseUrl = import.meta.env.VITE_API_URL ?? ''
-    const res = await fetch(`${baseUrl || ''}/auth/refresh`, {
+    const res = await fetch(`${baseUrl}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -151,6 +220,10 @@ export const useAgentOAuthStore = defineStore(STORE_ID, () => {
     tokens,
     setConfig,
     setTokens,
+    listPresets,
+    loadPreset,
+    savePreset,
+    deletePreset,
     authorize,
     refresh,
     signOut,

@@ -1,4 +1,6 @@
 import { createA2AClient } from '@/clients/a2aClient'
+import { A2UI_EXTENSION_URI } from '@/constants'
+import { componentRegistry } from '@a2ui/lit/ui'
 import {
   DataPartSchema,
   FilePartSchema,
@@ -14,7 +16,7 @@ import {
   type TaskArtifactUpdateEvent,
   type TaskStatusUpdateEvent,
 } from '@local/a2a-js'
-import type { JsonValue } from '@bufbuild/protobuf'
+import type { JsonObject, JsonValue } from '@bufbuild/protobuf'
 import { create, fromJson } from '@bufbuild/protobuf'
 import { ValueSchema } from '@bufbuild/protobuf/wkt'
 import { defineStore } from 'pinia'
@@ -95,6 +97,8 @@ export type UnifiedMessage = {
   artifactUpdate?: TaskArtifactUpdateEvent
   timestamp: number
   messageId: string
+  /** When set, this message has an A2UI block to render inline (one surface per block). */
+  a2uiSurfaceId?: string
 }
 
 export function streamResponseToAgentMessage(response: StreamResponse): UnifiedMessage | null {
@@ -185,7 +189,7 @@ export async function userMessageToAgentMessage(
     taskId: '',
     role: Role.USER,
     parts: agentParts,
-    extensions: [],
+    extensions: [A2UI_EXTENSION_URI],
     referenceTaskIds: [],
   })
 }
@@ -315,6 +319,10 @@ export class ConversationMessage {
     return undefined
   }
 
+  getA2uiSurfaceId(): string | undefined {
+    return this.unifiedMessage.a2uiSurfaceId
+  }
+
   static fromUnifiedMessage(unifiedMessage: UnifiedMessage): ConversationMessage {
     return new ConversationMessage(unifiedMessage)
   }
@@ -422,8 +430,20 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
       taskId: '',
       role: Role.USER,
       parts: agentParts,
-      extensions: [],
+      extensions: [A2UI_EXTENSION_URI],
       referenceTaskIds: [],
+      metadata: {
+        a2uiClientCapabilities: {
+          supportedCatalogIds: ['https://a2ui.org/specification/v0_8/standard_catalog_definition.json'],
+          inlineCatalogs: [
+            {
+              catalogId: 'https://a2ui.org/specification/v0_8/standard_catalog_definition.json',
+              components: componentRegistry.getInlineCatalog().components,
+              styles: {},
+            },
+          ],
+        } as unknown as JsonObject,
+      },
     })
 
     const request = create(SendMessageRequestSchema, {
@@ -479,8 +499,20 @@ export const useMessagesStore = defineStore(STORE_ID, (): MessagesStoreReturn =>
       taskId: taskId || '',
       role: Role.USER,
       parts: [part],
-      extensions: [],
+      extensions: [A2UI_EXTENSION_URI],
       referenceTaskIds: taskId ? [taskId] : [],
+      metadata: {
+        a2uiClientCapabilities: {
+          supportedCatalogIds: ['https://a2ui.org/specification/v0_8/standard_catalog_definition.json'],
+          inlineCatalogs: [
+            {
+              catalogId: 'https://a2ui.org/specification/v0_8/standard_catalog_definition.json',
+              components: componentRegistry.getInlineCatalog().components,
+              styles: {},
+            },
+          ],
+        } as unknown as JsonObject,
+      },
     })
 
     const request = create(SendMessageRequestSchema, {

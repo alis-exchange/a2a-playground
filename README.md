@@ -98,6 +98,8 @@ Use the **Playground** sidebar (right side) to configure:
 - **Authentication** – Custom headers (e.g. `Authorization`, `X-API-Key`, `X-Tenant-ID`) sent with every request. These are persisted and forwarded by the BFF to the agent.
 - **OAuth 2.0** – Client ID, Client Secret, Authorization URL, Token URL, and scope. Click **Authorize Connection** to sign in via a popup; the access token is then sent as `Authorization: Bearer <token>` on all A2A requests. The BFF forwards the incoming `Authorization` header to the agent.
 
+**OAuth presets** – You can save the current OAuth config under a nickname and load it later from the **Saved configs** dropdown in the OAuth section. Presets are stored on disk in `~/.a2a-playground/oauth/<nickname>.json`. Client secrets in these files are stored unencrypted; keep the directory permissions restrictive and do not commit the folder to version control. The folder includes a `.gitignore` so its contents are ignored by git. Nicknames may only contain letters, numbers, underscore, dot, and hyphen.
+
 ## Architecture
 
 ```

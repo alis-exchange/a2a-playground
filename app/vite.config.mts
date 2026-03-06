@@ -13,7 +13,12 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [
     Vue({
-      template: { transformAssetUrls },
+      template: {
+        transformAssetUrls,
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('a2ui-') || tag.startsWith('m3e-'),
+        },
+      },
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify({

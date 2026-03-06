@@ -1,6 +1,7 @@
 import { createClient } from '@connectrpc/connect'
 import type { Interceptor } from '@connectrpc/connect'
 import { createConnectTransport } from '@connectrpc/connect-web'
+import { A2UI_EXTENSION_URI } from '@/constants'
 import { A2AService } from '@local/a2a-js'
 import { useAgentConnectionStore } from '@/store/agentConnection'
 import { useAgentHeadersStore } from '@/store/agentHeaders'
@@ -15,6 +16,7 @@ const agentConfigInterceptor: Interceptor = (next) => (req) => {
     req.header.set('X-A2A-Agent-URL', connectionStore.agentUrl)
   }
   req.header.set('X-A2A-Agent-Protocol', connectionStore.protocol)
+  req.header.set('X-A2A-Extensions', A2UI_EXTENSION_URI)
   return next(req)
 }
 
