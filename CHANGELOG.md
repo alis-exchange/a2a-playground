@@ -1,4 +1,11 @@
-# [](https://github.com/alis-exchange/a2a-playground/compare/v0.0.6...v) (2026-03-04)
+# [](https://github.com/alis-exchange/a2a-playground/compare/v0.0.7...v) (2026-03-10)
+
+## [0.0.7](https://github.com/alis-exchange/a2a-playground/compare/v0.0.6...v0.0.7) (2026-03-06)
+
+
+### Features
+
+* enhance OAuth functionality by adding presets support, update playground view with new A2UI components, and improve font preloading in index.html ([e446662](https://github.com/alis-exchange/a2a-playground/commit/e4466628d9a70b224591ef3b4f94b964cd64597f))
 
 ## [0.0.6](https://github.com/alis-exchange/a2a-playground/compare/v0.0.5...v0.0.6) (2026-03-04)
 
